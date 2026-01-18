@@ -1,0 +1,52 @@
+<span id="BsscommercePasswordForm" class="bsscommerce-password-form">
+    <span class="bss-ltsp-price-wrapper"></span>
+    <span class="">
+        {%- if entered_password != password and entered_password -%}
+            <div class="form-message form-message--error" style="text-align: center">
+                {%- if message_passcode_incorrect == '' -%}
+                    Incorrect password !
+                {% else %}
+                    {{ message_passcode_incorrect }}
+                {% endif %}
+            </div>
+        {%- endif -%}
+
+        <div class="bsscommerce-password-message-container">
+            <span style="all: initial;">{{ passcode_message }}</span>
+        </div>
+        <br/>
+
+        <form class="bsscommerce-ltap-password" class="cart" novalidate style="display: flex">
+            <input
+                    type="password"
+                    value=""
+                    name="attributes[bsscommerce-password-{{ rule_id }}]"
+                    id="bsscommerce-password"
+                    class="input-full"
+                    placeholder="
+                                {%- if input_placeholder_form_submit == "" -%}
+                                     {{ 'general.password_page.login_form_password_placeholder' | t }}
+                                {%- else -%}
+                                    {{ input_placeholder_form_submit }}
+                                {%- endif -%}
+                            "
+            />
+
+            <span class="text-center">
+                    <input id="bsscommerce-password-submit"
+                           style="display: block !important;"
+                           type="submit"
+                           class="btn"
+                           value="
+                                        {%- if button_text_form_submit == "" -%}
+                                          {{ 'general.password_page.login_form_submit' | t }}
+                                        {%- else -%}
+                                            {{ button_text_form_submit }}
+                                        {%- endif -%}
+                                       "
+                    />
+            </span>
+        </form>
+    </span>
+</span>
+

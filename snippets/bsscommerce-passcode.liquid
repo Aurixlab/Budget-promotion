@@ -1,0 +1,88 @@
+<div class="page-width">
+    <div class="grid">
+        <div class="grid__item medium-up--one-half medium-up--push-one-quarter">
+            <div id="BsscommercePasswordForm">
+                <div class="form-vertical">
+                    {%- if entered_password != password and entered_password -%}
+                        <div class="form-message form-message--error" style="text-align: center">
+                            {{ message_passcode_incorrect }}
+                        </div>
+                    {%- endif -%}
+
+                    <div class="bsscommerce-password-message-container">
+                        <span>{{ passcode_message }}</span>
+                    </div>
+                    <br/>
+
+                    <form id="bsscommerce-ltap-password" class="cart" novalidate>
+                        <input
+                            type="password"
+                            value=""
+                            name="attributes[bsscommerce-password-{{ rule_id }}]"
+                            id="bsscommerce-password"
+                            class="input-full"
+                            placeholder="
+                                {%- if input_placeholder_form_submit == "" -%}
+                                     {{ 'general.password_page.login_form_password_placeholder' | t }}
+                                {%- else -%}
+                                    {{ input_placeholder_form_submit }}
+                                {%- endif -%}
+                            "
+                        />
+
+                        <div class="text-center">
+                            <p>
+                                <input id="bsscommerce-password-submit"
+                                       type="submit"
+                                       class="btn"
+                                       value="
+                                        {%- if button_text_form_submit == "" -%}
+                                          {{ 'general.password_page.login_form_submit' | t }}
+                                        {%- else -%}
+                                            {{button_text_form_submit}}
+                                        {%- endif -%}
+                                       "
+                                       />
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var passcodeElement = document.getElementById("bsscommerce-password");
+    var formData = new FormData();
+    formData.append(passcodeElement.name, passcodeElement.value);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("post", "/cart/update.js");
+    xmlHttp.send(formData);
+
+    document.getElementById('bsscommerce-ltap-password').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var passcodeElement = document.getElementById("bsscommerce-password");
+        passcodeElement.addEventListener("input", function () {
+            passcodeElement.classList.remove("input--error");
+        });
+
+        if (passcodeElement.value != "") {
+            var formData = new FormData();
+            formData.append(passcodeElement.name, passcodeElement.value);
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    location.reload();
+                }
+            };
+
+            xmlHttp.open("post", "/cart/update.js");
+            xmlHttp.send(formData);
+        } else {
+            passcodeElement.classList.add("input--error");
+        }
+    });
+</script>

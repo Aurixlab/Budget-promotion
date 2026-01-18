@@ -1,0 +1,15 @@
+{% if product.content contains 'zakeke' %}
+<div class="product-form__item product-form__item--submit">
+    <button id="zakeke-configurator" class="btn product-form__cart-submit">
+    <span>
+    Customize
+    </span>
+    </button>
+</div>
+<script>
+    document.querySelector('#zakeke-configurator').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = '/apps/zakeke/c/{{ product.handle }}?variant=' + document.querySelector('select[name=id]').value;
+});
+</script>
+{% endif %}

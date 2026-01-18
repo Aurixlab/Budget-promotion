@@ -1,0 +1,1942 @@
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<section class="homepage-quote-section" id="homepageQuote">
+  <div class="hq-container">
+    <form id="homepageQuoteForm" class="hq-form">
+      <!-- LEFT COLUMN -->
+      <div class="hq-left-column">
+        <!-- CHOOSE YOUR CATEGORY -->
+        <div class="hq-left-one">
+          <div class="hq-section">
+            <h3 class="hq-section-title"  data-aos="fade-up" data-aos-duration="800">CHOOSE YOUR CATEGORY</h3>
+            <div class="hq-category-grid">
+              <label class="hq-category-card"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="50">
+                <input type="radio" name="category" value="T-Shirt" required>
+                <div class="hq-category-content">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/unreal_capture_9.png?v=1761500347"
+                    alt="T-Shirt"
+                    class="hq-category-icon"
+                  >
+                  <span class="hq-category-name">T-SHIRT</span>
+                </div>
+              </label>
+
+              <label class="hq-category-card"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                <input type="radio" name="category" value="Hooded Sweatshirt">
+                <div class="hq-category-content">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/unreal_capture_8.png?v=1761500346"
+                    alt="Hoodie"
+                    class="hq-category-icon"
+                  >
+                  <span class="hq-category-name">HOODED SWEATSHIRT</span>
+                </div>
+              </label>
+
+              <label class="hq-category-card"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+                <input type="radio" name="category" value="Hat">
+                <div class="hq-category-content">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/ae4c0559-5f4d-424e-ab8d-44f7ee7b2c7e_1.png?v=1761500348"
+                    alt="Hat"
+                    class="hq-category-icon"
+                  >
+                  <span class="hq-category-name">HAT</span>
+                </div>
+              </label>
+
+              <label class="hq-category-card"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                <input type="radio" name="category" value="Outerwear">
+                <div class="hq-category-content">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/adff8141-20d2-47bc-96fb-52b5be9dc953_1.png?v=1761500348"
+                    alt="Outerwear"
+                    class="hq-category-icon"
+                  >
+                  <span class="hq-category-name">OUTERWEAR</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hq-middle-left-column">
+        <div class="hq-left-one">
+          <!-- QUANTITY -->
+          <div class="hq-section">
+            <h3 class="hq-section-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="250">QUANTITY</h3>
+            <div class="hq-quantity-options">
+              <label class="hq-qty-option" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                <input type="radio" name="quantity_range" value="1-24" required>
+                <span class="hq-qty-text">1-24</span>
+                <span class="hq-qty-badge save">Save 0%</span>
+                <span class="hq-qty-badge current">Current</span>
+              </label>
+
+              <label class="hq-qty-option" data-aos="fade-up" data-aos-duration="800" data-aos-delay="350">
+                <input type="radio" name="quantity_range" value="25-99">
+                <span class="hq-qty-text">25-99</span>
+                <span class="hq-qty-badge save">Save 5%</span>
+                <span class="hq-qty-badge current">Current</span>
+              </label>
+
+              <label class="hq-qty-option" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <input type="radio" name="quantity_range" value="100-499">
+                <span class="hq-qty-text">100-499</span>
+                <span class="hq-qty-badge save">Save 10%</span>
+                <span class="hq-qty-badge current">Current</span>
+              </label>
+
+              <label class="hq-qty-option" data-aos="fade-up" data-aos-duration="800" data-aos-delay="450">
+                <input type="radio" name="quantity_range" value="500+">
+                <span class="hq-qty-text">500+</span>
+                <span class="hq-qty-badge save">Save 20%</span>
+                <span class="hq-qty-badge current">Current</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- QUALITY -->
+          <div class="hq-section">
+            <h3 class="hq-section-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">QUALITY</h3>
+            <select name="quality" class="hq-select" required  data-aos="fade-up" data-aos-duration="800" data-aos-delay="550">
+              <option value="Top Quality" selected>Top Quality</option>
+              <option value="Standard Quality">Standard Quality</option>
+              <option value="Premium Quality">Premium Quality</option>
+            </select>
+          </div>
+
+          <!-- PRODUCTION AND SHIPPING -->
+          <div class="hq-section">
+            <h3 class="hq-section-title"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">PRODUCTION AND SHIPPING</h3>
+            <div class="pp-sms--div">
+              <label class="hq-production-option"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="650">
+                <input type="radio" name="production_type" value="Standard Production" checked>
+                <div class="hq-prod-box">
+                  <div class="hq-prod-left">
+                    <span class="hq-prod-title">Standard Production</span>
+                    <span class="hq-prod-sub">7-10 business days</span>
+                  </div>
+                  <div class="hq-prod-icon">
+                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="8.5" cy="8.5" r="7.5" stroke="#FF741C" stroke-width="2"/>
+                      <line x1="8" y1="3" x2="8" y2="9" stroke="#FF741C" stroke-width="2"/>
+                      <line x1="13" y1="8" x2="7" y2="8" stroke="#FF741C" stroke-width="2"/>
+                    </svg>
+                  </div>
+                </div>
+              </label>
+
+              <label class="hq-production-option rush"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="700">
+                <input type="radio" name="production_type" value="Rush Production">
+                <div class="hq-prod-box">
+                  <div class="hq-prod-left">
+                    <span class="hq-prod-title">Rush Production</span>
+                    <span class="hq-prod-sub">3-5 business days</span>
+                  </div>
+                  <span class="hq-prod-extra">10% + Rush Fees</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="hq-custom-date"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="750">
+              <label class="hq-date-label">
+                <input type="text" name="custom_date" class="hq-date-input">
+                <div class="hq-date-icon">
+                  <svg width="20" height="20" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.15412 1.743H1.65312C0.741722 1.743 0.00012207 2.4846 0.00012207 3.396V16.35C0.00012207 17.2599 0.741722 18 1.65312 18H15.6751C16.5865 18 17.3281 17.2599 17.3281 16.35V3.396C17.3281 2.4846 16.5865 1.743 15.6751 1.743H15.1771V0.762C15.1771 0.342 14.8339 0 14.4121 0H13.5991C13.1806 0 12.8401 0.342 12.8401 0.762V1.743H4.49112V0.762C4.49112 0.342 4.14912 0 3.72912 0H2.91612C2.49612 0 2.15412 0.342 2.15412 0.762V1.743ZM15.6751 17.4H1.65312C1.07262 17.4 0.600122 16.929 0.600122 16.35V5.9031H16.7281V16.35C16.7281 16.929 16.2556 17.4 15.6751 17.4ZM13.4401 0.762C13.4401 0.6726 13.5115 0.6 13.5991 0.6H14.4121C14.503 0.6 14.5771 0.6726 14.5771 0.762V3.444C14.5771 3.5349 14.5045 3.606 14.4121 3.606H13.5991C13.51 3.606 13.4401 3.5349 13.4401 3.444V0.762ZM12.8401 2.343V3.444C12.8401 3.864 13.1806 4.206 13.5991 4.206H14.4121C14.8339 4.206 15.1771 3.864 15.1771 3.444V2.343H15.6751C16.2556 2.343 16.7281 2.8155 16.7281 3.396V5.3031H0.600122V3.396C0.600122 2.8155 1.07262 2.343 1.65312 2.343H2.15412V3.444C2.15412 3.864 2.49612 4.206 2.91612 4.206H3.72912C4.14912 4.206 4.49112 3.864 4.49112 3.444V2.343H12.8401ZM2.75412 0.762C2.75412 0.6726 2.82672 0.6 2.91612 0.6H3.72912C3.81702 0.6 3.89112 0.6741 3.89112 0.762V3.444C3.89112 3.5334 3.81852 3.606 3.72912 3.606H2.91612C2.82522 3.606 2.75412 3.5349 2.75412 3.444V0.762Z" fill="#FF741C"/>
+                    <path d="M4.3819 6.78601H1.972C1.8064 6.78601 1.672 6.92041 1.672 7.08601V9.49561C1.672 9.66121 1.8064 9.79561 1.972 9.79561H4.3816C4.5472 9.79561 4.6816 9.66121 4.6816 9.49561V7.08601C4.6816 6.92041 4.5475 6.78601 4.3819 6.78601ZM4.0819 9.19561H2.2723V7.38601H4.0819V9.19561Z" fill="#FF741C"/>
+                    <path d="M8.03992 6.78601H5.63032C5.46472 6.78601 5.33032 6.92041 5.33032 7.08601V9.49561C5.33032 9.66121 5.46472 9.79561 5.63032 9.79561H8.03992C8.20552 9.79561 8.33992 9.66121 8.33992 9.49561V7.08601C8.33992 6.92041 8.20552 6.78601 8.03992 6.78601ZM7.73992 9.19561H5.93032V7.38601H7.73992V9.19561Z" fill="#FF741C"/>
+                    <path d="M11.6982 6.78601H9.28865C9.12305 6.78601 8.98865 6.92041 8.98865 7.08601V9.49561C8.98865 9.66121 9.12305 9.79561 9.28865 9.79561H11.6982C11.8638 9.79561 11.9982 9.66121 11.9982 9.49561V7.08601C11.9982 6.92041 11.8638 6.78601 11.6982 6.78601ZM11.3982 9.19561H9.58865V7.38601H11.3982V9.19561Z" fill="#FF741C"/>
+                    <path d="M15.3561 6.78601H12.9465C12.7809 6.78601 12.6465 6.92041 12.6465 7.08601V9.49561C12.6465 9.66121 12.7809 9.79561 12.9465 9.79561H15.3561C15.5217 9.79561 15.6561 9.66121 15.6561 9.49561V7.08601C15.6561 6.92041 15.5217 6.78601 15.3561 6.78601ZM15.0561 9.19561H13.2465V7.38601H15.0561V9.19561Z" fill="#FF741C"/>
+                    <path d="M4.3819 10.2523H1.972C1.8064 10.2523 1.672 10.3867 1.672 10.5523V12.9619C1.672 13.1275 1.8064 13.2619 1.972 13.2619H4.3816C4.5472 13.2619 4.6816 13.1275 4.6816 12.9619V10.5523C4.6816 10.3867 4.5475 10.2523 4.3819 10.2523ZM4.0819 12.6619H2.2723V10.8523H4.0819V12.6619Z" fill="#FF741C"/>
+                    <path d="M8.03992 10.2523H5.63032C5.46472 10.2523 5.33032 10.3867 5.33032 10.5523V12.9619C5.33032 13.1275 5.46472 13.2619 5.63032 13.2619H8.03992C8.20552 13.2619 8.33992 13.1275 8.33992 12.9619V10.5523C8.33992 10.3867 8.20552 10.2523 8.03992 10.2523ZM7.73992 12.6619H5.93032V10.8523H7.73992V12.6619Z" fill="#FF741C"/>
+                    <path d="M11.6982 10.2523H9.28865C9.12305 10.2523 8.98865 10.3867 8.98865 10.5523V12.9619C8.98865 13.1275 9.12305 13.2619 9.28865 13.2619H11.6982C11.8638 13.2619 11.9982 13.1275 11.9982 12.9619V10.5523C11.9982 10.3867 11.8638 10.2523 11.6982 10.2523ZM11.3982 12.6619H9.58865V10.8523H11.3982V12.6619Z" fill="#FF741C"/>
+                    <path d="M15.3561 10.2523H12.9465C12.7809 10.2523 12.6465 10.3867 12.6465 10.5523V12.9619C12.6465 13.1275 12.7809 13.2619 12.9465 13.2619H15.3561C15.5217 13.2619 15.6561 13.1275 15.6561 12.9619V10.5523C15.6561 10.3867 15.5217 10.2523 15.3561 10.2523ZM15.0561 12.6619H13.2465V10.8523H15.0561V12.6619Z" fill="#FF741C"/>
+                    <path d="M4.3819 13.7184H1.972C1.8064 13.7184 1.672 13.8528 1.672 14.0184V16.428C1.672 16.5936 1.8064 16.728 1.972 16.728H4.3816C4.5472 16.728 4.6816 16.5936 4.6816 16.428V14.0184C4.6816 13.8528 4.5475 13.7184 4.3819 13.7184ZM4.0819 16.128H2.2723V14.3184H4.0819V16.128Z" fill="#FF741C"/>
+                    <path d="M8.03992 13.7184H5.63032C5.46472 13.7184 5.33032 13.8528 5.33032 14.0184V16.428C5.33032 16.5936 5.46472 16.728 5.63032 16.728H8.03992C8.20552 16.728 8.33992 16.5936 8.33992 16.428V14.0184C8.33992 13.8528 8.20552 13.7184 8.03992 13.7184ZM7.73992 16.128H5.93032V14.3184H7.73992V16.128Z" fill="#FF741C"/>
+                    <path d="M11.6982 13.7184H9.28865C9.12305 13.7184 8.98865 13.8528 8.98865 14.0184V16.428C8.98865 16.5936 9.12305 16.728 9.28865 16.728H11.6982C11.8638 16.728 11.9982 16.5936 11.9982 16.428V14.0184C11.9982 13.8528 11.8638 13.7184 11.6982 13.7184ZM11.3982 16.128H9.58865V14.3184H11.3982V16.128Z" fill="#FF741C"/>
+                    <path d="M15.3561 13.7184H12.9465C12.7809 13.7184 12.6465 13.8528 12.6465 14.0184V16.428C12.6465 16.5936 12.7809 16.728 12.9465 16.728H15.3561C15.5217 16.728 15.6561 16.5936 15.6561 16.428V14.0184C15.6561 13.8528 15.5217 13.7184 15.3561 13.7184ZM15.0561 16.128H13.2465V14.3184H15.0561V16.128Z" fill="#FF741C"/>
+                    <path d="M5.97139 4.20608H11.3567C11.5223 4.20608 11.6567 4.07168 11.6567 3.90608C11.6567 3.74048 11.5223 3.60608 11.3567 3.60608H5.97139C5.80579 3.60608 5.67139 3.74048 5.67139 3.90608C5.67139 4.07168 5.80579 4.20608 5.97139 4.20608Z" fill="#FF741C"/>
+                  </svg>
+                </div>
+              </label>
+            </div>
+
+            <div class="hq-pickup-delivery">
+              <label class="hq-radio-btn"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="850">
+                <input type="radio" name="delivery_method" value="Pickup" checked>
+               <div class="hq-icon">
+                  <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_246.png?v=1761931366">
+                </div>
+                <span class="hq-text">Pickup</span>
+              </label>
+              <label class="hq-radio-btn"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="900">
+                <input type="radio" name="delivery_method" value="Delivery">
+                <div class="hq-icon">
+                  <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_246.png?v=1761931366">
+                </div>
+                <span class="hq-text">Delivery</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE COLUMN -->
+      <div class="hq-middle-column">
+        <!-- DESIGN DETAILS -->
+        <div class="hq-section">
+          <h3 class="hq-section-title"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="950">DESIGN DETAILS</h3>
+          <div class="hq-upload-box"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="1000">
+            <label for="hq_logo_upload" class="hq-upload-area">
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.133 10.2174C11.0138 10.2174 10.894 10.1697 10.7984 10.0728L8.38005 7.62038L5.98145 10.0713C5.77705 10.2801 5.46075 10.263 5.27525 10.0332C5.08965 9.80321 5.10475 9.44738 5.30925 9.23858L8.04275 6.44543C8.23285 6.25103 8.52295 6.25069 8.71365 6.44396L11.4681 9.23711C11.6732 9.44513 11.6896 9.80074 11.5047 10.0316C11.4059 10.1548 11.2697 10.2174 11.133 10.2174Z" fill="#FF741C"/>
+                <path d="M8.37878 18C8.10258 18 7.87878 17.7481 7.87878 17.4375V6.86157C7.87878 6.55096 8.10258 6.29907 8.37878 6.29907C8.65498 6.29907 8.87878 6.55096 8.87878 6.86157V17.4375C8.87878 17.7481 8.65498 18 8.37878 18Z" fill="#FF741C"/>
+                <path d="M12.3 12.6358H3.15C1.4131 12.6358 0 11.0549 0 9.11183C0 7.75969 0.6821 6.55031 1.7377 5.96059C1.7126 5.78408 1.7 5.60475 1.7 5.42385C1.7 3.54229 3.0683 2.01161 4.75 2.01161C5.2073 2.01161 5.6476 2.1222 6.0497 2.3355C6.6443 0.931275 7.9226 0 9.35 0C11.3626 0 13 1.8315 13 4.08274C13 4.19873 12.9957 4.31415 12.987 4.42879C14.7155 4.78643 16 6.46661 16 8.49713C16 10.7792 14.3402 12.6358 12.3 12.6358ZM4.75 3.13661C3.6196 3.13661 2.7 4.16273 2.7 5.42385C2.7 5.66381 2.733 5.89894 2.7981 6.1227L2.9539 6.6582L2.4777 6.83258C1.5939 7.15635 1 8.07221 1 9.11183C1 10.4346 1.9645 11.5108 3.15 11.5108H12.3C13.7888 11.5108 15 10.1589 15 8.49713C15 6.86261 13.8547 5.53973 12.3925 5.48539L11.7736 5.46244L11.924 4.78654C11.9745 4.55996 12.0001 4.32315 12.0001 4.08285C12 2.45183 10.8112 1.125 9.35 1.125C8.1519 1.125 7.099 2.02568 6.7896 3.31515L6.5945 4.12875L6.0014 3.61395C5.6417 3.30165 5.209 3.13661 4.75 3.13661Z" fill="#FF741C"/>
+              </svg>
+
+              <p class="hq-upload-text">UPLOAD LOGO/ARTWORK</p>
+              <input type="file" id="hq_logo_upload" name="logo" accept="image/*" style="display:none;">
+            </label>
+          </div>
+          <p class="hq-upload-subtext"   data-aos="fade-up" data-aos-duration="800" data-aos-delay="950">Max file size: 10MB (recommended 5MB or less)</p>
+          <div id="hq_upload_status" class="hq-upload-status"></div>
+        </div>
+
+        <!-- PRINT LOCATION -->
+        <div class="hq-section"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="1050">
+          <h3 class="hq-section-title">PRINT LOCATION</h3>
+          <div class="hq-print-location">
+            <div class="ss-fid">
+              <label class="hq-location-btn">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Untitled_design_2_2.png?v=1761929693">
+                <input type="checkbox" name="print_location" value="Front" checked="">
+              </label>
+              <span>FRONT</span>
+            </div>
+
+            <div class="ss-fid">
+              <label class="hq-location-btn">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Untitled_design_3_2.png?v=1761929692">
+                <input type="checkbox" name="print_location" value="Back">
+              </label>
+              <span>BACK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACT INFO -->
+        <div class="hq-section"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="1050">
+          <h3 class="hq-section-title">CONTACT INFO</h3>
+          <div class="sms-pp-filed">
+            <input type="text" name="organization_name" placeholder="Organization name" class="hq-input">
+            <input type="text" name="contact_name" placeholder="Contact Name*" class="hq-input" required>
+            <input type="tel" name="phone_number" placeholder="Phone Number*" class="hq-input" required>
+            <input type="email" name="email_address" placeholder="Email Address*" class="hq-input" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="hq-right-column"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="1100">
+        <h3 class="hq-section-title">ORDER PROCESS</h3>
+
+        <div class="hq-process-step">
+          <div class="hq-process-icon">
+            <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-art.png?v=1760204642" alt="">
+          </div>
+          <div class="hq-process-content">
+            <strong>SEND ART & QUANTITY</strong>
+            <p>Send us your art and quantity</p>
+          </div>
+        </div>
+
+        <div class="hq-process-arrow">↓</div>
+
+        <div class="hq-process-step">
+          <div class="hq-process-icon">
+            <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-quote.png?v=1760204642" alt="">
+          </div>
+          <div class="hq-process-content">
+            <strong>APPROVE QUOTE & PAY</strong>
+            <p>Review your quote and make payment</p>
+          </div>
+        </div>
+
+        <div class="hq-process-arrow">↓</div>
+
+        <div class="hq-process-step">
+          <div class="hq-process-icon">
+            <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-artwork.png?v=1760204641" alt="">
+          </div>
+          <div class="hq-process-content">
+            <strong>APPROVE ARTWORK</strong>
+            <p>Check your digital mockup and approve</p>
+          </div>
+        </div>
+
+        <div class="hq-process-arrow">↓</div>
+
+        <div class="hq-process-step">
+          <div class="hq-process-icon">
+            <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-status.png?v=1760204641" alt="">
+          </div>
+          <div class="hq-process-content">
+            <strong>ORDER STATUS UPDATE</strong>
+            <p>You'll be notified once your order is ready for pickup or on its way for delivery</p>
+          </div>
+        </div>
+        
+        <button type="submit" class="hq-submit-btn"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="1050">SUBMIT</button>
+      </div>
+    </form>
+  </div>
+
+  <button type="button" class="hq-close-btn" aria-label="Close form">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Success Popup -->
+  <div class="success-popup-overlay" id="homepageSuccessPopup">
+    <div class="success-popup">
+      <div class="success-popup-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+      </div>
+      <h2 class="success-popup-title">Quote request submitted successfully!</h2>
+      <p class="success-popup-message">Our Sales and Design team will contact you within 1 hour.</p>
+      <button class="success-popup-button" onclick="closeHomepageSuccessPopup()">OK</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  section.shopify-section.homepage-quote-section-wrapper{
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+            /* Homepage Quote Section Styles */
+
+            .homepage-quote-section {
+              padding: 100px 20px 0;
+              background: #FDFAF3;
+              position: relative;
+            }
+
+
+
+            .hq-form {
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr 1fr;
+              gap: 30px;
+              background: #FDFAF3;
+              padding: 0;
+            }
+
+            .hq-section {
+              padding-bottom: 15px;
+            }
+            form, fieldset {
+    margin-bottom: 0px;
+}
+
+            .hq-section-title {
+              margin-bottom: 15px;
+              letter-spacing: 0;
+              font-style: normal;
+              font-weight: 700;
+              font-size: 20px;
+              line-height: 24px;
+              text-transform: uppercase;
+              color: #000000;
+            }
+
+            /* Category Grid */
+            .hq-category-grid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 15px;
+            }
+
+            .hq-category-card {
+              position: relative;
+              cursor: pointer;
+              border: 2px solid #e5e5e500;
+              border-radius: 12px;
+              text-align: center;
+              transition: all 0.3s ease;
+            }
+
+            .hq-category-card:hover {
+              border-color: #FF741C;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(255, 116, 28, 0.15);
+            }
+
+            .hq-category-card input[type="radio"] {
+              position: absolute;
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .hq-category-card input[type="radio"]:checked + .hq-category-content {
+              color: #FF741C;
+            }
+
+            {% comment %} .hq-category-card input[type="radio"]:checked ~ .hq-category-content {
+              border: 2px solid #FF741C;
+              border-radius: 10px;
+            } {% endcomment %}
+
+            .hq-category-card:has(input[type="radio"]:checked) {
+              border-color: #FF741C;
+              background: #FFF5EE;
+            }
+
+            .hq-category-content {
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 10px;
+              padding: 10px;
+            }
+
+            .hq-category-icon {
+              width: 160px;
+              height: 160px;
+              object-fit: contain;
+            }
+
+            .hq-category-name {
+              font-style: normal;
+              font-weight: 700;
+              font-size: 13px;
+              line-height: 16px;
+              text-align: center;
+              text-transform: uppercase;
+              color: #FF741C;
+            }
+
+            /* Quantity Options */
+            .hq-quantity-options {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+            }
+
+            .hq-qty-option {
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 8px 15px;
+              border: 2px solid #e5e5e500;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              background: #FFFFFF;
+              box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+              border-radius: 7px;
+            }
+
+            .hq-qty-option:hover {
+              border-color: #FF741C;
+              box-shadow: 0 2px 8px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-qty-option input[type="radio"] {
+              position: absolute;
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .hq-qty-option:has(input[type="radio"]:checked) {
+              border-color: #FF741C;
+              background: #FFF5EE;
+              box-shadow:none;
+            }
+
+            .hq-qty-option:has(input[type="radio"]:checked) .hq-qty-text {
+              color: #FF741C;
+              font-weight: 700;
+            }
+
+            .hq-qty-option:has(input[type="radio"]:checked) .hq-qty-badge.save {
+              display: none;
+            }
+
+            .hq-qty-option:not(:has(input[type="radio"]:checked)) .hq-qty-badge.current {
+              display: none;
+            }
+
+            .hq-qty-badge {
+              padding: 4px 10px;
+              border-radius: 12px;
+              font-size: 11px;
+              font-weight: 600;
+              white-space: nowrap;
+            }
+
+            .hq-qty-badge.current {
+              background: #FF741C;
+              font-style: normal;
+              font-weight: 700;
+              font-size: 8px;
+              line-height: 10px;
+              color: #FFFFFF;
+            }
+
+            .hq-qty-badge.save {
+
+              font-style: normal;
+              font-weight: 700;
+              font-size: 10px;
+              line-height: 10px;
+              color: #FF741C;
+            }
+
+            .hq-qty-text {
+
+          font-style: normal;
+          font-weight: 700;
+          font-size: 14px;
+          line-height: 17px;
+          color: #000000;
+            }
+
+            /* Select Dropdown */
+            .hq-select {
+              width: 100%;
+              padding: 12px 35px 12px 15px;
+              background: transparent;
+              cursor: pointer;
+              transition: all 0.3s
+          ease;
+              border: 1px solid #FF741C;
+              border-radius: 10px;
+
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 15px;
+              color: #000000;
+              margin: 0;
+              background: white url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23FF741C' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+            }
+
+            .hq-select:focus {
+              outline: none;
+              border-color: #FF741C;
+              box-shadow: 0 0 0 3px rgba(255, 116, 28, 0.1);
+            }
+
+            /* Production Options */
+            .hq-production-option {
+                display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 15px;
+              margin-bottom: 0px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              background: transparent;
+              border: 1px solid #FF741C;
+              border-radius: 10px;
+              width: 100%;
+            }
+    .pp-sms--div {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+    }
+            .hq-production-option:hover {
+              border-color: #FF741C;
+              box-shadow: 0 2px 8px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-production-option input[type="radio"] {
+              position: absolute;
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .hq-production-option:has(input[type="radio"]:checked) {
+              border-color: #FF741C;
+              background: #fff;
+            }
+
+            .hq-production-option:has(input[type="radio"]:checked) .hq-prod-title {
+              color: #FF741C;
+            }
+
+            .hq-production-option:has(input[type="radio"]:checked) .hq-prod-icon circle:first-child {
+              stroke: #FF741C;
+            }
+
+            .hq-production-option:has(input[type="radio"]:checked) .hq-prod-icon circle:last-child {
+              display: block;
+            }
+
+            .hq-prod-box {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              flex: 1;
+              gap: 10px;
+            }
+
+            .hq-prod-left {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+            }
+
+            .hq-prod-title {
+          transition: color 0.3s ease;
+
+              font-style: normal;
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 15px;
+              color: #000000;
+              text-transform: capitalize;
+            }
+
+            .hq-prod-sub {
+
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 12px;
+              color: #323232;
+              opacity: 0.45;
+              text-transform: lowercase;
+            }
+
+            .hq-prod-extra {
+
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 15px;
+              color: #FF741C;
+            }
+
+
+
+            /* Date Input */
+            .hq-custom-date {
+              margin: 15px 0;
+            }
+
+            .hq-date-label {
+              position: relative;
+              display: block;
+            }
+
+
+
+            .hq-date-input:focus {
+              outline: none;
+              border-color: #FF741C;
+              box-shadow: 0 0 0 3px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-date-icon {
+              position: absolute;
+              right: 12px;
+              top: 50%;
+              transform: translateY(-50%);
+              pointer-events: none;
+              font-size: 18px;
+            }
+
+          input.hq-date-input {
+              align-items: center;
+              justify-content: space-between;
+              padding: 15px;
+              margin-bottom: 0px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              background: transparent;
+              border: 1px solid #FF741C;
+              border-radius: 10px;
+              min-height: 63px;
+              height: 100%;
+          }
+
+            /* Pickup/Delivery */
+            .hq-pickup-delivery {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+              margin-top: 0px;
+            }
+
+            .hq-radio-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            padding: 15px 12px;
+            border: 2px solid #e5e5e500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-color: #FF741C;
+    background: transparent;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            }
+.hq-icon img {
+    position: relative;
+    top: 5px;
+}
+            .hq-radio-btn:hover {
+              border-color: #FF741C;
+              box-shadow: 0 2px 8px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-radio-btn input[type="radio"] {
+              position: absolute;
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .hq-radio-btn:has(input[type="radio"]:checked) {
+              border-color: #FF741C;
+              background: #FF741C;
+            }
+
+            .hq-radio-btn:has(input[type="radio"]:checked) .hq-text {
+              color: #fff;
+              font-weight: 700;
+            }
+
+            .hq-icon {
+    position: absolute;
+    right: 0;
+}
+         
+
+            .hq-text {
+        transition: all 0.3s ease;
+
+            font-style: normal;
+            font-weight: 600;
+            line-height: 12px;
+            color: #000;
+            }
+
+            /* Upload Box */
+            .hq-upload-box {
+      padding: 10px;
+          text-align: center;
+          background: transparent;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px dashed #FF741C;
+          border-radius: 10px;
+            }
+
+            .hq-upload-box:hover {
+              background: #FFF5EE;
+              border-color: #e56515;
+            }
+
+            .hq-upload-area {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 10px;
+              cursor: pointer;
+            }
+
+            .hq-upload-area svg {
+              width: 20px;
+              height: 20px;
+            }
+
+            .hq-upload-text {
+      margin: 0;
+
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 15px;
+          text-transform: uppercase;
+          color: #000000;
+            }
+
+            .hq-upload-subtext {
+              font-size: 11px;
+              color: #666;
+              margin: 0;
+            }
+
+            .hq-upload-status {
+              font-size: 13px;
+              color: #4CAF50;
+              font-weight: 600;
+            }
+
+            /* Print Location */
+            .hq-print-location {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              gap: 10px;
+            }
+
+            .hq-location-btn {
+      padding: 8px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          background: white;
+          font-weight: 600;
+          font-size: 14px;
+          color: #333;
+          border: 1px solid #FF741C;
+          border-radius: 10px;
+          width: 100%;
+            }
+            .ss-fid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.ss-fid span {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 18px;
+}
+      label.hq-location-btn span {
+
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 15px;
+          text-transform: uppercase;
+          color: #000000;
+      }
+            .hq-location-btn:hover {
+              border-color: #FF741C;
+              box-shadow: 0 2px 8px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-location-btn input[type="checkbox"] {
+              position: absolute;
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+
+            .hq-location-btn:has(input[type="checkbox"]:checked) {
+              border-color: #FF741C;
+              background: #FFF5EE;
+              border-width: 3px;
+            }
+
+            .hq-location-btn:has(input[type="checkbox"]:checked) span {
+              color: #FF741C;
+              font-weight: 700;
+            }
+
+            /* Input Fields */
+            .hq-input {
+              width: 100%;
+              padding: 12px 15px;
+              border: 2px solid #E5E5E5;
+              border-radius: 8px;
+              font-size: 14px;
+              margin-bottom: 10px;
+              transition: all 0.3s ease;
+              background: white;
+            }
+      .hq-section input {
+          border: 1px solid #FF741C;
+          border-radius: 10px;
+          background: transparent;
+      }
+
+      .hq-section input::placeholder {
+
+      font-style: normal;
+      font-weight: 500;
+      font-size: 11px;
+      line-height: 13px;
+      color: #000000;
+      opacity: 0.7;
+      }
+      .sms-pp-filed {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.sms-pp-filed input.hq-input {
+    margin: 0;
+}
+
+            .hq-input:focus {
+              outline: none;
+              border-color: #FF741C;
+              box-shadow: 0 0 0 3px rgba(255, 116, 28, 0.1);
+            }
+
+            .hq-input::placeholder {
+              color: #999;
+            }
+
+            /* Submit Button */
+            .hq-submit-btn {
+              width: 100%;
+              padding: 16px;
+              background: #FF741C;
+              color: white;
+              border: none;
+              border-radius: 50px;
+              font-size: 16px;
+              font-weight: 700;
+              text-transform: uppercase;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              margin-top: 14px;
+              letter-spacing: 0px;
+            }
+
+            .hq-submit-btn:hover {
+              background: #e56515;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 20px rgba(255, 116, 28, 0.3);
+            }
+
+            .hq-submit-btn:active {
+              transform: translateY(0);
+            }
+
+            .hq-submit-btn:disabled {
+              background: #ccc;
+              cursor: not-allowed;
+              transform: none;
+              box-shadow: none;
+            }
+
+            /* Order Process Steps */
+
+
+            .hq-process-step {
+      display: flex;
+          align-items: flex-start;
+          gap: 15px;
+          padding: 5px 15px;
+          background: #FDFAF3;
+          border: 1px dashed #FF741C;
+          border-radius: 10px;
+            }
+
+            .hq-process-icon {
+              width: 35px;
+              height: 35px;
+              flex-shrink: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .hq-process-icon img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
+
+            .hq-process-content {
+              flex: 1;
+            }
+
+            .hq-process-content strong {
+           margin-bottom: 5px;
+
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 19px;
+          text-transform: uppercase;
+          color: #000000;
+            }
+
+            .hq-process-content p {
+       margin: 0;
+
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 15px;
+          color: #000000;
+            }
+
+            .hq-process-arrow {
+              text-align: center;
+              font-size: 18px;
+              color: #FF741C;
+            }
+
+            /* Success Popup Styles */
+            .success-popup-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.6);
+              display: flex !important;
+              justify-content: center;
+              align-items: center;
+              z-index: 9999;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.3s ease;
+            }
+
+            .success-popup-overlay.show {
+              opacity: 1;
+              visibility: visible;
+            }
+
+            .success-popup {
+              background: white;
+              padding: 40px;
+              border-radius: 16px;
+              text-align: center;
+              max-width: 450px;
+              width: 90%;
+              box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+              transform: scale(0.9);
+              transition: transform 0.3s ease;
+            }
+
+            .success-popup-overlay.show .success-popup {
+              transform: scale(1);
+            }
+
+            .success-popup-icon {
+              width: 80px;
+              height: 80px;
+              background: #4CAF50;
+              border-radius: 50%;
+              margin: 0 auto 20px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .success-popup-icon svg {
+              width: 50px;
+              height: 50px;
+              fill: white;
+            }
+
+            .success-popup-title {
+              font-size: 24px;
+              font-weight: 700;
+              color: #333;
+              margin-bottom: 15px;
+            }
+
+            .success-popup-message {
+              font-size: 16px;
+              color: #666;
+              margin-bottom: 30px;
+              line-height: 1.5;
+            }
+
+            .success-popup-button {
+              background: #FF741C;
+              color: white;
+              border: none;
+              padding: 14px 50px;
+              border-radius: 50px;
+              font-size: 16px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.3s ease;
+            }
+
+            .success-popup-button:hover {
+              background: #e56515;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 12px rgba(255, 116, 28, 0.3);
+            }
+
+            /* Responsive Design */
+            @media (max-width: 1200px) {
+              .hq-form {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+              }
+
+              .hq-left-column {
+                grid-column: 1 / 2;
+              }
+
+              .hq-middle-left-column {
+                grid-column: 2 / 3;
+              }
+
+              .hq-middle-column {
+                grid-column: 1 / 3;
+              }
+
+              .hq-right-column {
+                grid-column: 1 / 3;
+              }
+            }
+
+            @media (max-width: 768px) {
+              .homepage-quote-section {
+                padding: 80px 15px 0;
+              }
+
+              .hq-form {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+              }
+
+              .hq-left-column,
+              .hq-middle-left-column,
+              .hq-middle-column,
+              .hq-right-column {
+                grid-column: 1 / 2;
+              }
+
+              .hq-category-grid {
+                grid-template-columns: repeat(4, 1fr);
+              }
+
+              .hq-category-icon {
+                width: 50px;
+                height: 50px;
+              }
+      .hq-category-content {
+          padding: 0;
+      }
+
+
+              .hq-section-title {
+                font-size: 16px;
+              }
+
+              .hq-process-step {
+                padding: 12px;
+              }
+
+              .hq-process-icon {
+                width: 40px;
+                height: 40px;
+              }
+
+              .hq-process-content strong {
+                font-size: 12px;
+              }
+
+              .hq-process-content p {
+                font-size: 11px;
+              }
+
+              .success-popup {
+                padding: 30px 20px;
+              }
+
+              .success-popup-title {
+                font-size: 20px;
+              }
+
+              .success-popup-message {
+                font-size: 14px;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .hq-form {
+                padding: 0px;
+                gap: 0;
+              }
+      label.hq-production-option {
+          float: left;
+          width: 50%;
+      }
+.hq-prod-icon, .hq-prod-extra {
+    display: none;
+}
+
+   .hq-upload-box {
+   padding: 10px 15px;
+  }
+
+   .hq-upload-area svg {
+   width: 20px;
+   height: 20px;
+   }
+  .hq-right-column {
+      display: none;
+  }
+  .sms-pp-filed {
+      display: grid;
+      column-gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+  }
+  .hq-submit-btn {
+  margin-top: 0px;
+  }
+  .hq-section {
+      margin-bottom: 0;
+  }
+.hq-location-btn img {
+    width: 40px;
+}
+.hq-location-btn{
+padding:0;
+}
+.hq-production-option {
+    padding: 8px;
+}
+  }
+
+input.hq-date-input {
+    padding: 10px;
+    min-height: 46px;
+}
+ .hq-upload-area {
+        padding: 0;
+        margin: 0;
+    }
+
+/* Flatpickr Calendar Styling */
+.flatpickr-calendar {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-family: inherit !important;
+}
+
+/* Disabled dates (before minimum) */
+.flatpickr-day.disabled,
+.flatpickr-day.disabled:hover {
+  color: #ccc !important;
+  cursor: not-allowed !important;
+  background: transparent !important;
+}
+
+/* Selected date */
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: #FF741C !important;
+  border-color: #FF741C !important;
+  color: white !important;
+}
+
+/* Hover state for valid dates */
+.flatpickr-day:hover:not(.disabled):not(.selected) {
+  background: #fff5f0 !important;
+  border-color: #FF741C !important;
+}
+
+/* Month selector */
+.flatpickr-months .flatpickr-month {
+  background: #FF741C !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background: #FF741C !important;
+}
+
+/* Active state for date input wrapper */
+.date-input-wrapper.active {
+  border-color: #FF741C;
+  box-shadow: 0 0 0 3px rgba(255, 116, 28, 0.1);
+}
+
+/* Make sure input doesn't show cursor since it's readonly */
+#customDate {
+  cursor: pointer;
+}
+.flatpickr-current-month {
+left: 0 !important;
+    padding: 0 !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    height: 40px !important;
+}
+
+
+/* Close Button */
+.hq-close-btn {
+  position: absolute;
+  top: 15%;
+  right: 1.5%;
+  width: 44px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid #FF741C;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #FF741C;
+  z-index: 10;
+  padding: 0;
+}
+
+.hq-close-btn:hover {
+  background: #FF741C;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.hq-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hq-right-column {
+  position: relative;
+  padding-top: 50px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .hq-close-btn {
+width: 28px;
+        min-height: 28px;
+        height: 28px;
+        top: 7%;
+        right: 3.5%;
+  }
+  
+  .hq-right-column {
+    padding-top: 45px;
+  }
+}
+</style>
+
+<script>
+// HOMEPAGE QUOTE FORM WITH FLATPICKR DATE PICKER - FIXED SCOPE ISSUE
+(function () {
+  'use strict';
+  
+  console.log('🏠 Homepage quote form handler loading...');
+
+  // Store flatpickr instance in wider scope
+  let flatpickrInstance = null;
+
+  function initHomepageQuoteForm() {
+    console.log('✅ Initializing homepage quote form...');
+
+    // Check if Flatpickr is loaded
+    if (typeof flatpickr === 'undefined') {
+      console.error('❌ Flatpickr not loaded yet, retrying...');
+      setTimeout(initHomepageQuoteForm, 200);
+      return;
+    }
+
+    console.log('✅ Flatpickr loaded');
+
+    const form = document.getElementById('homepageQuoteForm');
+    const API_URL = 'https://shopify-quote-form-api.onrender.com/api/submit-quote';
+
+    if (!form) {
+      console.error('❌ Homepage quote form not found!');
+      return;
+    }
+
+    // === Helper: Add business days ===
+    function addBusinessDays(startDate, days) {
+      const result = new Date(startDate);
+      result.setHours(0, 0, 0, 0);
+      let added = 0;
+      while (added < days) {
+        result.setDate(result.getDate() + 1);
+        const day = result.getDay();
+        if (day !== 0 && day !== 6) added++;
+      }
+      return result;
+    }
+
+    // === Initialize Flatpickr for date input ===
+    const dateInput = form.querySelector('input[name="custom_date"]');
+    const dateLabel = form.querySelector('.hq-date-label');
+    
+    if (dateInput) {
+      console.log('✅ Date input found, initializing Flatpickr...');
+      
+      // Change to text type for Flatpickr
+      dateInput.type = 'text';
+      dateInput.readOnly = true;
+      dateInput.placeholder = 'Select Custom Date';
+
+      const today = new Date();
+      
+      // Initialize Flatpickr and store in outer scope variable
+      flatpickrInstance = flatpickr(dateInput, {
+        dateFormat: "M d, Y",
+        minDate: addBusinessDays(today, 7), // Start with 7 days (standard)
+        
+        disable: [
+          function(date) {
+            return (date.getDay() === 0 || date.getDay() === 6);
+          }
+        ],
+        
+        static: false,
+        disableMobile: false,
+        
+        onChange: function(selectedDates, dateStr) {
+          if (dateStr) {
+            console.log('✅ Date selected:', dateStr);
+          }
+        },
+        
+        onOpen: function() {
+          if (dateLabel) {
+            dateLabel.classList.add('active');
+          }
+        },
+        
+        onClose: function() {
+          if (dateLabel) {
+            dateLabel.classList.remove('active');
+          }
+        }
+      });
+
+      console.log('✅ Flatpickr initialized for homepage form');
+
+      // === Update minimum date based on production type ===
+      function updateMinimumDate(productionType) {
+        if (!flatpickrInstance) {
+          console.warn('⚠️ Flatpickr instance not available');
+          return;
+        }
+
+        const businessDays = productionType === 'Rush Production' ? 3 : 7;
+        const minDate = addBusinessDays(new Date(), businessDays);
+        
+        console.log(`📅 Homepage: ${productionType} = ${businessDays} business days min`);
+        
+        flatpickrInstance.set('minDate', minDate);
+        
+        const selectedDate = flatpickrInstance.selectedDates[0];
+        if (selectedDate && selectedDate < minDate) {
+          console.log('⚠️ Clearing invalid date');
+          flatpickrInstance.clear();
+        }
+      }
+
+      // === Setup production radio buttons ===
+      const productionOptions = form.querySelectorAll('.hq-production-option');
+      const productionRadios = form.querySelectorAll('input[name="production_type"]');
+      
+      if (productionRadios.length > 0) {
+        console.log('✅ Found', productionRadios.length, 'production options');
+        
+        productionRadios.forEach(function(radio) {
+          // Set initial state
+          if (radio.checked && radio.value === 'Standard Production') {
+            const parentOption = radio.closest('.hq-production-option');
+            if (parentOption) {
+              parentOption.classList.add('active');
+            }
+          }
+          
+          // Listen for changes
+          radio.addEventListener('change', function() {
+            console.log('🔄 Homepage production changed to:', this.value);
+            
+            // Update active class
+            productionOptions.forEach((opt) => opt.classList.remove('active'));
+            const parentOption = this.closest('.hq-production-option');
+            if (parentOption) {
+              parentOption.classList.add('active');
+            }
+            
+            // Update min date
+            updateMinimumDate(this.value);
+          });
+        });
+      }
+      
+      // Make date label clickable
+      if (dateLabel) {
+        dateLabel.style.cursor = 'pointer';
+        dateLabel.addEventListener('click', function(e) {
+          if (e.target !== dateInput && flatpickrInstance) {
+            e.preventDefault();
+            flatpickrInstance.open();
+          }
+        });
+      }
+    } else {
+      console.warn('⚠️ Date input not found in homepage form');
+    }
+
+    // === File upload handler ===
+    const fileInput = document.getElementById('hq_logo_upload');
+    const uploadStatus = document.getElementById('hq_upload_status');
+
+    if (fileInput && uploadStatus) {
+      fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+          if (!file.type.startsWith('image/')) {
+            uploadStatus.textContent = '❌ Please upload an image file';
+            uploadStatus.style.color = '#f44336';
+            return;
+          }
+          uploadStatus.textContent = `✅ ${file.name} selected (${Math.round(file.size / 1024)}KB)`;
+          uploadStatus.style.color = '#4CAF50';
+        }
+      });
+    }
+
+    // === Image compression helper ===
+    function compressImage(file, maxSizeMB = 2) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const img = new Image();
+
+          img.onload = function () {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            const maxWidth = 1920;
+            const maxHeight = 1920;
+
+            if (width > maxWidth || height > maxHeight) {
+              if (width > height) {
+                height = (height / width) * maxWidth;
+                width = maxWidth;
+              } else {
+                width = (width / height) * maxHeight;
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            let quality = 0.9;
+            let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+            while (compressedDataUrl.length > maxSizeMB * 1024 * 1024 * 1.37 && quality > 0.1) {
+              quality -= 0.1;
+              compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            }
+
+            const compressedSize = Math.round((compressedDataUrl.length * 0.75) / 1024);
+            console.log(`✅ Image compressed: ${Math.round(file.size / 1024)}KB → ${compressedSize}KB`);
+
+            resolve({
+              filename: file.name.replace(/\.[^/.]+$/, '') + '.jpg',
+              content: compressedDataUrl.split(',')[1],
+              contentType: 'image/jpeg',
+              size: compressedSize * 1024,
+            });
+          };
+
+          img.onerror = () => reject(new Error('Failed to load image'));
+          img.src = e.target.result;
+        };
+
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // === Form submission handler ===
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      console.log('📤 Homepage quote form submitted');
+
+      // Validate required fields
+      const categoryInput = form.querySelector('input[name="category"]:checked');
+      if (!categoryInput) {
+        alert('⚠️ Please select a product category');
+        return;
+      }
+
+      const quantityInput = form.querySelector('input[name="quantity_range"]:checked');
+      if (!quantityInput) {
+        alert('⚠️ Please select a quantity range');
+        return;
+      }
+
+      const submitBtn = form.querySelector('.hq-submit-btn');
+      if (!submitBtn) return;
+
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+
+      try {
+        const formData = new FormData(form);
+
+        const category = categoryInput.value;
+        const quantityRange = quantityInput.value;
+        const quality = formData.get('quality') || 'Top Quality';
+
+        const productionInput = form.querySelector('input[name="production_type"]:checked');
+        const productionType = productionInput ? productionInput.value : 'Standard Production';
+
+        const deliveryInput = form.querySelector('input[name="delivery_method"]:checked');
+        const deliveryMethod = deliveryInput ? deliveryInput.value : 'Pickup';
+
+        const customDate = formData.get('custom_date') || 'Not specified';
+
+        const printLocations = [];
+        form.querySelectorAll('input[name="print_location"]:checked').forEach((input) => {
+          printLocations.push(input.value);
+        });
+        const printLocation = printLocations.join(', ') || 'Not specified';
+
+        const organizationName = formData.get('organization_name') || '';
+        const contactName = formData.get('contact_name') || '';
+        const phoneNumber = formData.get('phone_number') || '';
+        const emailAddress = formData.get('email_address') || '';
+
+        const logoFile = fileInput?.files[0];
+        let logoData = null;
+
+        if (logoFile) {
+          console.log('📎 Processing logo file:', logoFile.name);
+
+          try {
+            if (!logoFile.type.startsWith('image/')) {
+              throw new Error('Please upload an image file (JPG, PNG, etc.)');
+            }
+
+            const fileSizeMB = logoFile.size / (1024 * 1024);
+            if (fileSizeMB > 10) {
+              throw new Error('File too large! Please upload an image smaller than 10MB.');
+            }
+
+            submitBtn.textContent = 'Compressing image...';
+
+            if (logoFile.size > 500 * 1024) {
+              console.log('🔄 Compressing large image...');
+              logoData = await compressImage(logoFile, 2);
+            } else {
+              const reader = new FileReader();
+              logoData = await new Promise((resolve, reject) => {
+                reader.onload = (e) => {
+                  resolve({
+                    filename: logoFile.name,
+                    content: e.target.result.split(',')[1],
+                    contentType: logoFile.type,
+                    size: logoFile.size,
+                  });
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(logoFile);
+              });
+            }
+
+            console.log('✅ Logo file ready');
+            submitBtn.textContent = 'Submitting...';
+          } catch (fileError) {
+            console.error('⚠️ Error processing file:', fileError);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            alert('❌ ' + fileError.message);
+            return;
+          }
+        }
+
+        const submissionData = {
+          form_type: 'Homepage Quote',
+          category: category,
+          quantity_range: quantityRange,
+          quality: quality,
+          production_type: productionType,
+          delivery_method: deliveryMethod,
+          custom_date: customDate,
+          print_location: printLocation,
+          organization_name: organizationName,
+          contact_name: contactName,
+          phone: phoneNumber,
+          email: emailAddress,
+          logo_file: logoData,
+        };
+
+        console.log('📦 Submitting homepage quote data');
+
+        let response;
+        let retries = 3;
+
+        while (retries > 0) {
+          try {
+            response = await fetch(API_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+              body: JSON.stringify(submissionData),
+            });
+            break;
+          } catch (fetchError) {
+            retries--;
+            console.warn(`⚠️ Fetch attempt failed. Retries left: ${retries}`);
+
+            if (retries === 0) {
+              throw new Error('Cannot connect to server. Please try again.');
+            }
+
+            submitBtn.textContent = `Connecting... (${3 - retries}/3)`;
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+          }
+        }
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('❌ Server error:', errorText);
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('✅ Response:', result);
+
+        if (result.success) {
+          showHomepageSuccessPopup();
+          form.reset();
+          if (uploadStatus) uploadStatus.textContent = '';
+          
+          // Clear Flatpickr date after reset
+          if (flatpickrInstance) {
+            flatpickrInstance.setDate(null);
+          }
+          
+          console.log('✅ Form reset complete');
+        } else {
+          throw new Error(result.error || 'Submission failed');
+        }
+      } catch (error) {
+        console.error('❌ Submission error:', error);
+        alert('❌ Error: ' + error.message + '\n\nPlease try again or contact us.');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    console.log('✅ Homepage quote form handler ready');
+  }
+
+  // Success popup functions
+  window.showHomepageSuccessPopup = function () {
+    const popup = document.getElementById('homepageSuccessPopup');
+    if (popup) {
+      popup.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeHomepageSuccessPopup = function () {
+    const popup = document.getElementById('homepageSuccessPopup');
+    if (popup) {
+      popup.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  };
+
+  document.addEventListener('click', function (e) {
+    const popup = document.getElementById('homepageSuccessPopup');
+    if (popup && e.target === popup) {
+      closeHomepageSuccessPopup();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeHomepageSuccessPopup();
+    }
+  });
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initHomepageQuoteForm, 300);
+    });
+  } else {
+    setTimeout(initHomepageQuoteForm, 300);
+  }
+})();
+
+// Close button handler
+{% comment %} document.addEventListener('DOMContentLoaded', function() {
+  const closeBtn = document.querySelector('.hq-close-btn');
+  const section = document.querySelector('.homepage-quote-section-wrapper');
+  
+  if (closeBtn && section) {
+    closeBtn.addEventListener('click', function() {
+      console.log('🔽 Closing form section');
+      section.classList.remove('active');
+      
+      // Optional: Scroll to top of section smoothly
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+}); {% endcomment %}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  gsap.registerPlugin(ScrollToPlugin);
+
+  const buttons = document.querySelectorAll(".video-hero__button, .features-box__cta, .slide__button");
+  const quoteSection = document.querySelector(".homepage-quote-section-wrapper");
+  const closeBtn = document.querySelector(".hq-close-btn");
+
+  if (!quoteSection) return;
+
+  // Prepare section collapsed
+  gsap.set(quoteSection, { height: 0, opacity: 0, y: 40 });
+
+  // ----- OPEN ANIMATION -----
+  function openQuoteSection() {
+    const sectionHeight = quoteSection.scrollHeight;
+
+    // Expand section
+    gsap.to(quoteSection, {
+      height: sectionHeight,
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: "power3.out",
+      onComplete: () => gsap.set(quoteSection, { height: "auto" })
+    });
+
+    // Smooth scroll to section
+    gsap.to(window, {
+      duration: 0.8,
+      scrollTo: { y: quoteSection, offsetY: 20 },
+      ease: "power2.out"
+    });
+  }
+
+  // ----- CLOSE ANIMATION -----
+  function closeQuoteSection() {
+    const sectionHeight = quoteSection.scrollHeight;
+
+    gsap.to(quoteSection, {
+      height: 0,
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      ease: "power2.inOut"
+    });
+  }
+
+  // Hook buttons
+  buttons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openQuoteSection();
+    });
+  });
+
+  // Close button
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeQuoteSection);
+  }
+
+});
+</script>
+
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Homepage Quote Form",
+  "tag": "section",
+  "class": "homepage-quote-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Get Your Custom Quote"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Quote Form",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

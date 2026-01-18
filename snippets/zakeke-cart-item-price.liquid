@@ -1,0 +1,6 @@
+{% assign customization_price = item.properties._configurationPrice | default: 0 | plus: 0 %}
+{% if customization_price > 0 %}
+	{{ item.price | plus: customization_price | money }}
+{% else %}
+	{{ item.price | money }}
+{% endif %}

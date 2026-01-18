@@ -1,0 +1,310 @@
+{% comment %}
+** Product Category Grid Section **
+- Custom category/collection grid layout
+- Displays collections in a 3-column grid
+{% endcomment %}
+
+<style>
+.product-category-section {
+  padding: 100px 20px 20px;
+  background: #FDFAF3;
+}
+.product-category-section .container {
+    max-width: 100%;
+}
+.category-title {
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: 0;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 58px;
+    text-transform: uppercase;
+    color: #FF741C;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin: 0 auto;
+}
+@media (max-width: 1300px) {
+    .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+.category-card {
+padding: 40px 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    background: #FFFFFF;
+    box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 11px;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.category-image-wrapper {
+  width: 100%;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.category-image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.category-name {
+letter-spacing: 0;
+    margin: 0;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-transform: uppercase;
+    color: #000000;
+    text-align: center;
+}
+
+
+@media (max-width: 990px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .category-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 590px) {
+  
+  .category-card {
+    padding: 30px 20px;
+  }
+      .product-category-section {
+     padding: 100px 15px 32px;
+    }
+        .category-title {
+        font-size: 28px;
+        margin-bottom: 16px;
+        line-height: 32px;
+    }
+        .product-category-section .container {
+        width: calc(100% - 15px);
+    }
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .category-image-wrapper {
+    height: 140px;
+}
+.category-name {
+    font-size: 16px;
+    line-height: 20px;
+}
+}
+
+@media (max-width: 400px) {
+    .product-category-section {
+        padding: 90px 15px 32px;
+    }
+}
+
+</style>
+
+<div class="product-category-section">
+  <div class="container">
+    {% if section.settings.heading != blank %}
+      <h2 class="category-title">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="category-grid">
+      {% for block in section.blocks %}
+        {% if block.settings.collection != blank %}
+          {% assign collection = collections[block.settings.collection] %}
+          
+          <a href="{{ collection.url }}" class="category-card" {{ block.shopify_attributes }}>
+            <div class="category-image-wrapper">
+              {% if collection.image %}
+                <img src="{{ collection.image | img_url: '400x400' }}" 
+                     alt="{{ collection.title }}" 
+                     loading="lazy">
+              {% elsif collection.products.first.featured_image %}
+                <img src="{{ collection.products.first.featured_image | img_url: '400x400' }}" 
+                     alt="{{ collection.title }}" 
+                     loading="lazy">
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            <h3 class="category-name">{{ collection.title }}</h3>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Set initial states
+    gsap.set('.category-title', {
+        opacity: 0,
+        y: 40
+    });
+    
+    gsap.set('.category-card', {
+        opacity: 0,
+        y: 50
+    });
+    
+    gsap.set('.category-card img', {
+        scale: 1.5,
+        y: 30
+    });
+    
+    // Animate title immediately on page load
+    gsap.to('.category-title', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: 'power3.out'
+    });
+    
+    // Animate cards one by one
+    const cards = document.querySelectorAll('.category-card');
+    cards.forEach((card, index) => {
+        const img = card.querySelector('img');
+        
+        // Card animation
+        gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.2,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+                trigger: '.category-grid',
+                start: 'top 75%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+        
+        // Image animation (scale and Y)
+        if (img) {
+            gsap.to(img, {
+                scale: 1,
+                y: 0,
+                duration: 1,
+                delay: index * 0.2 + 0.4,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.category-grid',
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        }
+    });
+    
+    // Add hover animations
+    {% comment %} cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            gsap.to(this, {
+                y: -8,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            gsap.to(this, {
+                y: 0,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+    }); {% endcomment %}
+});
+</script>
+
+{% schema %}
+{
+  "name": "Product Category Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "PRODUCT CATEGORY"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Category Grid",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

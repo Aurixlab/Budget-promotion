@@ -1,0 +1,2880 @@
+{% comment %}
+  ** Collection Template - Product Listing Page **
+  - Modern collection page with advanced filters
+  - Uses custom metafields for sub_category and quality
+  - AJAX filtering for all options including gender and sort
+{% endcomment %}
+
+<style>
+        .collection-bg-wrapper {
+      position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          max-height: 911px;
+          overflow: hidden;
+          height: 100%;
+          border-radius: 45px;
+          display: none;
+        }
+        .collection-bg-wrapper img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .pp-banner-col {
+          position: relative;
+      }
+      p.pp-italic {
+          text-transform: capitalize;
+          font-style: italic;
+      }
+        .product-banner-box {
+          position: relative;
+          overflow: hidden;
+          border-radius: 30px;
+          height: 270px;
+          margin: 30px 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 30px;
+          display:none;
+      }
+      .p-banner-content-box p {
+          color: #ff5b21;
+          text-transform: uppercase;
+          font-size: 20px;
+      }
+
+      .p-banner-content-box h3 {
+          color: #000;
+          font-size: 48px;
+          line-height: 52px;
+          font-weight: 700;
+          letter-spacing: 0;
+          max-width: 360px;
+          width: 100%;
+      }
+      img.pp-mobile {
+          display: none;
+      }
+      img.pp-center {
+          position: absolute;
+          left: 60%;
+          transform: translateX(-60%);
+          object-fit: contain !important;
+          width: auto !important;
+      }
+      p.pp-italic {
+          text-transform: capitalize;
+          font-style: italic;
+      }
+
+      .pp-baner-button-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-content: space-between;
+          gap: 10px;
+      }
+
+      .pp-baner-button-wrapper a {
+          padding: 5px 50px;
+          color: #fff;
+          border: 1px solid #fff;
+          border-radius: 32px;
+          transition: all .4s;
+          text-transform: uppercase;
+      }
+
+      .pp-baner-button-wrapper a:hover {
+          background: #ff641f;
+          border-color: #ff641f;
+      }
+      .pp-banner-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          transform-origin: center center;
+      }
+
+      .pp-banner-bg img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+
+       @media (max-width: 768px) {
+
+        img.pp-desktop {
+          display: none;
+      }
+      img.pp-mobile {
+          display: block;
+      }
+      .p-banner-content-box p {
+          color: #fff;
+          font-size: 10px;
+      }
+      .p-banner-content-box h3 {
+          font-size: 18px;
+          line-height: 26px;
+      }
+      .pp-baner-button-wrapper a {
+          padding: 3px 15px;
+          font-size: 12px;
+          line-height: 20px;
+      }
+      .product-banner-box {
+          height: 200px;
+              justify-content: flex-start;
+          align-items: flex-start;
+          padding: 20px;
+          flex-direction: column;
+          gap: 23px;
+          margin-bottom: 20px;
+      }
+      .collection-bg-wrapper {
+          max-height: 826px;
+      }
+      .subcategory-section {
+         padding-bottom: 16px !important;
+      }
+      img.pp-center {
+          left: 98%;
+          transform: translateX(-98%);
+          bottom: -16%;
+          width: 60% !important;
+      }
+
+
+       }
+
+
+
+          /* Subcategory Grid Section - ADD THIS TO YOUR EXISTING CSS */
+
+        .search_page .sixteen.columns.center, .search_page .six.columns.offset-by-five {
+            display: none;
+        }
+          .subcategory-section {
+              padding: 0px 0 30px;
+              position: relative;
+              overflow: hidden;
+          }
+
+          .subcategory-grid {
+              display: flex;
+              justify-content: center;
+              gap: 14px;
+              flex-wrap: nowrap;
+              overflow-x: auto;
+              overflow-y: hidden;
+              scroll-behavior: smooth;
+              cursor: grab;
+              user-select: none;
+              -webkit-overflow-scrolling: touch;
+              padding: 10px 5px;
+              scrollbar-width: none; /* Firefox */
+              -ms-overflow-style: none; /* IE and Edge */
+          }
+          .subcategory-grid::-webkit-scrollbar {
+              display: none;
+          }
+          .subcategory-grid:active {
+              cursor: grabbing;
+          }
+
+
+          .subcategory-card {
+          background: #0000001c;
+              box-shadow: 0 7px 7px rgb(0 0 0 / 6%);
+              border-radius: 20px;
+              overflow: hidden;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              text-decoration: none;
+              display: flex;
+              align-content: center;
+              justify-content: center;
+              align-items: center;
+              padding: 20px 10px;
+              flex: 0 0 auto;
+              width: auto;
+              pointer-events: auto;
+              flex-direction: column;
+              backdrop-filter: blur(21px);
+          }
+
+          .subcategory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.15);
+          }
+
+          .subcategory-card.active {
+            box-shadow: 0 0 0 3px #FF741C;
+          }
+
+          .subcategory-image {
+              width: 130px;
+              aspect-ratio: 1;
+              object-fit: contain;
+              pointer-events: none;
+              transform-origin: top;
+                  will-change: transform;
+          }
+
+          .subcategory-name {
+              text-align: center;
+              font-size: 14px;
+              font-weight: 700;
+              text-transform: uppercase;
+              color: #1a1a1a;
+              letter-spacing: 0;
+              line-height:18px;
+              pointer-events: none;
+          }
+
+          /* Responsive for subcategory grid */
+          @media (max-width: 990px) {
+            .subcategory-grid {
+              grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+              gap: 15px;
+            }
+          }
+
+            /* Responsive for subcategory grid */
+          @media (max-width: 1360px) {
+            .subcategory-grid {
+              justify-content: flex-start;
+          }
+          }
+
+          @media (max-width: 590px) {
+
+            .subcategory-card {
+              width: 150px;
+          }
+          .subcategory-image {
+              width: 70px;
+          }
+          }
+
+
+
+
+                .collection-page {
+                  padding: 100px 20px 32px;
+                }
+
+                .collection-header {
+                  text-align: center;
+                  margin-bottom: 10px;
+                }
+
+                .collection-title {
+                    letter-spacing: 0;
+            margin: 0;
+            font-weight: 700;
+            font-size: 64px;
+            line-height: 74px;
+            text-transform: uppercase;
+            color: #FF741C;
+            background: rgba(217, 217, 217, 0.1);
+            border: 4px solid rgba(255, 134, 58, 0.04);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(5px);
+            border-radius: 18px;
+            display: inline-block;
+            padding: 0 20px;
+                }
+
+                /* Filter Bar */
+                .collection-filters {
+              padding: 16px 25px;
+                  background: #F2F2F2;
+                  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.25);
+                  border-radius: 113px;
+                      position: relative;
+                          z-index: 2;
+                }
+
+                .filter-bar-content {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                }
+
+                .filter-left {
+                  display: flex;
+                  align-items: center;
+                  gap: 15px;
+                }
+
+                .filter-button {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  background: transparent;
+                  font-weight: 600;
+                  cursor: pointer;
+                  text-transform: uppercase;
+                  letter-spacing: 0px;
+                  transition: all 0.2s;
+                  color: #000;
+                  font-size: 20px;
+                }
+
+                .filter-button:hover {
+                  border-color: #FF6B35;
+                }
+
+
+                .filter-count {
+                  background: #FF6B35;
+                  color: white;
+                  font-size: 10px;
+                  font-weight: bold;
+                  padding: 2px 8px;
+                  border-radius: 12px;
+                  margin-left: 4px;
+                }
+
+                .clear-filters {
+                  color: #FF6B35;
+                  font-size: 12px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  text-decoration: none;
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  border: none;
+                  background: none;
+                }
+
+                .clear-filters:hover {
+                  color: #e05a25;
+                }
+
+                .filter-right {
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                }
+
+                /* Gender Toggle */
+                .gender-toggle {
+                  display: flex;
+                  border: 2px solid #000000;
+                  border-radius: 50px;
+                  overflow: hidden;
+                  flex-shrink: 0;
+                  padding:2px;
+                }
+
+                .gender-btn {
+              background: transparent;
+                  color: #000000;
+                  border: none;
+                  padding: 8px 24px;
+                  font-size: 12px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  cursor: pointer;
+                  transition: all 0.2s;
+                  letter-spacing: 0;
+                  border-radius: 40px;
+                }
+
+                .gender-btn.active {
+                  background: #000000;
+                  color: white;
+                }
+
+                .gender-btn:hover:not(.active) {
+                  background: #f3f4f6;
+                }
+
+                /* Sort Dropdown */
+                .sort-button {
+              display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  border-radius: 50px;
+                  padding: 0 18px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  cursor: pointer;
+                  letter-spacing: 0;
+                  margin: 0;
+                  border: 2px solid #000000;
+                  color: #000;
+                  background: transparent;
+                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 18px center;
+                background-size: 20px;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                height:52px;
+                }
+
+
+            .sort-button option {
+              color: #000;
+              font-size: 14px;
+              font-weight: 600;
+              text-transform: uppercase;
+              padding: 10px;
+              border-radius: 12px;
+            }
+
+
+
+
+
+            @-moz-document url-prefix() {
+              .sort-button option {
+                border-radius: 12px;
+                padding: 8px;
+              }
+            }
+                /* Expanded Filter Panel */
+                .filter-panel {
+                  margin: 0 auto;
+                  overflow: hidden;
+                  background: #f2f2f2;
+                  border-bottom: 2px solid #e5e7eb;
+                  padding: 24px;
+                  display: none;
+                      position: absolute;
+                width: 100%;
+                left: 0;
+                z-index: 1;
+                padding-top: 70px;
+          margin-top: -50px;
+              border-top-left-radius: 0;
+          border-top-right-radius: 0;
+              border-bottom-left-radius: 32px;
+          border-bottom-right-radius: 32px;
+                }
+
+                .filter-panel.active {
+                  display: block;
+                }
+
+                .filter-grid {
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 24px;
+                  padding-bottom: 24px;
+                      align-items: start;
+                }
+    .sms-phn-sms {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+                .filter-section h3 {
+                  font-size: 13px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  margin: 0 0 12px 0;
+                  letter-spacing: 0px;
+                }
+
+                .filter-content {
+                  max-height: 350px;
+                  overflow-y: auto;
+                  padding: 5px;
+                }
+
+                .filter-content::-webkit-scrollbar {
+                  width: 6px;
+                }
+
+                .filter-content::-webkit-scrollbar-thumb {
+                  background: #d1d5db;
+                  border-radius: 3px;
+                }
+
+                /* Category Filters */
+                .filter-checkbox {
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 8px;
+                  cursor: pointer;
+                }
+
+                .filter-checkbox input {
+                  width: 14px;
+                  height: 14px;
+                  margin-right: 8px;
+                  cursor: pointer;
+                }
+
+                .filter-checkbox label {
+                  font-size: 12px;
+                  color: #4b5563;
+                  cursor: pointer;
+                }
+
+                /* Color Grid */
+                .color-grid {
+                  display: grid;
+                  grid-template-columns: repeat(14, 1fr);
+                  gap: 0px;
+                }
+
+                .color-option {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  gap: 4px;
+                  padding: 6px;
+                  border-radius: 8px;
+                  cursor: pointer;
+                  transition: background 0.2s;
+                }
+
+                .color-option:hover {
+                  background: white;
+                }
+
+                .color-option.selected {
+                  background: white;
+                  box-shadow: 0 0 0 2px #FF6B35;
+                }
+
+                .color-swatch-filter {
+                  width: 28px;
+                  height: 28px;
+                  border-radius: 50%;
+                  border: 2px solid #e5e7eb;
+                  background-size: inherit !important;
+                  background-position: center;
+                }
+
+                .color-option span {
+                  font-size: 9px;
+                  color: #6b7280;
+                  text-align: center;
+                  line-height: 1.2;
+                }
+
+                /* Size Grid */
+                .size-grid {
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 8px;
+                }
+
+                .size-option {
+                  padding: 6px;
+                  border: 1px solid #d1d5db;
+                  border-radius: 6px;
+                  text-align: center;
+                  font-size: 12px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  transition: all 0.2s;
+                  background: white;
+                }
+
+                .size-option:hover {
+                  border-color: #FF6B35;
+                }
+
+                .size-option.selected {
+                  background: #FF6B35;
+                  color: white;
+                  border-color: #FF6B35;
+                }
+
+                /* Apply Button */
+                .apply-filters-btn {
+                  display: block;
+                  margin: 0 auto;
+                  padding: 10px 32px;
+                  background: #FF6B35;
+                  color: white;
+                  border: none;
+                  border-radius: 50px;
+                  letter-spacing:0;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  cursor: pointer;
+                  transition: background 0.2s;
+                }
+
+                .apply-filters-btn:hover {
+                  background: #e05a25;
+                }
+
+                /* Products Grid */
+                .products-grid {
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 25px;
+                  margin: 40px auto 0;
+                }
+                .collection-page .container {
+                max-width: 100%;
+            }
+            @media (max-width: 1300px) {
+            .products-grid {
+                  grid-template-columns: repeat(3, 1fr);
+                }
+                .color-grid {
+            grid-template-columns: repeat(10, 1fr);
+        }
+            }
+                @media (max-width: 1024px) {
+                .color-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+            .container {
+                width: calc(100% + 0px);
+            }
+            }
+
+                .product-card {
+                  background: #efeaea;
+              box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.25);
+              border-radius: 25px;
+                  padding: 15px;
+                  transition: all 0.3s ease;
+                  text-decoration: none;
+                  display: block;
+                  position: relative;
+                  backdrop-filter: blur(21px);
+                  transform-origin: top;
+                }
+
+                .product-card:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.5);
+                }
+
+                .product-badge {
+                  position: absolute;
+                  top: 20px;
+                  left: 20px;
+                  background: white;
+                  padding: 4px 10px;
+                  border-radius: 4px;
+                  font-size: 10px;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  z-index: 1;
+                  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                .product-image-wrapper {
+              width: 100%;
+                  aspect-ratio: 1;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin-bottom: 35px;
+                  overflow: hidden;
+                }
+
+                .product-image-wrapper img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: contain;
+                  transition: opacity 0.3s;
+                  transform-origin: top;
+                }
+
+                .product-info {
+                  text-align: left;
+                  padding: 0 5px;
+                }
+
+                .product-name {
+              font-size: 16px;
+                  font-weight: 500;
+                  text-transform: UPPERCASE;
+                  color: #1a1a1a;
+                  margin: 0 0 10px 0;
+                  letter-spacing: 0;
+                  line-height: 1.3;
+                   transform-origin: top;
+                }
+
+                .product-variant {
+                  font-size: 11px;
+                  color: #666;
+                  margin: 0 0 10px 0;
+                }
+
+                .product-colors {
+                  display: flex;
+                  gap: 5px;
+                  margin-bottom: 8px;
+                  flex-wrap: wrap;
+                  transform-origin: top;
+                }
+
+                .color-swatch {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 50%;
+                  border: 2px solid #e5e5e5;
+                  cursor: pointer;
+                  transition: all 0.2s;
+                  position: relative;
+                  background-size: inherit !important;
+                  background-position: center;
+                }
+
+                .color-swatch:hover {
+                  transform: scale(1.15);
+                  border-color: #333;
+                }
+
+                .color-swatch.active {
+                  border-color: #000;
+                  border-width: 2.5px;
+                }
+
+                .product-price {
+                  font-size: 15px;
+                  font-weight: 700;
+                  color: #1a1a1a;
+                  margin: 8px 0 0 0;
+                }
+
+                .price-compare {
+                  text-decoration: line-through;
+                  color: #999;
+                  margin-right: 8px;
+                  font-size: 13px;
+                }
+
+                /* Responsive */
+                @media (max-width: 990px) {
+                  .products-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                  }
+  .sms-phn-sms {
+      grid-template-columns: repeat(1, 1fr);
+  }
+                  .filter-grid {
+                  overflow-x: scroll;
+                scrollbar-width: thin;
+                scrollbar-color: #888 #f1f1f1;
+                  }
+                  .filter-grid::-webkit-scrollbar {
+                height: 8px; /* scrollbar height */
+            }
+
+            .filter-grid::-webkit-scrollbar-track {
+                background: #f1f1f1; /* track color */
+                border-radius: 10px;
+            }
+
+            .filter-grid::-webkit-scrollbar-thumb {
+                background-color: #888; /* scrollbar thumb */
+                border-radius: 10px;
+                border: 2px solid #f1f1f1; /* padding around thumb */
+            }
+
+            .filter-grid::-webkit-scrollbar-thumb:hover {
+                background-color: #555; /* hover color */
+            }
+
+                  .collection-title {
+                    font-size: 36px;
+                  }
+
+                  .filter-bar-content {
+                    gap: 12px;
+                  }
+
+                  .filter-left,
+                  .filter-right {
+                    justify-content: center;
+                  }
+                }
+
+                @media (max-width: 590px) {
+                  {% comment %} .products-grid {
+                    grid-template-columns: 1fr;
+                  } {% endcomment %}
+
+                  .product-name {
+                  text-transform: capitalize;
+                  font-size: 12px;
+              }
+                  .color-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+              .color-swatch {
+                  width: 14px;
+                  height: 14px;
+              }
+              .apply-filters-btn {
+                  font-size: 14px;
+                  margin-top: 10px;
+              }
+              .collection-page .container {
+                  width: calc(100% - 0px);
+              }
+                  .product-image-wrapper {
+                  aspect-ratio: 0;
+                  margin-bottom: 10px;
+              }
+              .color-swatch-filter {
+                width: 20px;
+                height: 20px;
+            }
+
+                  .collection-title {
+                      font-size: 32px;
+                      line-height: 42px;
+                  }
+
+                  .gender-btn {
+                  padding: 0 8px;
+                  min-height: 26px;
+                  height: 20px;
+              }
+              .filter-button {
+                  font-size: 14px;
+                  padding: 0;
+              }
+              .filter-button svg {
+                  width: 24px;
+              }
+                  .sort-button {
+                      padding: 0 10px;
+                      background-position: right 10px center;
+                      height: 42px;
+                      display: none;
+                  }
+                  .filter-panel {
+                  padding: 16px;
+                          padding: 16px;
+              padding-top: 55px;
+              margin-top: -40px;
+              }
+              .filter-checkbox label {
+                        line-height: 15px;
+                    font-size: 11px;
+              }
+            .filter-grid {
+                gap: 16px;
+            }
+              button#clear-all {
+                      position: absolute;
+              bottom: -7px;
+              font-size: 9px;
+              letter-spacing: 0;
+              padding: 0;
+              margin-left: 31px;
+              }
+              .filter-count {
+          font-size: 8px;
+          padding: 2px 5px;
+          margin-left: 0px;
+      }
+      .filter-section h3 {
+          margin: 0 0 6px 0;
+      }
+              .products-grid {
+                  margin: 30px auto 0;
+                  gap: 12px;
+              }
+              .collection-filters {
+                  padding: 8px 12px;
+              }
+
+                }
+
+
+            @media (max-width: 380px) {
+             .collection-page {
+             padding: 90px 10px 32px;
+              }
+            .filter-button {
+            font-size: 14px;
+                  }
+             .gender-btn {
+              font-size: 10px;
+            }
+            }
+
+
+
+        /* ============================================
+           SUBCATEGORY CARD REORDERING STYLES
+           Smooth animations and transitions
+           ============================================ */
+
+        /* Prevent interaction during reordering animation */
+        .subcategory-grid.is-reordering {
+          pointer-events: none;
+        }
+
+        .subcategory-grid.is-reordering .subcategory-card {
+          pointer-events: none;
+        }
+
+        /* Active card highlight - enhanced for movement */
+        .subcategory-card.active {
+          box-shadow: 0 0 0 3px #FF741C;
+          position: relative;
+          z-index: 2; /* Ensure active cards appear above others during animation */
+        }
+
+        /* Smooth transform for card movement */
+        .subcategory-card {
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          transform-origin: center center;
+        }
+
+        /* Prevent flash during reordering */
+        .subcategory-grid.is-reordering .subcategory-card {
+          transition: box-shadow 0.3s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Subtle scale effect for active cards during reorder */
+        @keyframes activeCardPulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+        }
+
+        .subcategory-card.active.is-moving {
+          animation: activeCardPulse 0.6s ease-in-out;
+        }
+
+        /* Ensure smooth scrolling */
+        .subcategory-grid {
+          scroll-behavior: smooth;
+        }
+
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+          .subcategory-grid,
+          .subcategory-card {
+            transition: none !important;
+            animation: none !important;
+          }
+
+          .subcategory-grid {
+            scroll-behavior: auto;
+          }
+        }
+
+        /* Mobile optimization - faster animations on smaller devices */
+        @media (max-width: 590px) {
+          .subcategory-grid.is-reordering .subcategory-card {
+            transition-duration: 0.4s;
+          }
+        }
+
+        /* Tablet optimization */
+        @media (max-width: 990px) and (min-width: 591px) {
+          .subcategory-grid.is-reordering .subcategory-card {
+            transition-duration: 0.5s;
+          }
+        }
+
+        /* Ensure active cards have higher visual priority */
+        .subcategory-card.active {
+          filter: brightness(1.05);
+        }
+
+        .subcategory-card:not(.active) {
+          filter: brightness(1);
+          transition: filter 0.3s ease;
+        }
+
+        /* Hover state preserved during reordering */
+        .subcategory-grid:not(.is-reordering) .subcategory-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Active card hover - slight enhancement */
+        .subcategory-grid:not(.is-reordering) .subcategory-card.active:hover {
+          box-shadow: 0 0 0 3px #FF741C, 0px 10px 15px rgba(255, 116, 28, 0.3);
+        }
+
+        .subcategory-grid:not(.is-reordering) .subcategory-card {
+            transition: all 0.3s ease;
+        }
+</style>
+
+<div class="collection-page">
+  <div class="collection-bg-wrapper">
+    {% if collection.metafields.custom.collection_bg_image_desktop
+      or collection.metafields.custom.collection_bg_image_mobile
+    %}
+      <picture>
+        {% if collection.metafields.custom.collection_bg_image_mobile %}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ collection.metafields.custom.collection_bg_image_mobile | image_url: width: 1000 }}"
+          >
+        {% endif %}
+        {% if collection.metafields.custom.collection_bg_image_desktop %}
+          <img
+            src="{{ collection.metafields.custom.collection_bg_image_desktop | image_url: width: 2000 }}"
+            alt="{{ collection.title }}"
+          >
+        {% endif %}
+      </picture>
+    {% else %}
+      {%- comment -%} Fallback image {%- endcomment -%}
+      <img src="{{ 'default-image.jpg' | asset_url }}" alt="{{ collection.title }}">
+    {% endif %}
+  </div>
+
+  <div class="container">
+    <!-- Collection Header -->
+    <div class="collection-header">
+      <h1 class="collection-title">{{ collection.title }}</h1>
+    </div>
+
+    <div class="product-banner-box">
+      <div class="pp-banner-bg">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0777/5879/files/Desktop_banner_BG.png?v=1762986605"
+          alt="{{ collection.title }}"
+          class="pp-desktop"
+        >
+        <img
+          src="https://cdn.shopify.com/s/files/1/0777/5879/files/Phone_banner_BG.webp?v=1762986685"
+          alt="{{ collection.title }}"
+          class="pp-mobile"
+        >
+        <img
+          src="https://cdn.shopify.com/s/files/1/0777/5879/files/asder.png?v=1762986892"
+          alt="{{ collection.title }}"
+          class="pp-center"
+        >
+      </div>
+      <div class="pp-banner-col">
+        <div class="p-banner-content-box">
+          <p>Black Friday Sale</p>
+          <h3>Lowest Price Of the year</h3>
+          <p class="pp-italic">Custom t-shirts & Hoodies</p>
+        </div>
+      </div>
+      <div class="pp-banner-col">
+        <div class="pp-baner-button-wrapper">
+          <a href="#">Shop T-shirts</a>
+          <a href="#">Shop Hoodies</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subcategory Grid -->
+    <div class="subcategory-section">
+      <div class="subcategory-grid" id="subcategory-grid">
+        {% comment %} Collect all subcategories with their first product image {% endcomment %}
+        {% assign subcategory_data = '' %}
+
+        {% for product in collection.products %}
+          {% assign subcat_value = product.metafields.custom.sub_category.value
+            | default: product.metafields.custom.sub_category
+          %}
+
+          {% if subcat_value %}
+            {% comment %} Handle both list and single value {% endcomment %}
+            {% if subcat_value.first %}
+              {% for subcategory in subcat_value %}
+                {% unless subcategory_data contains subcategory %}
+                  {% assign product_image = product.featured_image | img_url: '400x400' %}
+                  {% assign subcategory_data = subcategory_data
+                    | append: subcategory
+                    | append: ':::'
+                    | append: product_image
+                    | append: '|||'
+                  %}
+                {% endunless %}
+              {% endfor %}
+            {% else %}
+              {% unless subcategory_data contains subcat_value %}
+                {% assign product_image = product.featured_image | img_url: '400x400' %}
+                {% assign subcategory_data = subcategory_data
+                  | append: subcat_value
+                  | append: ':::'
+                  | append: product_image
+                  | append: '|||'
+                %}
+              {% endunless %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} Display subcategory cards {% endcomment %}
+        {% assign subcategory_array = subcategory_data | split: '|||' | sort %}
+        {% for item in subcategory_array %}
+          {% if item != blank %}
+            {% assign parts = item | split: ':::' %}
+            {% assign subcategory_name = parts[0] %}
+            {% assign subcategory_image = parts[1] %}
+
+            <div
+              class="subcategory-card"
+              onclick="filterBySubcategory('{{ subcategory_name }}', this)"
+              data-subcategory="{{ subcategory_name }}"
+            >
+              <div>
+                <img
+                  src="{{ subcategory_image }}"
+                  alt="{{ subcategory_name }}"
+                  class="subcategory-image"
+                  loading="lazy"
+                >
+              </div>
+              <div class="subcategory-name">{{ subcategory_name }}</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="collection-filters">
+      <div class="filter-bar-content">
+        <div class="filter-left">
+          <button class="filter-button" id="toggle-filters" onclick="toggleFilterPanel()">
+            <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="19.5" cy="19.5" r="19" stroke="black"/>
+              <line x1="9.5" y1="13.5" x2="30.5" y2="13.5" stroke="black" stroke-linecap="round"/>
+              <line x1="9.5" y1="19.5" x2="30.5" y2="19.5" stroke="black" stroke-linecap="round"/>
+              <line x1="9.5" y1="25.5" x2="30.5" y2="25.5" stroke="black" stroke-linecap="round"/>
+              <circle cx="12.5" cy="13.5" r="1.5" fill="black"/>
+              <circle cx="25.5" cy="19.5" r="1.5" fill="black"/>
+              <circle cx="17.5" cy="25.5" r="1.5" fill="black"/>
+            </svg>
+
+            FILTER
+            <span class="filter-count" id="filter-count" style="display: none;">0</span>
+          </button>
+
+          <button class="clear-filters" id="clear-all" onclick="clearAllFilters()" style="display: none;">
+            Clear All
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="filter-right">
+          <!-- Gender Toggle -->
+          <div class="gender-toggle">
+            <button class="gender-btn active" data-gender="all" onclick="filterByGenderAjax('all', event)">ALL</button>
+            <button class="gender-btn" data-gender="men" onclick="filterByGenderAjax('men', event)">MEN</button>
+            <button class="gender-btn" data-gender="women" onclick="filterByGenderAjax('women', event)">WOMEN</button>
+            <button class="gender-btn" data-gender="youth" onclick="filterByGenderAjax('youth', event)">YOUTH</button>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <select class="sort-button" id="sort-by" onchange="sortCollectionAjax(this.value)">
+            <option value="manual">SORTING</option>
+            <option value="best-selling">BEST SELLING</option>
+            <option value="title-ascending">A-Z</option>
+            <option value="title-descending">Z-A</option>
+            <option value="price-ascending">PRICE: LOW TO HIGH</option>
+            <option value="price-descending">PRICE: HIGH TO LOW</option>
+            <option value="created-descending">NEWEST</option>
+            <option value="created-ascending">OLDEST</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expanded Filter Panel -->
+    <div class="filter-panel" id="filter-panel">
+      <div class="filter-grid">
+        <!-- Brand Filter -->
+        <div class="filter-section">
+          <h3>BRAND</h3>
+          <div class="filter-content" id="brand-filters">
+            {% assign all_brands = '' %}
+            {% for product in collection.products %}
+              {% assign brand_value = product.metafields.custom.brand.value
+                | default: product.metafields.custom.brand
+              %}
+
+              {% if brand_value and brand_value != blank %}
+                {% unless all_brands contains brand_value %}
+                  {% assign all_brands = all_brands | append: brand_value | append: '||' %}
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
+
+            {% assign brand_array = all_brands | split: '||' | sort %}
+            {% if brand_array.size > 0 %}
+              {% for brand in brand_array %}
+                {% if brand != blank %}
+                  <div class="filter-checkbox">
+                    <input
+                      type="checkbox"
+                      id="brand-{{ brand | handleize }}"
+                      value="{{ brand }}"
+                      onchange="filterProductsLive()"
+                    >
+                    <label for="brand-{{ brand | handleize }}">{{ brand }}</label>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              <p style="font-size: 11px; color: #999;">No brands found</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Sub Categories Filter (from metafield) -->
+        {% comment %}
+          <div class="filter-section">
+            <h3>SUB CATEGORIES</h3>
+            <div class="filter-content" id="subcategory-filters">
+              {% assign all_subcategories = '' %}
+              {% for product in collection.products %}
+                {% comment %} Handle both string and list metafield types {% endcomment %}
+                {% assign subcat_value = product.metafields.custom.sub_category.value
+                  | default: product.metafields.custom.sub_category
+                %}
+
+                {% if subcat_value %}
+                  {% comment %} Check if it's a list (array) {% endcomment %}
+                  {% if subcat_value.first %}
+                    {% for subcategory in subcat_value %}
+                      {% unless all_subcategories contains subcategory %}
+                        {% assign all_subcategories = all_subcategories | append: subcategory | append: '||' %}
+                      {% endunless %}
+                    {% endfor %}
+                  {% else %}
+                    {% comment %} It's a single string value {% endcomment %}
+                    {% unless all_subcategories contains subcat_value %}
+                      {% assign all_subcategories = all_subcategories | append: subcat_value | append: '||' %}
+                    {% endunless %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+
+              {% assign subcategory_array = all_subcategories | split: '||' | sort %}
+              {% if subcategory_array.size > 0 %}
+                {% for subcategory in subcategory_array %}
+                  {% if subcategory != blank %}
+                    <div class="filter-checkbox">
+                      <input
+                        type="checkbox"
+                        id="subcat-{{ subcategory | handleize }}"
+                        value="{{ subcategory }}"
+                        onchange="filterProductsLive()"
+                      >
+                      <label for="subcat-{{ subcategory | handleize }}">{{ subcategory }}</label>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <p style="font-size: 11px; color: #999;">No subcategories found</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endcomment %}
+
+        <div class="sms-phn-sms">
+          <!-- Gender Filter -->
+          <div class="filter-section">
+            <h3>GENDER</h3>
+            <div class="filter-content" id="gender-filters">
+              <div class="filter-checkbox">
+                <input type="checkbox" id="gender-men" value="men" onchange="filterProductsLive()">
+                <label for="gender-men">Men</label>
+              </div>
+              <div class="filter-checkbox">
+                <input type="checkbox" id="gender-women" value="women" onchange="filterProductsLive()">
+                <label for="gender-women">Women</label>
+              </div>
+              <div class="filter-checkbox">
+                <input type="checkbox" id="gender-youth" value="youth" onchange="filterProductsLive()">
+                <label for="gender-youth">Youth</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Filter (from metafield) -->
+          <div class="filter-section">
+            <h3>QUALITY</h3>
+            <div class="filter-content" id="quality-filters">
+              {% assign all_qualities = '' %}
+              {% for product in collection.products %}
+                {% comment %} Handle both .value accessor and direct access {% endcomment %}
+                {% assign quality_value = product.metafields.custom.quality.value
+                  | default: product.metafields.custom.quality
+                %}
+
+                {% if quality_value and quality_value != blank %}
+                  {% unless all_qualities contains quality_value %}
+                    {% assign all_qualities = all_qualities | append: quality_value | append: '||' %}
+                  {% endunless %}
+                {% endif %}
+              {% endfor %}
+
+              {% assign quality_array = all_qualities | split: '||' %}
+
+              {% comment %} Define the custom quality order {% endcomment %}
+              {% assign quality_order = 'Premium,Standard,Basic' | split: ',' %}
+
+              {% if quality_array.size > 0 %}
+                {% comment %} Display qualities in custom order {% endcomment %}
+                {% for quality_name in quality_order %}
+                  {% if all_qualities contains quality_name %}
+                    <div class="filter-checkbox">
+                      <input
+                        type="checkbox"
+                        id="quality-{{ quality_name | handleize }}"
+                        value="{{ quality_name }}"
+                        onchange="filterProductsLive()"
+                      >
+                      <label for="quality-{{ quality_name | handleize }}">{{ quality_name }}</label>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% comment %} Display any qualities not in the predefined order {% endcomment %}
+                {% for quality in quality_array %}
+                  {% if quality != blank %}
+                    {% unless quality_order contains quality %}
+                      <div class="filter-checkbox">
+                        <input
+                          type="checkbox"
+                          id="quality-{{ quality | handleize }}"
+                          value="{{ quality }}"
+                          onchange="filterProductsLive()"
+                        >
+                        <label for="quality-{{ quality | handleize }}">{{ quality }}</label>
+                      </div>
+                    {% endunless %}
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <p style="font-size: 11px; color: #999;">No quality data found</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Filter -->
+        <div class="filter-section">
+          <h3>COLOR</h3>
+          <div class="filter-content">
+            <div class="color-grid" id="color-filter-grid">
+              <!-- Colors will be dynamically populated from products -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Size Filter -->
+        {% comment %}
+          <div class="filter-section">
+            <h3>SIZE</h3>
+            <div class="filter-content">
+              <div class="size-grid">
+                {% assign all_sizes = '' %}
+                {% for product in collection.products %}
+                  {% for option in product.options_with_values %}
+                    {% assign option_name = option.name | downcase %}
+                    {% if option_name == 'size' %}
+                      {% for value in option.values %}
+                        {% unless all_sizes contains value %}
+                          {% assign all_sizes = all_sizes | append: value | append: '||' %}
+                        {% endunless %}
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+
+                {% assign size_array = all_sizes | split: '||' | sort %}
+                {% for size in size_array %}
+                  {% if size != blank %}
+                    <div class="size-option" onclick="toggleSizeFilterLive(this, '{{ size }}')">{{ size }}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endcomment %}
+
+        <!-- Vendor Filter -->
+        {% comment %}
+          <div class="filter-section">
+            <h3>Vendor</h3>
+            <div class="filter-content">
+              {% assign vendors = collection.all_vendors %}
+              {% for vendor in vendors %}
+                <div class="filter-checkbox">
+                  <input
+                    type="checkbox"
+                    id="vendor-{{ vendor | handleize }}"
+                    value="{{ vendor }}"
+                    onchange="filterProductsLive()"
+                  >
+                  <label for="vendor-{{ vendor | handleize }}">{{ vendor }}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endcomment %}
+      </div>
+
+      <!-- Apply Button -->
+      <button class="apply-filters-btn" onclick="toggleFilterPanel()">Apply</button>
+    </div>
+
+    <!-- Products Grid -->
+    {% paginate collection.products by 100 %}
+      <div class="products-grid" id="product-grid">
+        {% for product in collection.products %}
+          {% comment %} Collect product colors and their images {% endcomment %}
+          {% assign product_colors = '' %}
+          {% assign color_data = '' %}
+          {% assign first_variant_image = '' %}
+          {% for option in product.options_with_values %}
+            {% assign option_name = option.name | downcase %}
+            {% if option_name == 'color' or option_name == 'colour' %}
+              {% for value in option.values %}
+                {% assign product_colors = product_colors | append: value | append: ',' %}
+
+                {% comment %} Find variant with this color {% endcomment %}
+                {% for variant in product.variants %}
+                  {% if variant.option1 == value or variant.option2 == value or variant.option3 == value %}
+                    {% assign color_handle = value | handle %}
+                    {% if variant.featured_image %}
+                      {% assign variant_image = variant.featured_image | img_url: '600x600' %}
+                    {% elsif variant.image %}
+                      {% assign variant_image = variant.image | img_url: '600x600' %}
+                    {% else %}
+                      {% assign variant_image = product.featured_image | img_url: '600x600' %}
+                    {% endif %}
+
+                    {% comment %} Store first variant image as default {% endcomment %}
+                    {% if first_variant_image == blank and variant_image != blank %}
+                      {% assign first_variant_image = variant_image %}
+                    {% endif %}
+
+                    {% assign color_data = color_data
+                      | append: value
+                      | append: ':'
+                      | append: color_handle
+                      | append: ':'
+                      | append: variant_image
+                      | append: '||'
+                    %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+
+          {% comment %} Use first variant image, fallback to featured image {% endcomment %}
+          {% if first_variant_image != blank %}
+            {% assign default_product_image = first_variant_image %}
+          {% else %}
+            {% assign default_product_image = product.featured_image | img_url: '600x600' %}
+          {% endif %}
+
+          {% comment %} Get subcategories and quality from metafields {% endcomment %}
+          {% assign product_subcategories = '' %}
+          {% assign subcat_value = product.metafields.custom.sub_category.value
+            | default: product.metafields.custom.sub_category
+          %}
+
+          {% if subcat_value %}
+            {% comment %} Check if it's a list (array) {% endcomment %}
+            {% if subcat_value.first %}
+              {% for subcat in subcat_value %}
+                {% assign product_subcategories = product_subcategories | append: subcat | append: ',' %}
+              {% endfor %}
+            {% else %}
+              {% comment %} It's a single string value {% endcomment %}
+              {% assign product_subcategories = subcat_value | append: ',' %}
+            {% endif %}
+          {% endif %}
+
+          {% assign product_quality = '' %}
+          {% assign quality_value = product.metafields.custom.quality.value
+            | default: product.metafields.custom.quality
+          %}
+          {% if quality_value %}
+            {% assign product_quality = quality_value %}
+          {% endif %}
+
+          {% comment %} Get product sizes from variants {% endcomment %}
+          {% assign product_sizes = '' %}
+          {% for option in product.options_with_values %}
+            {% assign option_name = option.name | downcase %}
+            {% if option_name == 'size' %}
+              {% for value in option.values %}
+                {% assign product_sizes = product_sizes | append: value | append: ',' %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+
+          {% comment %} Check if product has men/women/youth tags {% endcomment %}
+          {% assign product_gender = '' %}
+          {% if product.tags contains 'men' %}
+            {% assign product_gender = 'men' %}
+          {% elsif product.tags contains 'women' %}
+            {% assign product_gender = 'women' %}
+          {% elsif product.tags contains 'youth' %}
+            {% assign product_gender = 'youth' %}
+          {% endif %}
+
+          <a
+            href="{{ product.url }}"
+            class="product-card"
+            data-tags="{{ product.tags | join: ',' }}"
+            data-vendor="{{ product.vendor }}"
+            data-colors="{{ product_colors }}"
+            data-color-data="{{ color_data }}"
+            data-subcategories="{{ product_subcategories }}"
+            data-quality="{{ product_quality }}"
+            data-brand="{{ product.metafields.custom.brand.value | default: product.metafields.custom.brand }}"
+            data-gender="{{ product_gender }}"
+            data-sizes="{{ product_sizes }}"
+            data-price="{{ product.price }}"
+            data-title="{{ product.title }}"
+            data-created="{{ product.created_at | date: '%s' }}"
+          >
+            {% if product.tags contains 'new' or product.tags contains 'new-arrival' %}
+              <div class="product-badge">New Arrival</div>
+            {% elsif product.tags contains 'bestseller' or product.tags contains 'best-seller' %}
+              <div class="product-badge">Best Seller</div>
+            {% elsif product.tags contains 'sale' %}
+              <div class="product-badge">Sale</div>
+            {% endif %}
+
+            <div class="product-image-wrapper">
+              <img
+                class="product-main-image"
+                src="{{ default_product_image }}"
+                alt="{{ product.title }}"
+                loading="lazy"
+                data-original="{{ default_product_image }}"
+              >
+            </div>
+
+            <div class="product-info">
+              <h3 class="product-name">{{ product.title }}</h3>
+
+              <!-- Color Swatches -->
+              {% for option in product.options_with_values %}
+                {% assign option_name = option.name | downcase %}
+                {% if option_name == 'color' or option_name == 'colour' %}
+                  <div class="product-colors" data-product-id="{{ product.id }}">
+                    {% for value in option.values %}
+                      {% assign variant_image = '' %}
+                      {% assign color_handle = value | handle %}
+
+                      {% for variant in product.variants %}
+                        {% if variant.option1 == value or variant.option2 == value or variant.option3 == value %}
+                          {% if variant.featured_image %}
+                            {% assign variant_image = variant.featured_image | img_url: '600x600' %}
+                          {% elsif variant.image %}
+                            {% assign variant_image = variant.image | img_url: '600x600' %}
+                          {% endif %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% capture swatch_style %}{% if variant_image %}background-image: url({{ variant_image }}); background-size: cover; background-position: center;{% else %}background-color: {{ value | split: ' ' | last | handle }};{% endif %}{% endcapture %}
+
+                      <span
+                        class="color-swatch{% if forloop.first %} active{% endif %}"
+                        title="{{ value }}"
+                        data-color="{{ value }}"
+                        data-image="{{ variant_image }}"
+                        style="{{ swatch_style }}"
+                        onmouseover="changeProductImage(this)"
+                      ></span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endpaginate %}
+  </div>
+</div>
+
+<script>
+  // ============================================
+  // COMPLETE COLLECTION FILTER SYSTEM - FIXED VERSION
+  // ============================================
+
+  // Global filter state
+  var activeFilters = {
+    subcategories: [],
+    quality: [],
+    genderCheckboxes: [],
+    colors: [],
+    brands: [],
+    sizes: [],
+    vendors: [],
+    gender: 'all',
+    sort: 'manual',
+  };
+
+  // Store all products for sorting/filtering
+  var allProducts = [];
+  var urlFiltersApplied = false;
+  var isCardClick = false;
+
+  // ============================================
+  // UTILITY FUNCTIONS
+  // ============================================
+
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+
+  // ============================================
+  // SUBCATEGORY CARD FUNCTIONALITY
+  // ============================================
+
+  function filterBySubcategory(subcategoryName, cardElement) {
+    isCardClick = true;
+    var subcategoryLower = subcategoryName.toLowerCase();
+    var isCurrentlyActive = cardElement.classList.contains('active');
+
+    if (isCurrentlyActive) {
+      cardElement.classList.remove('active');
+    } else {
+      cardElement.classList.add('active');
+    }
+
+    var handleizedName = subcategoryName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    var checkbox = document.querySelector('#subcat-' + handleizedName);
+
+    if (!isCurrentlyActive) {
+      if (checkbox) checkbox.checked = true;
+      if (!activeFilters.subcategories.includes(subcategoryLower)) {
+        activeFilters.subcategories.push(subcategoryLower);
+      }
+    } else {
+      if (checkbox) checkbox.checked = false;
+      var index = activeFilters.subcategories.indexOf(subcategoryLower);
+      if (index > -1) {
+        activeFilters.subcategories.splice(index, 1);
+      }
+    }
+
+    filterProductsLive();
+
+    setTimeout(function () {
+      isCardClick = false;
+    }, 100);
+
+    setTimeout(function () {
+      var productsGrid = document.getElementById('product-grid');
+      if (productsGrid) {
+        var yOffset = -100;
+        var y = productsGrid.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 100);
+  }
+
+  function updateSubcategoryCardStates() {
+    var subcategoryCards = document.querySelectorAll('.subcategory-card');
+    subcategoryCards.forEach(function (card) {
+      var cardSubcategory = card.getAttribute('data-subcategory').toLowerCase();
+      if (activeFilters.subcategories.includes(cardSubcategory)) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+  }
+
+  function clearSubcategorySelections() {
+    document.querySelectorAll('.subcategory-card').forEach(function (card) {
+      card.classList.remove('active');
+    });
+    activeFilters.subcategories = [];
+  }
+
+  // ============================================
+  // DRAGGABLE SUBCATEGORY GRID
+  // ============================================
+
+  function initDraggableGrid() {
+    var subcategoryGrid = document.querySelector('.subcategory-grid');
+    if (!subcategoryGrid) return;
+
+    var isDown = false;
+    var startX;
+    var scrollLeft;
+    var isDragging = false;
+    var dragThreshold = 5;
+
+    subcategoryGrid.addEventListener('mousedown', function (e) {
+      if (e.target.closest('.subcategory-card')) {
+        isDown = true;
+        isDragging = false;
+        subcategoryGrid.style.cursor = 'grabbing';
+        startX = e.pageX - subcategoryGrid.offsetLeft;
+        scrollLeft = subcategoryGrid.scrollLeft;
+      }
+    });
+
+    subcategoryGrid.addEventListener('mouseleave', function () {
+      isDown = false;
+      subcategoryGrid.style.cursor = 'grab';
+    });
+
+    subcategoryGrid.addEventListener('mouseup', function (e) {
+      isDown = false;
+      subcategoryGrid.style.cursor = 'grab';
+      if (isDragging) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      setTimeout(function () {
+        isDragging = false;
+      }, 50);
+    });
+
+    subcategoryGrid.addEventListener('mousemove', function (e) {
+      if (!isDown) return;
+      e.preventDefault();
+      var x = e.pageX - subcategoryGrid.offsetLeft;
+      var walk = (x - startX) * 2;
+      if (Math.abs(walk) > dragThreshold) {
+        isDragging = true;
+      }
+      subcategoryGrid.scrollLeft = scrollLeft - walk;
+    });
+
+    var touchStartX = 0;
+    var touchScrollLeft = 0;
+
+    subcategoryGrid.addEventListener(
+      'touchstart',
+      function (e) {
+        touchStartX = e.touches[0].pageX;
+        touchScrollLeft = subcategoryGrid.scrollLeft;
+        isDragging = false;
+      },
+      { passive: true }
+    );
+
+    subcategoryGrid.addEventListener(
+      'touchmove',
+      function (e) {
+        var touchX = e.touches[0].pageX;
+        var walk = (touchStartX - touchX) * 1.5;
+        if (Math.abs(walk) > dragThreshold) {
+          isDragging = true;
+        }
+        subcategoryGrid.scrollLeft = touchScrollLeft + walk;
+      },
+      { passive: true }
+    );
+
+    subcategoryGrid.addEventListener(
+      'touchend',
+      function () {
+        setTimeout(function () {
+          isDragging = false;
+        }, 50);
+      },
+      { passive: true }
+    );
+
+    var subcategoryCards = subcategoryGrid.querySelectorAll('.subcategory-card');
+    subcategoryCards.forEach(function (card) {
+      card.addEventListener(
+        'click',
+        function (e) {
+          if (isDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            return false;
+          }
+        },
+        true
+      );
+    });
+  }
+
+  // ============================================
+  // INITIALIZATION
+  // ============================================
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var colorMap = {};
+    var productCards = document.querySelectorAll('.product-card');
+
+    productCards.forEach(function (card) {
+      allProducts.push(card);
+    });
+
+    productCards.forEach(function (card) {
+      var swatches = card.querySelectorAll('.color-swatch[data-color]');
+      swatches.forEach(function (swatch) {
+        var colorName = swatch.getAttribute('data-color');
+        if (colorName && !colorMap[colorName]) {
+          colorMap[colorName] = swatch.getAttribute('style');
+        }
+      });
+    });
+
+    var colorFilterGrid = document.getElementById('color-filter-grid');
+    Object.keys(colorMap)
+      .sort()
+      .forEach(function (colorName) {
+        var colorDiv = document.createElement('div');
+        colorDiv.className = 'color-option';
+        colorDiv.onclick = function () {
+          toggleColorFilterLive(this, colorName);
+        };
+        var swatch = document.createElement('div');
+        swatch.className = 'color-swatch-filter';
+        if (colorMap[colorName]) {
+          swatch.setAttribute('style', colorMap[colorName]);
+        }
+        var label = document.createElement('span');
+        label.textContent = colorName;
+        colorDiv.appendChild(swatch);
+        colorDiv.appendChild(label);
+        colorFilterGrid.appendChild(colorDiv);
+      });
+
+    var currentPath = window.location.pathname.toLowerCase();
+    if (currentPath.includes('/men')) {
+      activeFilters.gender = 'men';
+    } else if (currentPath.includes('/women')) {
+      activeFilters.gender = 'women';
+    } else if (currentPath.includes('/youth')) {
+      activeFilters.gender = 'youth';
+    }
+    updateGenderButtons();
+
+    var hasUrlFilters = applyUrlFilters();
+    if (!hasUrlFilters) {
+      filterProductsLive();
+    }
+
+    // Initialize draggable grid
+    initDraggableGrid();
+  });
+
+  // ============================================
+  // URL FILTER APPLICATION
+  // ============================================
+
+  function applyUrlFilters() {
+    var urlSubcategory = getUrlParameter('subcategory');
+    var urlColor = getUrlParameter('color');
+    var urlSize = getUrlParameter('size');
+    var urlQuality = getUrlParameter('quality');
+    var urlVendor = getUrlParameter('vendor');
+    var urlBrand = getUrlParameter('brand');
+    var hasUrlFilters = false;
+
+    if (urlSubcategory) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      activeFilters.subcategories.push(urlSubcategory.toLowerCase());
+      var allSubcatCheckboxes = document.querySelectorAll('[id^="subcat-"]');
+      allSubcatCheckboxes.forEach(function (checkbox) {
+        if (checkbox.value.toLowerCase() === urlSubcategory.toLowerCase()) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (urlColor) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      var colorOptions = document.querySelectorAll('.color-option');
+      colorOptions.forEach(function (option) {
+        var colorName = option.querySelector('span').textContent;
+        if (colorName.toLowerCase() === urlColor.toLowerCase()) {
+          option.classList.add('selected');
+          activeFilters.colors.push(urlColor.toLowerCase());
+        }
+      });
+    }
+
+    if (urlSize) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      activeFilters.sizes.push(urlSize.toLowerCase());
+    }
+
+    if (urlQuality) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      activeFilters.quality.push(urlQuality.toLowerCase());
+      document.querySelectorAll('[id^="quality-"]').forEach(function (checkbox) {
+        if (checkbox.value.toLowerCase() === urlQuality.toLowerCase()) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (urlVendor) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      activeFilters.vendors.push(urlVendor.toLowerCase());
+      document.querySelectorAll('[id^="vendor-"]').forEach(function (checkbox) {
+        if (checkbox.value.toLowerCase() === urlVendor.toLowerCase()) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (urlBrand) {
+      hasUrlFilters = true;
+      urlFiltersApplied = true;
+      activeFilters.brands.push(urlBrand.toLowerCase());
+      document.querySelectorAll('[id^="brand-"]').forEach(function (checkbox) {
+        if (checkbox.value.toLowerCase() === urlBrand.toLowerCase()) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (hasUrlFilters) {
+      filterProductsLive();
+    }
+
+    return hasUrlFilters;
+  }
+
+  // ============================================
+  // FILTER UI FUNCTIONS
+  // ============================================
+
+  function updateGenderButtons() {
+    document.querySelectorAll('.gender-btn').forEach(function (btn) {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-gender') === activeFilters.gender) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  function toggleFilterPanel() {
+    var panel = document.getElementById('filter-panel');
+    var button = document.getElementById('toggle-filters');
+    if (panel.classList.contains('active')) {
+      panel.classList.remove('active');
+      button.classList.remove('active');
+    } else {
+      panel.classList.add('active');
+      button.classList.add('active');
+    }
+  }
+
+  function toggleColorFilterLive(element, color) {
+    element.classList.toggle('selected');
+    var colorLower = color.toLowerCase();
+    var index = activeFilters.colors.indexOf(colorLower);
+    if (index > -1) {
+      activeFilters.colors.splice(index, 1);
+    } else {
+      activeFilters.colors.push(colorLower);
+    }
+    filterProductsLive();
+  }
+
+  function toggleSizeFilterLive(element, size) {
+    element.classList.toggle('selected');
+    var sizeLower = size.toLowerCase();
+    var index = activeFilters.sizes.indexOf(sizeLower);
+    if (index > -1) {
+      activeFilters.sizes.splice(index, 1);
+    } else {
+      activeFilters.sizes.push(sizeLower);
+    }
+    filterProductsLive();
+  }
+
+  function filterByGenderAjax(gender, event) {
+    event.preventDefault();
+    activeFilters.gender = gender;
+    updateGenderButtons();
+    filterProductsLive();
+  }
+
+  function sortCollectionAjax(sortValue) {
+    activeFilters.sort = sortValue;
+    filterProductsLive();
+  }
+
+  function changeProductImage(swatchElement) {
+    var imageUrl = swatchElement.getAttribute('data-image');
+    if (imageUrl) {
+      var productCard = swatchElement.closest('.product-card');
+      var productImage = productCard.querySelector('.product-main-image');
+      productImage.style.opacity = '0.7';
+      setTimeout(function () {
+        productImage.src = imageUrl;
+        productImage.style.opacity = '1';
+      }, 150);
+    }
+    var allSwatches = swatchElement.parentElement.querySelectorAll('.color-swatch');
+    allSwatches.forEach(function (swatch) {
+      swatch.classList.remove('active');
+    });
+    swatchElement.classList.add('active');
+  }
+
+  // ============================================
+  // MAIN FILTERING FUNCTION
+  // ============================================
+
+  function filterProductsLive() {
+    if (!isCardClick && !urlFiltersApplied) {
+      activeFilters.subcategories = [];
+      document.querySelectorAll('.filter-checkbox input[id^="subcat-"]:checked').forEach(function (checkbox) {
+        activeFilters.subcategories.push(checkbox.value.toLowerCase());
+      });
+
+      activeFilters.quality = [];
+      document.querySelectorAll('.filter-checkbox input[id^="quality-"]:checked').forEach(function (checkbox) {
+        activeFilters.quality.push(checkbox.value.toLowerCase());
+      });
+
+      activeFilters.genderCheckboxes = [];
+      document.querySelectorAll('.filter-checkbox input[id^="gender-"]:checked').forEach(function (checkbox) {
+        activeFilters.genderCheckboxes.push(checkbox.value.toLowerCase());
+      });
+
+      activeFilters.brands = [];
+      document.querySelectorAll('.filter-checkbox input[id^="brand-"]:checked').forEach(function (checkbox) {
+        activeFilters.brands.push(checkbox.value.toLowerCase());
+      });
+
+      activeFilters.vendors = [];
+      document.querySelectorAll('.filter-checkbox input[id^="vendor-"]:checked').forEach(function (checkbox) {
+        activeFilters.vendors.push(checkbox.value.toLowerCase());
+      });
+
+      updateSubcategoryCardStates();
+    } else if (urlFiltersApplied) {
+      urlFiltersApplied = false;
+      updateSubcategoryCardStates();
+    }
+
+    var visibleProducts = [];
+
+    allProducts.forEach(function (card) {
+      var shouldShow = true;
+      var productGender = (card.getAttribute('data-gender') || '').toLowerCase();
+      var productSubcatsAttr = card.getAttribute('data-subcategories') || '';
+      var productSubcats = productSubcatsAttr
+        .toLowerCase()
+        .split(',')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(function (s) {
+          return s !== '';
+        });
+      var productQuality = (card.getAttribute('data-quality') || '').toLowerCase();
+      var productBrand = (card.getAttribute('data-brand') || '').toLowerCase();
+      var productVendor = card.getAttribute('data-vendor').toLowerCase();
+      var productColorsAttr = card.getAttribute('data-colors') || '';
+      var productColors = productColorsAttr
+        .toLowerCase()
+        .split(',')
+        .map(function (c) {
+          return c.trim();
+        })
+        .filter(function (c) {
+          return c !== '';
+        });
+      var productSizesAttr = card.getAttribute('data-sizes') || '';
+      var productSizes = productSizesAttr
+        .toLowerCase()
+        .split(',')
+        .map(function (s) {
+          return s.trim();
+        })
+        .filter(function (s) {
+          return s !== '';
+        });
+
+      if (shouldShow) {
+        // Get all gender tags from the product
+        var productTags = (card.getAttribute('data-tags') || '')
+          .toLowerCase()
+          .split(',')
+          .map(function (t) {
+            return t.trim();
+          });
+
+        if (activeFilters.genderCheckboxes.length > 0) {
+          // Check if product has ANY of the selected gender tags
+          var hasMatchingGender = activeFilters.genderCheckboxes.some(function (gender) {
+            return productTags.includes(gender);
+          });
+          if (!hasMatchingGender) {
+            shouldShow = false;
+          }
+        } else if (activeFilters.gender !== 'all') {
+          // Check if product has the selected gender tag
+          if (!productTags.includes(activeFilters.gender)) {
+            shouldShow = false;
+          }
+        }
+      }
+
+      if (activeFilters.subcategories.length > 0 && shouldShow) {
+        var hasMatchingSubcat = activeFilters.subcategories.some(function (subcat) {
+          return productSubcats.includes(subcat.trim());
+        });
+        if (!hasMatchingSubcat) shouldShow = false;
+      }
+
+      if (activeFilters.quality.length > 0 && shouldShow) {
+        if (!activeFilters.quality.includes(productQuality)) {
+          shouldShow = false;
+        }
+      }
+
+      if (activeFilters.brands.length > 0 && shouldShow) {
+        if (!activeFilters.brands.includes(productBrand)) {
+          shouldShow = false;
+        }
+      }
+
+      if (activeFilters.vendors.length > 0 && shouldShow) {
+        if (!activeFilters.vendors.includes(productVendor)) {
+          shouldShow = false;
+        }
+      }
+
+      if (activeFilters.colors.length > 0 && shouldShow) {
+        var hasMatchingColor = activeFilters.colors.some(function (color) {
+          return productColors.includes(color);
+        });
+
+        if (!hasMatchingColor) {
+          shouldShow = false;
+        } else {
+          var colorData = card.getAttribute('data-color-data');
+          if (colorData) {
+            var colors = colorData.split('||');
+            var imageUpdated = false;
+
+            for (var i = 0; i < activeFilters.colors.length && !imageUpdated; i++) {
+              var filterColor = activeFilters.colors[i];
+
+              for (var j = 0; j < colors.length && !imageUpdated; j++) {
+                var colorInfo = colors[j].trim();
+                if (colorInfo) {
+                  var parts = colorInfo.split(':');
+                  if (parts.length >= 3) {
+                    var colorName = parts[0].toLowerCase().trim();
+                    var imageUrl = parts[2].trim();
+
+                    if (colorName === filterColor && imageUrl) {
+                      var productImage = card.querySelector('.product-main-image');
+                      if (productImage) {
+                        productImage.src = imageUrl;
+                      }
+
+                      var swatches = card.querySelectorAll('.color-swatch');
+                      swatches.forEach(function (swatch) {
+                        swatch.classList.remove('active');
+                        var swatchColor = swatch.getAttribute('data-color');
+                        if (swatchColor && swatchColor.toLowerCase().trim() === colorName) {
+                          swatch.classList.add('active');
+                        }
+                      });
+
+                      imageUpdated = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        var productImage = card.querySelector('.product-main-image');
+        var originalImage = productImage.getAttribute('data-original');
+        if (originalImage) {
+          productImage.src = originalImage;
+          var swatches = card.querySelectorAll('.color-swatch');
+          swatches.forEach(function (swatch, index) {
+            swatch.classList.remove('active');
+            if (index === 0) {
+              swatch.classList.add('active');
+            }
+          });
+        }
+      }
+
+      if (activeFilters.sizes.length > 0 && shouldShow) {
+        var hasMatchingSize = activeFilters.sizes.some(function (size) {
+          return productSizes.includes(size);
+        });
+        if (!hasMatchingSize) shouldShow = false;
+      }
+
+      if (shouldShow) {
+        visibleProducts.push(card);
+      }
+    });
+
+    sortProducts(visibleProducts);
+
+    allProducts.forEach(function (card) {
+      card.style.display = 'none';
+    });
+
+    var productGrid = document.getElementById('product-grid');
+    visibleProducts.forEach(function (card) {
+      card.style.display = 'block';
+      productGrid.appendChild(card);
+    });
+
+    updateFilterCount();
+    showNoResultsMessage(visibleProducts.length);
+  }
+
+  // ============================================
+  // SORTING
+  // ============================================
+
+  function sortProducts(products) {
+    var sortValue = activeFilters.sort;
+    products.sort(function (a, b) {
+      switch (sortValue) {
+        case 'title-ascending':
+          return a.getAttribute('data-title').toLowerCase().localeCompare(b.getAttribute('data-title').toLowerCase());
+        case 'title-descending':
+          return b.getAttribute('data-title').toLowerCase().localeCompare(a.getAttribute('data-title').toLowerCase());
+        case 'price-ascending':
+          return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+        case 'price-descending':
+          return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+        case 'created-descending':
+          return parseInt(b.getAttribute('data-created')) - parseInt(a.getAttribute('data-created'));
+        case 'created-ascending':
+          return parseInt(a.getAttribute('data-created')) - parseInt(b.getAttribute('data-created'));
+        default:
+          return 0;
+      }
+    });
+  }
+
+  // ============================================
+  // UI UPDATES
+  // ============================================
+
+  function updateFilterCount() {
+    var count = 0;
+    count += activeFilters.subcategories.length;
+    count += activeFilters.quality.length;
+    count += activeFilters.genderCheckboxes.length;
+    count += activeFilters.colors.length;
+    count += activeFilters.brands.length;
+    count += activeFilters.sizes.length;
+    count += activeFilters.vendors.length;
+
+    var countElement = document.getElementById('filter-count');
+    var clearButton = document.getElementById('clear-all');
+
+    if (count > 0) {
+      countElement.textContent = count;
+      countElement.style.display = 'inline-block';
+      clearButton.style.display = 'flex';
+    } else {
+      countElement.style.display = 'none';
+      clearButton.style.display = 'none';
+    }
+  }
+
+  function showNoResultsMessage(visibleCount) {
+    var existingMessage = document.getElementById('no-results-message');
+    if (visibleCount === 0) {
+      if (!existingMessage) {
+        var grid = document.getElementById('product-grid');
+        var message = document.createElement('div');
+        message.id = 'no-results-message';
+        message.style.cssText =
+          'grid-column: 1/-1; text-align: center; padding: 60px 20px; font-size: 18px; color: #666;';
+        message.innerHTML =
+          '<p style="margin-bottom: 10px;">No products found matching your filters.</p><button onclick="clearAllFilters()" style="background: #FF6B35; color: white; border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; cursor: pointer;">Clear All Filters</button>';
+        grid.appendChild(message);
+      }
+    } else {
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+    }
+  }
+
+  function clearAllFilters() {
+    activeFilters = {
+      subcategories: [],
+      quality: [],
+      genderCheckboxes: [],
+      colors: [],
+      brands: [],
+      sizes: [],
+      vendors: [],
+      gender: activeFilters.gender,
+      sort: 'manual',
+    };
+
+    document.querySelectorAll('.filter-checkbox input:checked').forEach(function (checkbox) {
+      checkbox.checked = false;
+    });
+
+    document.querySelectorAll('.color-option.selected').forEach(function (element) {
+      element.classList.remove('selected');
+    });
+
+    document.querySelectorAll('.size-option.selected').forEach(function (element) {
+      element.classList.remove('selected');
+    });
+
+    clearSubcategorySelections();
+    document.getElementById('sort-by').value = 'manual';
+    filterProductsLive();
+  }
+</script>
+
+<script>
+  // ============================================
+  // SUBCATEGORY CARD REORDERING SCRIPT
+  // ============================================
+
+  (function () {
+    'use strict';
+
+    var ANIMATION_DURATION = 600;
+    var ANIMATION_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
+
+    function getCardPositions(grid) {
+      var cards = Array.from(grid.querySelectorAll('.subcategory-card'));
+      var positions = new Map();
+      cards.forEach(function (card) {
+        var rect = card.getBoundingClientRect();
+        positions.set(card, {
+          left: rect.left,
+          top: rect.top,
+          width: rect.width,
+          height: rect.height,
+        });
+      });
+      return positions;
+    }
+
+    function reorderCards(grid) {
+      var cards = Array.from(grid.querySelectorAll('.subcategory-card'));
+      var activeCards = cards.filter(function (card) {
+        return card.classList.contains('active');
+      });
+      var inactiveCards = cards.filter(function (card) {
+        return !card.classList.contains('active');
+      });
+
+      if (activeCards.length === 0) {
+        return false;
+      }
+
+      var beforePositions = getCardPositions(grid);
+      var fragment = document.createDocumentFragment();
+      activeCards.forEach(function (card) {
+        fragment.appendChild(card);
+      });
+      inactiveCards.forEach(function (card) {
+        fragment.appendChild(card);
+      });
+      grid.appendChild(fragment);
+
+      var afterPositions = getCardPositions(grid);
+      animateCardMovement(beforePositions, afterPositions);
+      return true;
+    }
+
+    function animateCardMovement(beforePositions, afterPositions) {
+      beforePositions.forEach(function (beforePos, card) {
+        var afterPos = afterPositions.get(card);
+        if (!afterPos) return;
+
+        var deltaX = beforePos.left - afterPos.left;
+        var deltaY = beforePos.top - afterPos.top;
+
+        if (deltaX === 0 && deltaY === 0) return;
+
+        card.style.transition = 'none';
+        card.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px)';
+        card.offsetHeight;
+        card.style.transition = 'transform ' + ANIMATION_DURATION + 'ms ' + ANIMATION_EASING;
+        card.style.transform = 'translate(0, 0)';
+
+        setTimeout(function () {
+          card.style.transition = '';
+          card.style.transform = '';
+        }, ANIMATION_DURATION);
+      });
+    }
+
+    function scrollToActiveCards(grid) {
+      var firstActive = grid.querySelector('.subcategory-card.active');
+      if (!firstActive) return;
+
+      var gridRect = grid.getBoundingClientRect();
+      var cardRect = firstActive.getBoundingClientRect();
+      var isVisible = cardRect.left >= gridRect.left && cardRect.right <= gridRect.right;
+
+      if (!isVisible) {
+        var scrollLeft = firstActive.offsetLeft - 10;
+        grid.scrollTo({
+          left: scrollLeft,
+          behavior: 'smooth',
+        });
+      }
+    }
+
+    function handleCardReorder() {
+      var grid = document.getElementById('subcategory-grid');
+      if (!grid) return;
+
+      grid.classList.add('is-reordering');
+      var didReorder = reorderCards(grid);
+
+      if (didReorder) {
+        setTimeout(function () {
+          scrollToActiveCards(grid);
+        }, ANIMATION_DURATION / 2);
+      }
+
+      setTimeout(function () {
+        grid.classList.remove('is-reordering');
+      }, ANIMATION_DURATION);
+    }
+
+    function enhanceSubcategoryFilter() {
+      if (typeof window.filterBySubcategory === 'function') {
+        var originalFilterBySubcategory = window.filterBySubcategory;
+        window.filterBySubcategory = function (subcategoryName, cardElement) {
+          originalFilterBySubcategory.apply(this, arguments);
+          setTimeout(function () {
+            handleCardReorder();
+          }, 50);
+        };
+      }
+    }
+
+    function init() {
+      enhanceSubcategoryFilter();
+
+      var originalClearAll = window.clearAllFilters;
+      if (typeof originalClearAll === 'function') {
+        window.clearAllFilters = function () {
+          originalClearAll.apply(this, arguments);
+
+          setTimeout(function () {
+            var grid = document.getElementById('subcategory-grid');
+            if (grid) {
+              var cards = Array.from(grid.querySelectorAll('.subcategory-card'));
+              cards.sort(function (a, b) {
+                var nameA = a.getAttribute('data-subcategory').toLowerCase();
+                var nameB = b.getAttribute('data-subcategory').toLowerCase();
+                return nameA.localeCompare(nameB);
+              });
+
+              var beforePositions = getCardPositions(grid);
+              var fragment = document.createDocumentFragment();
+              cards.forEach(function (card) {
+                fragment.appendChild(card);
+              });
+              grid.appendChild(fragment);
+
+              var afterPositions = getCardPositions(grid);
+              animateCardMovement(beforePositions, afterPositions);
+            }
+          }, 50);
+        };
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<script>
+  // ============================================
+  // PRODUCTION COLLECTION PAGE ANIMATIONS - FIXED
+  // ============================================
+
+  (function () {
+    'use strict';
+
+    function waitForGSAP(callback, maxAttempts = 60) {
+      let attempts = 0;
+      let hasLoaded = false;
+
+      const initWhenReady = function () {
+        if (hasLoaded) return;
+
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+          hasLoaded = true;
+          console.log('✅ GSAP & ScrollTrigger ready - starting animations');
+          callback();
+        } else if (attempts < maxAttempts) {
+          attempts++;
+          setTimeout(initWhenReady, 100);
+        } else {
+          console.error('❌ GSAP failed to load after 6s');
+        }
+      };
+
+      if (document.readyState === 'complete') {
+        initWhenReady();
+      } else {
+        window.addEventListener('load', initWhenReady);
+      }
+    }
+
+    function initAnimations() {
+      if (window.animationsInitialized) return;
+      window.animationsInitialized = true;
+
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+      // Initial states
+      gsap.set('.collection-title', { opacity: 0, y: 20 });
+      gsap.set('.collection-bg-wrapper img', { opacity: 0, scale: 1.5 });
+      gsap.set('.product-banner-box .pp-banner-bg', { opacity: 0, scale: 1.5 });
+      gsap.set('.product-banner-box .p-banner-content-box > *', { opacity: 0, y: 30 });
+      gsap.set('.product-banner-box .pp-baner-button-wrapper a', { opacity: 0, y: 20 });
+      gsap.set('.product-banner-box img.pp-center', { opacity: 0, y: 60, scale: 1.95 });
+      gsap.set('.subcategory-section', { opacity: 0, y: 20 });
+      gsap.set('.subcategory-card', { opacity: 0, y: 20 });
+      gsap.set('.subcategory-card img', { scale: 1.5, opacity: 0 });
+      gsap.set('.collection-filters', { opacity: 0, y: 30 });
+      gsap.set('.filter-button, .gender-btn, .sort-button', { opacity: 0 });
+      gsap.set('.product-card', { opacity: 0, y: 40 });
+      gsap.set('.product-image-wrapper img', { opacity: 0, y: 20, scale: 1.95 });
+      gsap.set('.product-name', { opacity: 0, y: 10 });
+      gsap.set('.product-colors', { opacity: 0, y: 10 });
+
+      const masterTL = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        onStart: () => console.log('🎬 Page load animation started'),
+      });
+
+      masterTL.to('.collection-title', { opacity: 1, y: 0, duration: 0.8 }, 0);
+      masterTL.to('.collection-bg-wrapper img', { opacity: 1, scale: 1, duration: 1.4, ease: 'power1.inOut' }, 0.2);
+      masterTL.to('.product-banner-box', { opacity: 1, duration: 0.3 }, 0.2);
+      masterTL.to(
+        '.product-banner-box .pp-banner-bg',
+        { opacity: 1, scale: 1, duration: 1.4, ease: 'power1.inOut' },
+        0.2
+      );
+      masterTL.to(
+        '.product-banner-box .p-banner-content-box > *',
+        { opacity: 1, y: 0, duration: 0.7, stagger: 0.12 },
+        0.6
+      );
+      masterTL.to(
+        '.product-banner-box .pp-baner-button-wrapper a',
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+        1
+      );
+      masterTL.to(
+        '.product-banner-box img.pp-center',
+        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'back.out(1.2)' },
+        0.9
+      );
+
+      gsap.to('.subcategory-section', {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        delay: 1.2,
+        onComplete: () => {
+          const subcategoryGrid = document.querySelector('.subcategory-grid');
+          if (subcategoryGrid) {
+            const cards = subcategoryGrid.querySelectorAll('.subcategory-card');
+            cards.forEach((card, index) => {
+              const cardImage = card.querySelector('img');
+
+              gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                delay: index * 0.06,
+                // DON'T clear props on subcategory cards - they need their transforms for reordering
+                onComplete: function () {
+                  gsap.set(card, { clearProps: 'opacity,y' }); // Only clear animation props, not transform
+                },
+              });
+
+              if (cardImage) {
+                gsap.to(cardImage, {
+                  scale: 1,
+                  opacity: 1,
+                  duration: 0.8,
+                  delay: index * 0.06 + 0.1,
+                  onComplete: function () {
+                    gsap.set(cardImage, { clearProps: 'scale,opacity' });
+                  },
+                });
+              }
+            });
+          }
+        },
+      });
+
+      gsap.to('.collection-filters', {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        delay: 1.9,
+        onComplete: () => {
+          const filterElements = document.querySelectorAll('.filter-button, .gender-btn, .sort-button');
+          gsap.to(filterElements, { opacity: 1, y: 0, duration: 0.5, stagger: 0.04 });
+        },
+      });
+
+      const productGrid = document.querySelector('.products-grid');
+      if (productGrid) {
+        const productCards = productGrid.querySelectorAll('.product-card');
+
+        productCards.forEach((card) => {
+          const cardImage = card.querySelector('.product-image-wrapper img');
+          const productName = card.querySelector('.product-name');
+          const productColors = card.querySelector('.product-colors');
+
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+            },
+          });
+
+          if (cardImage) {
+            gsap.to(cardImage, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            });
+          }
+
+          if (productName) {
+            gsap.to(productName, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            });
+          }
+
+          if (productColors) {
+            gsap.to(productColors, {
+              opacity: 1,
+              duration: 0.4,
+              y: 0,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            });
+          }
+        });
+      }
+
+      const origToggleFilter = window.toggleFilterPanel;
+      if (typeof origToggleFilter === 'function') {
+        window.toggleFilterPanel = function () {
+          const panel = document.getElementById('filter-panel');
+          const button = document.getElementById('toggle-filters');
+
+          if (!panel.classList.contains('active')) {
+            panel.style.display = 'block';
+            panel.classList.add('active');
+            button.classList.add('active');
+
+            gsap.fromTo(
+              panel,
+              { opacity: 0, height: 0 },
+              { opacity: 1, height: 'auto', duration: 0.5, ease: 'power2.out' }
+            );
+
+            const sections = panel.querySelectorAll('.filter-section');
+            gsap.fromTo(
+              sections,
+              { opacity: 0, y: 15 },
+              { opacity: 1, y: 0, duration: 0.4, stagger: 0.05, delay: 0.1 }
+            );
+          } else {
+            gsap.to(panel, {
+              opacity: 0,
+              height: 0,
+              duration: 0.35,
+              ease: 'power2.in',
+              onComplete: () => {
+                panel.classList.remove('active');
+                button.classList.remove('active');
+                panel.style.display = 'none';
+                gsap.set(panel, { clearProps: 'all' });
+              },
+            });
+          }
+        };
+      }
+
+      // DON'T wrap filterProductsLive - let it run naturally without animation interference
+      // The reordering script already handles animations for subcategory cards
+      const origFilterLive = window.filterProductsLive;
+      if (typeof origFilterLive === 'function') {
+        window.filterProductsLive = function () {
+          // Call original function immediately without animation wrapper
+          origFilterLive.apply(this, arguments);
+
+          // Add subtle animation to newly visible products AFTER filtering completes
+          setTimeout(() => {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+
+            const visibleCards = Array.from(grid.querySelectorAll('.product-card')).filter(
+              (c) => c.style.display !== 'none'
+            );
+
+            // Quick fade-in for filtered products
+            visibleCards.forEach((card, index) => {
+              if (card.style.opacity === '0' || card.style.opacity === '') {
+                gsap.fromTo(
+                  card,
+                  { opacity: 0 },
+                  { opacity: 1, duration: 0.4, delay: index * 0.02, ease: 'power2.out' }
+                );
+              }
+            });
+          }, 50);
+        };
+      }
+
+      document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('color-swatch')) {
+          gsap.to(e.target, {
+            scale: 1.12,
+            duration: 0.12,
+            yoyo: true,
+            repeat: 1,
+            ease: 'power2.inOut',
+          });
+        }
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 250);
+      });
+
+      console.log('✅ Animations fully initialized');
+    }
+
+    if (document.readyState === 'complete') {
+      waitForGSAP(initAnimations);
+    } else {
+      window.addEventListener('load', () => {
+        waitForGSAP(initAnimations);
+      });
+    }
+
+    if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', () => {
+        setTimeout(() => {
+          window.animationsInitialized = false;
+          initAnimations();
+        }, 200);
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Page",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "paragraph",
+      "content": "Filters use custom metafields: custom.sub_category and custom.quality"
+    }
+  ]
+}
+{% endschema %}

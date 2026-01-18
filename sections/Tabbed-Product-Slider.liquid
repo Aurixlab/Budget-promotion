@@ -1,0 +1,907 @@
+<style>
+  .tabbed-product-section {
+    max-width: 100%;
+    padding: 32px 0;
+  }
+
+  .tab-navigation {
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+    flex-wrap: wrap;
+    background: #FF741C;
+    padding: 20px 10px;
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    cursor: pointer;
+    padding: 0px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: capitalize;
+    letter-spacing: 0;
+    min-height: 25px;
+    height: 25px;
+    opacity: .35;
+  }
+
+  .tab-button:hover {
+    color: #333;
+    transform: translateY(-2px);
+  }
+
+  .tab-button.active {
+    color: #000000;
+    opacity: 1;
+    font-size: 28px;
+
+  }
+
+  .tab-content {
+    display: none;
+    padding: 30px 0 0;
+    opacity: 0;
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .product-slider-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 0 20px;
+    margin: 0 auto;
+    cursor: grab;
+  }
+
+  .product-slider-wrapper.dragging {
+    cursor: grabbing;
+  }
+
+  .product-slider-wrapper.dragging .product-slider-track {
+    transition: none !important;
+  }
+
+  .product-slider-track {
+    display: flex;
+    gap: 30px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    user-select: none;
+  }
+
+  .product-card {
+    flex: 0 0 calc(33.333% - 20px);
+    text-align: center;
+    min-width: 280px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .product-card a,
+  .product-card button {
+    pointer-events: auto;
+  }
+
+  .product-card .product-card-title,
+  .product-card .product-card-description,
+  .product-card .product-card-buttons {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .product-card.center-active .product-card-title,
+  .product-card.center-active .product-card-description,
+  .product-card.center-active .product-card-buttons {
+    opacity: 1;
+    max-height: 500px;
+  }
+
+  .product-card:hover::before {
+    left: 100%;
+  }
+
+  .product-image-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-image-wrapper img {
+    width: 100%;
+    height: 460px;
+    object-fit: contain;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .product-card:hover .product-image-wrapper img {
+    transform: scale(1.08);
+  }
+
+  .product-card-title {
+    margin-bottom: 10px;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
+  .product-card-description {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #FF741C;
+    margin-bottom: 20px;
+  }
+
+  .product-card-buttons {
+    display: flex;
+    column-gap: 38px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    row-gap: 20px;
+  }
+
+  .product-card-button {
+    overflow: hidden;
+    letter-spacing: 0;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    padding: .7rem 2.5rem;
+    background-color: #ff741c;
+    color: #ffffff !important;
+    border-radius: 38px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .product-card-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .product-card-button:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .product-card-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+  }
+
+  @media (max-width: 1024px) {
+    .product-card {
+      flex: 0 0 calc(50% - 15px);
+      min-width: 250px;
+    }
+
+    .product-image-wrapper img {
+      height: 300px;
+    }
+    
+    .product-card-description {
+      margin-bottom: 14px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tab-navigation {
+      gap: 20px;
+    }
+
+    .tab-button {
+      font-size: 15px;
+      line-height: 15px;
+      min-height: 15px;
+      height: 15px;
+    }
+    
+    .tab-content {
+      padding: 0;
+    }
+    
+    .product-card-buttons {
+      column-gap: 16px;
+    }
+
+    .product-slider-wrapper {
+      padding: 0 20px;
+    }
+
+    .product-card {
+      flex: 0 0 calc(100% - 0px);
+      min-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tab-navigation {
+      gap: 10px;
+      padding: 16px 0px;
+    }
+
+    .product-image-wrapper img {
+      width: 300px;
+      object-fit: contain;
+    }
+    
+    .product-card {
+      padding: 0px;
+    }
+
+    .product-card-button {
+      padding: 5px 30px;
+      font-size: 14px;
+    }
+    .tab-button.active {
+    font-size: 22px;
+}
+
+  }
+
+  .slider-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    padding:0;
+    background: #FF741C;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .slider-nav-arrow:hover {
+    background: #e66817;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .slider-nav-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .slider-nav-arrow svg {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
+  }
+
+  .slider-nav-arrow.prev {
+    left: 25px;
+  }
+
+  .slider-nav-arrow.next {
+    right: 25px;
+  }
+
+  @media (min-width: 1025px) {
+    .slider-nav-arrow {
+      display: flex;
+    }
+    
+    .product-slider-wrapper {
+      cursor: default;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .product-slider-wrapper {
+      cursor: grab;
+    }
+    
+    .product-slider-wrapper.dragging {
+      cursor: grabbing;
+    }
+    
+    .product-card {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    
+    .product-card.fade-active {
+      opacity: 1;
+    }
+  }
+</style>
+
+<div class="tabbed-product-section">
+  <div class="tab-navigation">
+    {% for block in section.blocks %}
+      <button
+        class="tab-button {% if forloop.first %}active{% endif %}"
+        data-tab="tab-{{ forloop.index }}"
+        {{ block.shopify_attributes }}
+      >
+        {{ block.settings.tab_title }}
+      </button>
+    {% endfor %}
+  </div>
+
+  {% for block in section.blocks %}
+    <div class="tab-content {% if forloop.first %}active{% endif %}" data-tab-content="tab-{{ forloop.index }}">
+      <div class="product-slider-wrapper" data-slider-wrapper="tab-{{ forloop.index }}">
+        <div class="product-slider-track" data-slider="tab-{{ forloop.index }}">
+          {% if block.settings.collection != blank %}
+            {% assign collection = collections[block.settings.collection] %}
+            {% assign product_limit = block.settings.products_to_show | default: 10 %}
+
+            {% if collection.products.size > 0 %}
+              {% for product in collection.products limit: product_limit %}
+                <div class="product-card">
+                  <div class="product-image-wrapper">
+                    {% if product.featured_image %}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 600 }}"
+                        alt="{{ product.title }}"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </div>
+                  <h3 class="product-card-title">{{ product.title }}</h3>
+                  {% comment %} {% if block.settings.show_price %}
+                    <p class="product-card-description">As low as {{ product.price | money }} (Price for 2000)</p>
+                  {% endif %} {% endcomment %}
+                    {% if block.settings.show_price %}
+                    {% if product.metafields.custom.price_info %}
+                      <p class="product-card-description">{{ product.metafields.custom.price_info }}</p>
+                    {% else %}
+                      <p class="product-card-description">As low as {{ product.price | money }} (Price for 2000)</p>
+                    {% endif %}
+                  {% endif %}
+                  <div class="product-card-buttons">
+                    {% assign has_men = false %}
+                    {% assign has_women = false %}
+                    {% assign has_youth = false %}
+
+                    {% for variant in product.variants %}
+                      {% assign variant_title_lower = variant.title | downcase %}
+                      {% if variant_title_lower contains 'women' %}
+                        {% assign has_women = true %}
+                      {% endif %}
+                      {% if variant_title_lower contains 'woman' %}
+                        {% assign has_women = true %}
+                      {% endif %}
+                      {% if variant_title_lower contains 'men' %}
+                        {% unless has_women %}
+                          {% assign has_men = true %}
+                        {% endunless %}
+                      {% endif %}
+                      {% if variant_title_lower contains 'youth' %}
+                        {% assign has_youth = true %}
+                      {% endif %}
+                      {% if variant_title_lower contains 'kid' %}
+                        {% assign has_youth = true %}
+                      {% endif %}
+                      {% if variant_title_lower contains 'child' %}
+                        {% assign has_youth = true %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% for tag in product.tags %}
+                      {% assign tag_lower = tag | downcase %}
+                      {% if tag_lower == 'men' or tag_lower == 'mens' %}
+                        {% assign has_men = true %}
+                      {% endif %}
+                      {% if tag_lower == 'women' or tag_lower == 'womens' %}
+                        {% assign has_women = true %}
+                      {% endif %}
+                      {% if tag_lower == 'youth' or tag_lower == 'kids' %}
+                        {% assign has_youth = true %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% if has_men %}
+                      <a href="{{ product.url }}?variant=men" class="product-card-button">Men</a>
+                    {% endif %}
+                    {% if has_women %}
+                      <a href="{{ product.url }}?variant=women" class="product-card-button">Women</a>
+                    {% endif %}
+                    {% if has_youth %}
+                      <a href="{{ product.url }}?variant=youth" class="product-card-button">Youth</a>
+                    {% endif %}
+
+                    {% unless has_men or has_women or has_youth %}
+                      <a href="{{ product.url }}" class="product-card-button">Shop Now</a>
+                    {% endunless %}
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p style="text-align: center; padding: 60px 20px; color: #999; width: 100%; font-size: 15px;">
+                No products found in this collection.
+              </p>
+            {% endif %}
+          {% else %}
+            <p style="text-align: center; padding: 60px 20px; color: #999; width: 100%; font-size: 15px;">
+              Please select a collection in the tab settings.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  const sliderInstances = {};
+  
+  function initializeSlider(sliderId) {
+    const wrapper = document.querySelector(`[data-slider-wrapper="${sliderId}"]`);
+    const track = document.querySelector(`[data-slider="${sliderId}"]`);
+    
+    if (!track || !wrapper) return null;
+    
+    // Clean up existing clones
+    track.querySelectorAll('.product-card.cloned').forEach(clone => clone.remove());
+    
+    const cards = Array.from(track.querySelectorAll('.product-card:not(.cloned)'));
+    if (cards.length === 0) return null;
+    
+    // Clone cards for infinite scrolling
+    const cardsToClone = Math.min(cards.length, 3);
+    
+    for (let i = 0; i < cardsToClone; i++) {
+      const clone = cards[i].cloneNode(true);
+      clone.classList.add('cloned');
+      track.appendChild(clone);
+    }
+    
+    for (let i = cards.length - 1; i >= Math.max(0, cards.length - cardsToClone); i--) {
+      const clone = cards[i].cloneNode(true);
+      clone.classList.add('cloned');
+      track.insertBefore(clone, track.firstChild);
+    }
+    
+    // Remove existing arrows
+    wrapper.querySelectorAll('.slider-nav-arrow').forEach(arrow => arrow.remove());
+    
+    // Create arrows
+    const prevArrow = document.createElement('button');
+    prevArrow.className = 'slider-nav-arrow prev';
+    prevArrow.innerHTML = '<svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>';
+    prevArrow.setAttribute('aria-label', 'Previous');
+    
+    const nextArrow = document.createElement('button');
+    nextArrow.className = 'slider-nav-arrow next';
+    nextArrow.innerHTML = '<svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+    nextArrow.setAttribute('aria-label', 'Next');
+    
+    wrapper.appendChild(prevArrow);
+    wrapper.appendChild(nextArrow);
+    
+    const allCards = track.querySelectorAll('.product-card');
+    let currentIndex = cardsToClone;
+    let isTransitioning = false;
+    let autoplayInterval = null;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let isScrolling = null;
+    let startPos = 0;
+    let startTime = 0;
+    let currentTranslate = 0;
+    let velocity = 0;
+    
+    function isDesktop() {
+      return window.innerWidth > 1024;
+    }
+    
+    function getVisibleCards() {
+      const width = window.innerWidth;
+      if (width > 1024) return 3;
+      if (width > 768) return 2;
+      return 1;
+    }
+    
+    function getCardWidth() {
+      return allCards[0] ? allCards[0].offsetWidth : 0;
+    }
+    
+    function updateCenterCard() {
+      const visibleCards = getVisibleCards();
+      const centerOffset = Math.floor(visibleCards / 2);
+      const centerIndex = currentIndex + centerOffset;
+      
+      allCards.forEach((card, index) => {
+        card.classList.toggle('center-active', index === centerIndex);
+      });
+    }
+    
+    function updateFadeCards() {
+      const visibleCards = getVisibleCards();
+      
+      allCards.forEach((card, index) => {
+        const isVisible = index >= currentIndex && index < currentIndex + visibleCards;
+        card.classList.toggle('fade-active', isVisible);
+      });
+      
+      updateCenterCard();
+    }
+    
+    function updateSlider(transition = true) {
+      const cardWidth = getCardWidth();
+      if (cardWidth === 0) return;
+      
+      const gap = 30;
+      const moveAmount = currentIndex * (cardWidth + gap);
+      
+      if (isDesktop()) {
+        track.style.transition = transition ? 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+        track.style.transform = `translateX(-${moveAmount}px)`;
+        
+        if (transition) {
+          setTimeout(updateCenterCard, 300);
+        } else {
+          updateCenterCard();
+        }
+      } else {
+        track.style.transition = 'none';
+        track.style.transform = `translateX(-${moveAmount}px)`;
+        updateFadeCards();
+      }
+    }
+    
+    function handleTransitionEnd(e) {
+      if (e.target !== track || e.propertyName !== 'transform') return;
+      
+      isTransitioning = false;
+      const totalOriginalCards = cards.length;
+      
+      if (currentIndex >= totalOriginalCards + cardsToClone) {
+        currentIndex = cardsToClone;
+        updateSlider(false);
+      } else if (currentIndex < cardsToClone) {
+        currentIndex = totalOriginalCards + cardsToClone - 1;
+        updateSlider(false);
+      }
+    }
+    
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayInterval = setInterval(() => {
+        if (!isTransitioning && !isDragging) {
+          handleNext();
+        }
+      }, 5000);
+    }
+    
+    function stopAutoplay() {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+      }
+    }
+    
+    function handlePrev() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentIndex--;
+      updateSlider(true);
+      stopAutoplay();
+      setTimeout(startAutoplay, 1000);
+    }
+    
+    function handleNext() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      currentIndex++;
+      updateSlider(true);
+      if (!isDesktop()) {
+        stopAutoplay();
+        setTimeout(startAutoplay, 1000);
+      }
+    }
+    
+    prevArrow.addEventListener('click', handlePrev);
+    nextArrow.addEventListener('click', handleNext);
+    
+    function getPositionX(event) {
+      return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+    }
+    
+    function getPositionY(event) {
+      return event.type.includes('mouse') ? event.pageY : event.touches[0].clientY;
+    }
+    
+    function touchStart(event) {
+      if (isDesktop()) return;
+      if (event.target.closest('a, button, .product-card-button')) return;
+      if (isTransitioning) return;
+      
+      startX = getPositionX(event);
+      startY = getPositionY(event);
+      startPos = startX;
+      startTime = Date.now();
+      isScrolling = null;
+      velocity = 0;
+      currentTranslate = 0;
+    }
+    
+    function touchMove(event) {
+      if (isScrolling === false) {
+        event.preventDefault();
+      }
+      
+      if (isScrolling === true) return;
+      
+      if (isScrolling === null) {
+        const currentX = getPositionX(event);
+        const currentY = getPositionY(event);
+        const diffX = Math.abs(currentX - startX);
+        const diffY = Math.abs(currentY - startY);
+        
+        if (diffX > 10 || diffY > 10) {
+          isScrolling = diffY > diffX;
+          
+          if (!isScrolling) {
+            isDragging = true;
+            wrapper.classList.add('dragging');
+            stopAutoplay();
+          }
+        }
+      }
+      
+      if (!isDragging) return;
+      
+      event.preventDefault();
+      
+      const currentPosition = getPositionX(event);
+      const diff = currentPosition - startPos;
+      currentTranslate = diff;
+      
+      const currentTime = Date.now();
+      const timeDiff = currentTime - startTime;
+      if (timeDiff > 0) {
+        velocity = diff / timeDiff;
+      }
+    }
+    
+    function touchEnd() {
+      if (!isDragging) {
+        isScrolling = null;
+        return;
+      }
+      
+      isDragging = false;
+      isScrolling = null;
+      wrapper.classList.remove('dragging');
+      
+      const movedBy = currentTranslate;
+      const threshold = 50;
+      const momentumThreshold = 0.3;
+      
+      if (Math.abs(velocity) > momentumThreshold) {
+        currentIndex += velocity < 0 ? 1 : -1;
+      } else if (movedBy < -threshold) {
+        currentIndex++;
+      } else if (movedBy > threshold) {
+        currentIndex--;
+      }
+      
+      const totalOriginalCards = cards.length;
+      const maxIndex = totalOriginalCards + cardsToClone * 2 - 1;
+      
+      currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+      
+      isTransitioning = true;
+      allCards.forEach(card => card.classList.remove('fade-active'));
+      
+      setTimeout(() => {
+        updateSlider(true);
+        setTimeout(() => { isTransitioning = false; }, 100);
+      }, 100);
+      
+      setTimeout(startAutoplay, 600);
+    }
+    
+    wrapper.addEventListener('mousedown', touchStart);
+    wrapper.addEventListener('mousemove', touchMove);
+    wrapper.addEventListener('mouseup', touchEnd);
+    wrapper.addEventListener('mouseleave', () => { if (isDragging) touchEnd(); });
+    wrapper.addEventListener('touchstart', touchStart, { passive: true });
+    wrapper.addEventListener('touchmove', touchMove, { passive: false });
+    wrapper.addEventListener('touchend', touchEnd);
+    wrapper.addEventListener('contextmenu', e => { if (isDragging) e.preventDefault(); });
+    track.addEventListener('transitionend', handleTransitionEnd);
+    
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => updateSlider(false), 250);
+    });
+    
+    // Initialize
+    currentIndex = cardsToClone;
+    updateSlider(false);
+    startAutoplay();
+    
+    return {
+      destroy() {
+        stopAutoplay();
+        prevArrow.remove();
+        nextArrow.remove();
+      }
+    };
+  }
+  
+  function activateTab(tabId) {
+    // Destroy all sliders
+    Object.keys(sliderInstances).forEach(key => {
+      if (sliderInstances[key]?.destroy) {
+        sliderInstances[key].destroy();
+        delete sliderInstances[key];
+      }
+    });
+    
+    // Update UI
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    const targetButton = document.querySelector(`[data-tab="${tabId}"]`);
+    const targetContent = document.querySelector(`[data-tab-content="${tabId}"]`);
+    
+    if (targetButton) targetButton.classList.add('active');
+    if (targetContent) targetContent.classList.add('active');
+    
+    // Initialize slider after DOM update
+    setTimeout(() => {
+      sliderInstances[tabId] = initializeSlider(tabId);
+    }, 100);
+  }
+  
+  // Tab click handlers
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', function() {
+      activateTab(this.getAttribute('data-tab'));
+    });
+  });
+  
+  // Initialize first tab on load - THE FIX
+  window.addEventListener('load', () => {
+    const firstButton = document.querySelector('.tab-button.active');
+    if (firstButton) {
+      const tabId = firstButton.getAttribute('data-tab');
+      // Programmatically trigger tab activation
+      setTimeout(() => {
+        activateTab(tabId);
+      }, 300);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Product Slider",
+  "tag": "section",
+  "class": "tabbed-product-slider-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Create product tabs that automatically fetch products from your collections. Drag to navigate through products on any device."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_tab",
+      "name": "Product Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Tab Title",
+          "default": "Top selling"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "label": "Number of Products to Show",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "type": "checkbox",
+          "id": "show_price",
+          "label": "Show Product Price",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Product Slider",
+      "blocks": [
+        {
+          "type": "product_tab",
+          "settings": {
+            "tab_title": "Top selling"
+          }
+        },
+        {
+          "type": "product_tab",
+          "settings": {
+            "tab_title": "New arrivals"
+          }
+        },
+        {
+          "type": "product_tab",
+          "settings": {
+            "tab_title": "Clearance"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

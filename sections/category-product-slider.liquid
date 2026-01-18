@@ -1,0 +1,607 @@
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+.category-slider-section {
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+.dual-slider-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+}
+
+.swiper {
+    padding-bottom: 0;
+}
+.slider-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.category-slider-section .swiper-slide {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.category-slider-section .swiper-slide-active {
+    opacity: 1;
+}
+
+.slide-content-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  width: 100%;
+  justify-content:center;
+}
+
+.product-image-container {
+  width: 100%;
+  margin-bottom: 20px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image-container img {
+  width: auto;
+  height: 130%;
+  position:absolute;
+  object-fit: contain;
+  display: block;
+  opacity: 0;
+  transform: translateY(20px) scale(1.1);
+  transform-origin: center center;
+  transition: opacity 0.6s ease, transform 0.7s ease;
+}
+
+.swiper-slide-active .product-image-container img {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.product-title {
+  margin-bottom: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #000000;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.swiper-slide-active .product-title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.custom-price-info {
+  margin-bottom: 15px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #FF741C;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.swiper-slide-active .custom-price-info {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+.slide-cta-button {
+  letter-spacing: 0;
+  width: fit-content;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: .5rem 1.5rem;
+  background-color: #ff741c;
+  color: #ffffff !important;
+  border-radius: 38px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.swiper-slide-active .slide-cta-button {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease 0.6s, transform 0.5s ease 0.6s, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slide-cta-button:hover {
+  background: #e55a00;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 116, 28, 0.3);
+}
+
+.slide-content-right {
+  position: relative;
+  height: 70svh;
+  width: 100%;
+  overflow: hidden;
+  border-radius:38px;
+}
+
+.lifestyle-image-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 32px;
+  cursor: pointer;
+}
+
+.lifestyle-image-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 32px;
+  opacity: 0;
+  transform: translateY(15px) scale(1.2);
+  transform-origin: center center;
+  transition: opacity 0.6s ease, transform 0.7s ease;
+}
+
+.swiper-slide-active .lifestyle-image-container img {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition-delay: 0.15s;
+}
+
+.lifestyle-image-mobile {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .dual-slider-container {
+    gap: 20px;
+  }
+  
+  .slide-content-right {
+    height: 380px;
+  }
+}
+
+@media (max-width: 968px) {
+  .dual-slider-container {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+  
+  .slide-content-right {
+    height: 550px;
+  }
+  
+  .category-badge {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+  
+  .product-title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  
+  .custom-price-info {
+    font-size: 16px;
+  }
+  
+  .lifestyle-image-desktop {
+    display: none !important;
+  }
+  
+  .lifestyle-image-mobile {
+    display: block !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .slide-content-left {
+    padding: 0;
+  }
+  
+  .slide-cta-button {
+    padding: .5rem 1.5rem;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+  
+  .product-image-container {
+    width: 100%;
+    max-width: 100%;
+    height: 300px;
+    aspect-ratio: auto;
+    margin: 0 0 20px 0;
+  }
+  .category-slider-section .swiper-slide {
+    flex-direction: column;
+}
+  
+  .product-image-container img {
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .product-title {
+    margin-bottom: 5px;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  
+  .custom-price-info {
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 18px;
+  }
+  
+  .slide-content-right {
+    height: 280px;
+  }
+  
+  .category-slider-section {
+    padding-bottom: 0;
+  }
+
+  .category-badge {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+
+  .dual-slider-container {
+    gap: 30px;
+  }
+}
+</style>
+
+<div class="category-slider-section">
+  <div class="dual-slider-container">
+    
+    {%- comment -%} LEFT SLIDER {%- endcomment -%}
+    <div class="slider-wrapper">
+      <div class="swiper categoryProductSwiper1">
+        <div class="swiper-wrapper">
+          {% assign slide_count = 0 %}
+          
+          {% paginate collections.all.products by 250 %}
+            {% for product in collections.all.products %}
+              {% if product.available %}
+                {% for variant in product.variants %}
+                  {% if variant.metafields.custom.show_in_dual_slider == true %}
+                    {% assign slide_count = slide_count | plus: 1 %}
+                  
+                    <div class="swiper-slide" data-product-url="{{ product.url }}?variant={{ variant.id }}">
+                      <div class="slide-content-left">
+                        <div class="product-image-container">
+                          {% if variant.image %}
+                            <img 
+                              src="{{ variant.image | image_url: width: 500 }}" 
+                              alt="{{ product.title }} - {{ variant.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                          {% elsif product.featured_image %}
+                            <img 
+                              src="{{ product.featured_image | image_url: width: 500 }}" 
+                              alt="{{ product.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                          {% endif %}
+                        </div>
+
+                        <h3 class="product-title">{{ product.title }}</h3>
+
+                        {% if product.metafields.custom.price_info != blank %}
+                          <div class="custom-price-info">{{ product.metafields.custom.price_info }}</div>
+                        {% endif %}
+
+                        <a href="{{ product.url }}?variant={{ variant.id }}" class="slide-cta-button">
+                          SEE DETAILS
+                        </a>
+                      </div>
+
+                      <div class="slide-content-right">
+                        {% if variant.metafields.custom.slider_lifestyle_desktop != blank %}
+                          <a href="{{ product.url }}?variant={{ variant.id }}" class="lifestyle-image-container">
+                            <img 
+                              class="lifestyle-image-desktop"
+                              src="{{ variant.metafields.custom.slider_lifestyle_desktop | image_url: width: 900 }}" 
+                              alt="{{ product.title }} - {{ variant.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                            
+                            {% if variant.metafields.custom.slider_lifestyle_mobile != blank %}
+                              <img 
+                                class="lifestyle-image-mobile"
+                                src="{{ variant.metafields.custom.slider_lifestyle_mobile | image_url: width: 900 }}" 
+                                alt="{{ product.title }} - {{ variant.title }} - Mobile"
+                                loading="lazy"
+                                draggable="false"
+                              >
+                            {% else %}
+                              <img 
+                                class="lifestyle-image-mobile"
+                                src="{{ variant.metafields.custom.slider_lifestyle_desktop | image_url: width: 900 }}" 
+                                alt="{{ product.title }} - {{ variant.title }}"
+                                loading="lazy"
+                                draggable="false"
+                              >
+                            {% endif %}
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endpaginate %}
+          
+          {% if slide_count == 0 %}
+            <div class="swiper-slide">
+              <div style="text-align: center; padding: 40px; width: 100%;">
+                <h3 style="color: #ff741c;">No Featured Products Found</h3>
+                <p style="margin: 15px 0;">To add products to this slider:</p>
+                <ol style="text-align: left; max-width: 500px; margin: 0 auto; line-height: 1.8;">
+                  <li>Go to any product in your admin</li>
+                  <li>Select the variant you want to feature</li>
+                  <li>Find the <strong>show_in_dual_slider</strong> metafield and set it to <strong>true</strong></li>
+                  <li>Upload images to <strong>slider_lifestyle_desktop</strong> and <strong>slider_lifestyle_mobile</strong></li>
+                  <li>Save - the product will appear here automatically!</li>
+                </ol>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} RIGHT SLIDER - Starts from different position {%- endcomment -%}
+    <div class="slider-wrapper">
+      <div class="swiper categoryProductSwiper2">
+        <div class="swiper-wrapper">
+          {% assign slide_count_2 = 0 %}
+          
+          {% paginate collections.all.products by 250 %}
+            {% for product in collections.all.products %}
+              {% if product.available %}
+                {% for variant in product.variants %}
+                  {% if variant.metafields.custom.show_in_dual_slider == true %}
+                    {% assign slide_count_2 = slide_count_2 | plus: 1 %}
+                  
+                    <div class="swiper-slide" data-product-url="{{ product.url }}?variant={{ variant.id }}">
+                      <div class="slide-content-left">
+                        <div class="product-image-container">
+                          {% if variant.image %}
+                            <img 
+                              src="{{ variant.image | image_url: width: 500 }}" 
+                              alt="{{ product.title }} - {{ variant.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                          {% elsif product.featured_image %}
+                            <img 
+                              src="{{ product.featured_image | image_url: width: 500 }}" 
+                              alt="{{ product.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                          {% endif %}
+                        </div>
+
+                        <h3 class="product-title">{{ product.title }}</h3>
+
+                        {% if product.metafields.custom.price_info != blank %}
+                          <div class="custom-price-info">{{ product.metafields.custom.price_info }}</div>
+                        {% endif %}
+
+                        <a href="{{ product.url }}?variant={{ variant.id }}" class="slide-cta-button">
+                          SEE DETAILS
+                        </a>
+                      </div>
+
+                      <div class="slide-content-right">
+                        {% if variant.metafields.custom.slider_lifestyle_desktop != blank %}
+                          <a href="{{ product.url }}?variant={{ variant.id }}" class="lifestyle-image-container">
+                            <img 
+                              class="lifestyle-image-desktop"
+                              src="{{ variant.metafields.custom.slider_lifestyle_desktop | image_url: width: 900 }}" 
+                              alt="{{ product.title }} - {{ variant.title }}"
+                              loading="lazy"
+                              draggable="false"
+                            >
+                            
+                            {% if variant.metafields.custom.slider_lifestyle_mobile != blank %}
+                              <img 
+                                class="lifestyle-image-mobile"
+                                src="{{ variant.metafields.custom.slider_lifestyle_mobile | image_url: width: 900 }}" 
+                                alt="{{ product.title }} - {{ variant.title }} - Mobile"
+                                loading="lazy"
+                                draggable="false"
+                              >
+                            {% else %}
+                              <img 
+                                class="lifestyle-image-mobile"
+                                src="{{ variant.metafields.custom.slider_lifestyle_desktop | image_url: width: 900 }}" 
+                                alt="{{ product.title }} - {{ variant.title }}"
+                                loading="lazy"
+                                draggable="false"
+                              >
+                            {% endif %}
+                          </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endpaginate %}
+          
+          {% if slide_count_2 == 0 %}
+            <div class="swiper-slide">
+              <div style="text-align: center; padding: 40px; width: 100%;">
+                <h3 style="color: #ff741c;">No Featured Products Found</h3>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSliders);
+  } else {
+    initSliders();
+  }
+
+  function initSliders() {
+    if (typeof Swiper === 'undefined') {
+      console.error('Swiper library not loaded');
+      return;
+    }
+
+    // Count total slides for offset calculation
+    const totalSlides = document.querySelectorAll('.categoryProductSwiper1 .swiper-slide').length;
+    const offsetSlide = totalSlides > 2 ? Math.floor(totalSlides / 2) : 0;
+
+    // Initialize LEFT Swiper with autoplay
+    const swiper1 = new Swiper('.categoryProductSwiper1', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      speed: 900,
+      grabCursor: true,
+      touchRatio: 1,
+      threshold: 5,
+      preventClicks: true,
+      a11y: { enabled: true }
+    });
+
+    // Initialize RIGHT Swiper with offset initialSlide
+    const swiper2 = new Swiper('.categoryProductSwiper2', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      initialSlide: offsetSlide, // Start from middle position
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      speed: 900,
+      grabCursor: true,
+      touchRatio: 1,
+      threshold: 5,
+      preventClicks: true,
+      a11y: { enabled: true },
+      // Firefox-specific fix: ensure autoplay starts
+      on: {
+        init: function() {
+          // Force autoplay to start on Firefox
+          if (this.autoplay && !this.autoplay.running) {
+            this.autoplay.start();
+          }
+        }
+      }
+    });
+
+    // Clickable slides (ignore buttons/links)
+    document.querySelectorAll('.swiper-slide').forEach(slide => {
+      slide.addEventListener('click', function(e) {
+        if (
+          e.target.tagName === 'A' ||
+          e.target.tagName === 'BUTTON' ||
+          e.target.closest('a') ||
+          e.target.closest('button')
+        ) return;
+
+        const productUrl = this.getAttribute('data-product-url');
+        if (productUrl) window.location.href = productUrl;
+      });
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Dual Independent Sliders",
+  "tag": "section",
+  "class": "category-slider-section-wrapper",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "✨ Two INDEPENDENT sliders showing different products at the same time"
+    },
+    {
+      "type": "header",
+      "content": "How to Add Products"
+    },
+    {
+      "type": "paragraph",
+      "content": "1. Go to any product → select a variant\n2. Set show_in_dual_slider = true\n3. Upload slider_lifestyle_desktop image\n4. Upload slider_lifestyle_mobile image (optional)\n5. Set price_info on product (optional)\n6. Save → Product appears automatically!"
+    },
+    {
+      "type": "header",
+      "content": "Required Metafields"
+    },
+    {
+      "type": "paragraph",
+      "content": "VARIANT LEVEL (namespace: custom):\n• show_in_dual_slider (boolean)\n• slider_lifestyle_desktop (file)\n• slider_lifestyle_mobile (file, optional)\n\nPRODUCT LEVEL (namespace: custom):\n• price_info (text, optional)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dual Independent Sliders"
+    }
+  ]
+}
+{% endschema %}

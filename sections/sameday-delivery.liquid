@@ -1,0 +1,770 @@
+{% comment %}
+  ** Same Day Delivery Page - COMING SOON MODE **
+  - Minimal coming soon design
+  - Original code commented out below for future use
+{% endcomment %}
+
+
+
+<style>
+  body.page-sameday {
+      background: #FDFAF3;
+  }
+      .sameday-page {
+        padding: 80px 20px 40px;
+        max-width: 100%;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .countdown-border-bg {
+    border-radius: 75px;
+    background: linear-gradient(280deg, #ffffff, #646464);
+    padding: 2px;
+    margin-bottom: 60px;
+}
+
+      .countdown-banner {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    background: rgb(253 250 243);
+    backdrop-filter: blur(17.5px);
+    border-radius: 75px;
+    position: relative;
+      }
+
+
+      .countdown-title {
+    font-size: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    margin: 0;
+    line-height: 1.2;
+    color: #000;
+      }
+
+      .countdown-subtitle {
+        font-size: 18px;
+        margin: 0 0 35px 0;
+        opacity: 0.95;
+        font-weight: 500;
+      }
+
+      .countdown-timer {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: nowrap;
+      }
+
+      .time-value {
+font-size: 64px;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0px;
+    font-style: italic;
+    color: #FF741C;
+      }
+
+      .time-label {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        opacity: 0.9;
+        font-weight: 600;
+        display:none;
+      }
+
+      .countdown-message {
+        font-size: 16px;
+        opacity: 0.95;
+        margin: 25px 0 0 0;
+        line-height: 1.5;
+      }
+
+      .countdown-message strong {
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .products-grid {
+        display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(400px, 400px));
+    justify-content: center;
+        gap: 30px;
+        margin-top: 0;
+      }
+
+      .product-card {
+background: #efeaea;
+    box-shadow: 3px 7px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+    padding: 15px;
+    transition: all 0.3s 
+ease;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    backdrop-filter: blur(21px);
+    transform-origin: top;
+      }
+
+      {% comment %} .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      } {% endcomment %}
+
+      .product-badge {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: #FF6B35;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 11px;
+        line-height: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        z-index: 1;
+        letter-spacing: 0.5px;
+      }
+span.time-separator {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: .8;
+    display: block;
+    margin-bottom: 0px;
+    font-style: italic;
+    color: #FF741C;
+}
+      .product-image-wrapper {
+width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 35px;
+    overflow: hidden;
+      }
+
+      .product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s;
+    transform-origin: top;
+      }
+
+      .product-card:hover .product-image-wrapper img {
+        transform: scale(1.05);
+      }
+
+      .product-info {
+        text-align: left;
+        padding: 0 5px;
+      }
+
+      .product-name {
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #1a1a1a;
+        margin: 0 0 6px 0;
+        line-height: 1.3;
+      }
+
+      .product-variant {
+        font-size: 12px;
+        color: #666;
+        margin: 0 0 12px 0;
+      }
+
+      .product-colors {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 10px;
+        flex-wrap: nowrap;
+      }
+
+      .color-swatch {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #e5e5e5;
+        cursor: pointer;
+        transition: all 0.2s;
+        background-size: inherit !important;
+        background-position: center;
+      }
+
+      .color-swatch:hover {
+        transform: scale(1.2);
+        border-color: #333;
+      }
+
+      .color-swatch.active {
+        border-color: #FF6B35;
+        border-width: 3px;
+      }
+
+      .product-price {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 10px 0 0 0;
+      }
+
+      .price-compare {
+        text-decoration: line-through;
+        color: #999;
+        margin-right: 10px;
+        font-size: 14px;
+      }
+
+      @media (max-width: 1200px) {
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 25px;
+        }
+      }
+
+      @media (max-width: 990px) {
+        .sameday-page {
+          padding: 80px 15px;
+        }
+
+
+
+        .countdown-title {
+          font-size: 36px;
+        }
+
+        .countdown-subtitle {
+          font-size: 16px;
+          margin-bottom: 30px;
+        }
+
+        .time-block {
+          padding: 0px;
+        }
+
+        .time-value {
+          font-size: 44px;
+        }
+
+        span.time-separator {
+    font-size: 40px;
+}
+
+        .time-label {
+          font-size: 12px;
+        }
+
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 20px;
+        }
+
+        .weekend-message {
+          font-size: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .countdown-title {
+          font-size: 20px;
+          letter-spacing: 1px;
+        }
+
+        .countdown-subtitle {
+          font-size: 15px;
+        }
+
+        .countdown-timer {
+          gap: 15px;
+        }
+
+        .time-block {
+          min-width: 80px;
+        }
+
+        .time-value {
+          font-size: 38px;
+        }
+
+        .countdown-message {
+          font-size: 15px;
+        }
+
+        .countdown-message strong {
+          font-size: 16px;
+        }
+
+        .products-grid {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 18px;
+        }
+
+        .product-card {
+          padding: 15px;
+        }
+
+        .weekend-message {
+          font-size: 18px;
+        }
+
+        .weekend-subtitle {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 590px) {
+        .sameday-page {
+          padding: 100px 0px 40px;
+        }
+
+        .countdown-banner {
+        border-radius: 12px;
+        gap: 0;
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 10px;
+        }
+
+        .countdown-title {
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+.countdown-border-bg {
+    margin-bottom: 30px;
+    border-radius: 12px;
+}
+
+        .countdown-subtitle {
+          font-size: 14px;
+          margin-bottom: 25px;
+        }
+
+        .countdown-timer {
+          gap: 0px;
+        }
+
+        .time-block {
+          min-width: 70px;
+          border-radius: 12px;
+        }
+
+        .time-value {
+          font-size: 32px;
+          margin-bottom: 8px;
+        }
+
+        .time-label {
+          font-size: 10px;
+          letter-spacing: 1px;
+        }
+
+        .countdown-message {
+          font-size: 14px;
+          margin-top: 20px;
+        }
+
+        .countdown-message strong {
+          font-size: 15px;
+        }
+
+        .products-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+        }
+
+        .product-image-wrapper {
+    margin-bottom: 0;
+}
+
+        .product-name {
+          font-size: 14px;
+        }
+
+        .product-variant {
+          font-size: 11px;
+        }
+
+        .product-price {
+          font-size: 16px;
+        }
+
+        .product-badge {
+          top: 20px;
+          left: 20px;
+          padding: 5px 12px;
+          font-size: 10px;
+        }
+
+        .weekend-message {
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+
+        .weekend-subtitle {
+          font-size: 13px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .countdown-title {
+          font-size: 20px;
+        }
+
+        .time-block {
+          min-width: 65px;
+        }
+
+        .time-value {
+          font-size: 28px;
+        }
+
+        .time-label {
+          font-size: 9px;
+        }
+      }
+</style>
+
+<div class="sameday-page">
+  <div class="container">
+    <div class="countdown-border-bg">
+      <div class="countdown-banner" id="countdown-banner">
+        <div id="countdown-content">
+          <div class="countdown-timer">
+              <div class="time-block">
+                <span class="time-value" id="hours">00</span>
+                <span class="time-label">Hours</span>
+              </div>
+              <span class="time-separator">:</span>
+              <div class="time-block">
+                <span class="time-value" id="minutes">00</span>
+                <span class="time-label">Minutes</span>
+              </div>
+              <span class="time-separator">:</span>
+              <div class="time-block">
+                <span class="time-value" id="seconds">00</span>
+                <span class="time-label">Seconds</span>
+              </div>
+            </div>
+        </div>
+
+        <h1 class="countdown-title">SAME DAY Pickup</h1>
+      </div>
+    </div>
+
+    <div class="products-grid" id="product-grid">
+      {% assign sameday_collection = collections.sameday %}
+      {% for product in sameday_collection.products %}
+        {% assign product_colors = '' %}
+        {% assign color_data = '' %}
+        {% for option in product.options_with_values %}
+          {% assign option_name = option.name | downcase %}
+          {% if option_name == 'color' or option_name == 'colour' %}
+            {% for value in option.values %}
+              {% assign product_colors = product_colors | append: value | append: ',' %}
+              {% for variant in product.variants %}
+                {% if variant.option1 == value or variant.option2 == value or variant.option3 == value %}
+                  {% if variant.featured_image %}
+                    {% assign variant_image = variant.featured_image | img_url: '600x600' %}
+                  {% elsif variant.image %}
+                    {% assign variant_image = variant.image | img_url: '600x600' %}
+                  {% else %}
+                    {% assign variant_image = product.featured_image | img_url: '600x600' %}
+                  {% endif %}
+                  {% assign color_data = color_data
+                    | append: value
+                    | append: ':'
+                    | append: variant_image
+                    | append: '||'
+                  %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+
+        <a
+          href="{{ product.url }}"
+          class="product-card"
+          data-tags="{{ product.tags | join: ',' }}"
+          data-vendor="{{ product.vendor }}"
+          data-colors="{{ product_colors }}"
+          data-color-data="{{ color_data }}"
+          data-price="{{ product.price }}"
+        >
+          <div class="product-badge">Same Day</div>
+
+          <div class="product-image-wrapper">
+            <img
+              class="product-main-image"
+              src="{{ product.featured_image | img_url: '600x600' }}"
+              alt="{{ product.title }}"
+              data-original="{{ product.featured_image | img_url: '600x600' }}"
+            >
+          </div>
+
+          <div class="product-info">
+            <h3 class="product-name">{{ product.title }}</h3>
+
+            {% for option in product.options_with_values %}
+              {% assign option_name = option.name | downcase %}
+              {% if option_name == 'color' or option_name == 'colour' %}
+                <div class="product-colors">
+                  {% for value in option.values %}
+                    {% assign variant_image = '' %}
+                    {% for variant in product.variants %}
+                      {% if variant.option1 == value or variant.option2 == value or variant.option3 == value %}
+                        {% if variant.featured_image %}
+                          {% assign variant_image = variant.featured_image | img_url: '600x600' %}
+                        {% elsif variant.image %}
+                          {% assign variant_image = variant.image | img_url: '600x600' %}
+                        {% endif %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% capture swatch_style %}{% if variant_image %}background-image: url({{ variant_image }});{% endif %}{% endcapture %}
+
+                    <span
+                      class="color-swatch{% if forloop.first %} active{% endif %}"
+                      title="{{ value }}"
+                      data-image="{{ variant_image }}"
+                      style="{{ swatch_style }}"
+                      onmouseover="changeProductImage(this)"
+                    ></span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Get the next Monday at 11:00 AM MST (includes weekend time in countdown)
+  function getNextMondayDeadline() {
+    const now = new Date();
+    const nowMST = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+    const day = nowMST.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+    const nextMonday = new Date(nowMST);
+    nextMonday.setHours(11, 0, 0, 0);
+
+    // If it's Monday and before 11 AM, use today
+    if (day === 1 && nowMST.getHours() < 11) {
+      return nextMonday;
+    }
+
+    // Calculate days until next Monday
+    const daysUntilMonday = day === 0 ? 1 : 8 - day;
+    nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
+
+    return nextMonday;
+  }
+
+  // Get next weekday deadline at 11:00 AM MST (skips weekends)
+  function getNextWeekdayDeadline() {
+    const now = new Date();
+    const nowMST = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+    const endTimeMST = new Date(nowMST);
+    endTimeMST.setHours(11, 0, 0, 0);
+
+    const day = nowMST.getDay();
+
+    // Friday before 11 AM - deadline is today
+    if (day === 5 && nowMST.getTime() < endTimeMST.getTime()) {
+      return endTimeMST;
+    }
+    // Friday after 11 AM or weekend - next deadline is Monday
+    else if (day === 5 && nowMST.getTime() >= endTimeMST.getTime()) {
+      endTimeMST.setDate(endTimeMST.getDate() + 3); // Skip to Monday
+    } else if (day === 6 || day === 0) {
+      const daysUntilMonday = (1 + 7 - day) % 7;
+      endTimeMST.setDate(endTimeMST.getDate() + daysUntilMonday);
+    }
+    // Weekday
+    else {
+      if (nowMST.getTime() >= endTimeMST.getTime()) {
+        endTimeMST.setDate(endTimeMST.getDate() + 1);
+      }
+    }
+
+    return endTimeMST;
+  }
+
+  // Choose which deadline to use
+  // Change to getNextMondayDeadline() to include weekends in countdown
+  let endTimeMST = getNextWeekdayDeadline();
+
+  function updateTimer() {
+    const now = new Date();
+    const nowMST = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+
+    let diff = endTimeMST - nowMST;
+
+    // If deadline passed, get next deadline
+    if (diff <= 0) {
+      endTimeMST = getNextWeekdayDeadline(); // or getNextMondayDeadline()
+      diff = endTimeMST - nowMST;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
+
+  function changeProductImage(swatchElement) {
+    var imageUrl = swatchElement.getAttribute('data-image');
+    if (imageUrl) {
+      var productCard = swatchElement.closest('.product-card');
+      var productImage = productCard.querySelector('.product-main-image');
+      productImage.src = imageUrl;
+    }
+
+    var allSwatches = swatchElement.parentElement.querySelectorAll('.color-swatch');
+    allSwatches.forEach(function (s) {
+      s.classList.remove('active');
+    });
+    swatchElement.classList.add('active');
+  }
+
+
+  // Register ScrollTrigger if you want scroll-based animations (optional)
+  // gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', function() {
+  // Set initial states for all animated elements
+  gsap.set('.countdown-border-bg', {
+    opacity: 0,
+  });
+
+  gsap.set('.countdown-timer', {
+    opacity: 0,
+    y:40
+  });
+
+  gsap.set('.countdown-title', {
+    opacity: 0,
+    y:40
+  });
+
+  gsap.set('.product-card', {
+    opacity: 0,
+    y: 40
+  });
+
+  gsap.set('.product-main-image', {
+    y: 20,
+    scale: 1.5
+  });
+
+  // Create timeline for sequential animations
+  const tl = gsap.timeline({
+    defaults: {
+      ease: 'power3.out'
+    }
+  });
+
+  // Animate countdown banner first
+  tl.to('.countdown-border-bg', {
+    opacity: 1,
+    duration: 0.8
+  });
+
+  tl.to('.countdown-timer', {
+    opacity: 1,
+    y:0,
+    duration: 0.8
+  });
+
+    tl.to('.countdown-title', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8
+  });
+
+  // Animate product cards one by one
+  tl.to('.product-card', {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    stagger: {
+      amount: 1.2, // Total time to stagger all cards
+      from: 'start'
+    }
+  }, '-=0.3'); // Start slightly before countdown finishes
+
+  // Animate images inside cards
+  tl.to('.product-main-image', {
+    y: 0,
+    scale: 1,
+    duration: 0.8,
+    stagger: {
+      amount: 1.2,
+      from: 'start'
+    },
+    ease: 'power2.out'
+  }, '-=1.5'); // Start while cards are animating
+
+  // Optional: Add hover enhancement
+  const productCards = document.querySelectorAll('.product-card');
+  productCards.forEach(card => {
+    const image = card.querySelector('.product-main-image');
+    
+    card.addEventListener('mouseenter', () => {
+      gsap.to(image, {
+        scale: 1.05,
+        duration: 0.4,
+        ease: 'power2.out'
+      });
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      gsap.to(image, {
+        scale: 1,
+        duration: 0.4,
+        ease: 'power2.out'
+      });
+    });
+  });
+});
+</script>
+
+
+{% schema %}
+{
+  "name": "Same Day Delivery",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Currently showing Coming Soon design. Original code is commented out in the template."
+    }
+  ]
+}
+{% endschema %}

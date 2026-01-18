@@ -1,0 +1,793 @@
+<style>
+  #homepage-intro-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 9999;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+    opacity: 1;
+  }
+
+  #homepage-intro-video.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .intro-video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    min-width: 100%;
+    min-height: 100%;
+    min-height: -webkit-fill-available;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .intro-video--desktop {
+    display: block;
+  }
+
+  .intro-video--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .intro-video--desktop {
+      display: none;
+    }
+
+    .intro-video--mobile {
+      display: block;
+    }
+
+    .intro-video {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  body.playing-intro {
+    overflow: hidden;
+  }
+</style>
+
+<!-- HOMEPAGE INTRO VIDEO -->
+{% if section.settings.intro_video_url_desktop != blank or section.settings.intro_video_url_mobile != blank %}
+<div id="homepage-intro-video">
+  {% if section.settings.intro_video_url_desktop != blank %}
+    <video id="intro-video-desktop" class="intro-video intro-video--desktop" muted playsinline preload="auto">
+      <source src="{{ section.settings.intro_video_url_desktop }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  {% endif %}
+
+  {% if section.settings.intro_video_url_mobile != blank %}
+    <video id="intro-video-mobile" class="intro-video intro-video--mobile" muted playsinline preload="auto">
+      <source src="{{ section.settings.intro_video_url_mobile }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  {% endif %}
+</div>
+{% endif %}
+<!-- END HOMEPAGE INTRO VIDEO -->
+
+<style>
+  .video-hero {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    margin-top: -48px;
+    transform-origin: top center;
+  }
+
+  .video-hero__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-hero__video--mobile {
+    display: none;
+  }
+
+  .video-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, {{ section.settings.overlay_opacity }});
+    z-index: 1;
+  }
+
+  .video-hero__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    color: #fff;
+  }
+
+  .video-hero__title {
+    font-size: clamp(2rem, 5vw, {{ section.settings.title_size }}px);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    max-width: 800px;
+  }
+
+  .video-hero__subtitle {
+    font-size: clamp(1rem, 2vw, {{ section.settings.subtitle_size }}px);
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+
+  .video-hero__button {
+    display: inline-block;
+    padding: 0.7rem 2.5rem;
+    background-color: {{ section.settings.button_color }};
+    color: {{ section.settings.button_text_color }} !important;
+    border-radius: 38px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    position: absolute !important;
+    left: 2%;
+    bottom: 8%;
+  }
+
+  .video-hero__button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .video-hero__progress-bar {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 3;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 23px;
+  }
+
+  .video-hero__progress {
+    height: 100%;
+    background-color: {{ section.settings.progress_bar_color }};
+    width: 0%;
+    transition: width 0.4s linear;
+    border-radius: 23px;
+  }
+
+  .video-hero__controls {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 3;
+    display: none;
+    gap: 1rem;
+  }
+
+  .video-hero__control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  .video-hero__control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .video-hero__scroll-indicator {
+    position: absolute;
+    bottom: 6rem;
+    right: 3rem;
+    z-index: 3;
+    width: 1em;
+    height: 3.125em;
+    transform: scale(2);
+    cursor: pointer;
+  }
+
+  .video-hero__scroll-indicator .mouse {
+    height: 1.375em;
+    width: 0.875em;
+    border: 1px solid {{ section.settings.button_color }};
+    border-radius: 2em;
+  }
+
+  .video-hero__scroll-indicator .wheel {
+    position: relative;
+    display: block;
+    height: 0.1875em;
+    width: 0.1875em;
+    margin: 0.1875em auto 0;
+    background: {{ section.settings.button_color }};
+    animation: mouse-wheel 1.2s ease infinite;
+    border-radius: 50%;
+  }
+
+  .video-hero__scroll-indicator .icon-arrows {
+    margin-top: 0.5em;
+  }
+
+  .video-hero__scroll-indicator .icon-arrows::after,
+  .video-hero__scroll-indicator .icon-arrows::before {
+    content: '';
+  }
+
+  .video-hero__scroll-indicator .icon-arrows span,
+  .video-hero__scroll-indicator .icon-arrows::after,
+  .video-hero__scroll-indicator .icon-arrows::before {
+    display: block;
+    width: 0.315em;
+    height: 0.315em;
+    border-right: 1px solid {{ section.settings.button_color }};
+    border-bottom: 1px solid {{ section.settings.button_color }};
+    margin: 0 0 0.125em 0.315em;
+    transform: rotate(45deg);
+    animation: mouse-scroll 1s infinite;
+    animation-direction: alternate;
+  }
+
+  .video-hero__scroll-indicator .icon-arrows::before {
+    margin-top: 0.315em;
+    animation-delay: 0.1s;
+  }
+
+  .video-hero__scroll-indicator .icon-arrows span {
+    animation-delay: 0.2s;
+  }
+
+  .video-hero__scroll-indicator .icon-arrows::after {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes mouse-wheel {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0.375em);
+    }
+  }
+
+  @keyframes mouse-scroll {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .video-hero__video--desktop {
+      display: none;
+    }
+
+    .video-hero__video--mobile {
+      display: block;
+    }
+
+    .video-hero__controls {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .video-hero__button {
+      padding: .5rem 1.5rem;
+      bottom: 10%;
+      font-size: 14px;
+    }
+
+    .video-hero__scroll-indicator {
+      right: 1rem;
+      transform: scale(1.5);
+    }
+
+    .video-hero {
+      margin-top: -34px;
+    }
+  }
+</style>
+
+<section class="video-hero">
+  {% if section.settings.video_url_desktop != blank %}
+    <video 
+      class="video-hero__video video-hero__video--desktop" 
+      id="heroVideoDesktop"
+      muted 
+      loop
+      playsinline
+      preload="auto"
+      {% if section.settings.video_poster_desktop != blank %}
+        poster="{{ section.settings.video_poster_desktop | img_url: 'master' }}"
+      {% endif %}
+    >
+      <source src="{{ section.settings.video_url_desktop }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  {% endif %}
+
+  {% if section.settings.video_url_mobile != blank %}
+    <video 
+      class="video-hero__video video-hero__video--mobile" 
+      id="heroVideoMobile"
+      muted 
+      loop
+      playsinline
+      preload="auto"
+      {% if section.settings.video_poster_mobile != blank %}
+        poster="{{ section.settings.video_poster_mobile | img_url: 'master' }}"
+      {% endif %}
+    >
+      <source src="{{ section.settings.video_url_mobile }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  {% endif %}
+
+  <div class="video-hero__overlay"></div>
+
+  <div class="video-hero__content page-width">
+    {% if section.settings.title != blank %}
+      <h1 class="video-hero__title">{{ section.settings.title }}</h1>
+    {% endif %}
+
+    {% if section.settings.subtitle != blank %}
+      <p class="video-hero__subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+
+    {% if section.settings.button_text != blank %}
+      <a href="{% if section.settings.button_link != blank %}{{ section.settings.button_link }}{% else %}#{% endif %}" class="video-hero__button">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_progress_bar %}
+    <div class="video-hero__progress-bar">
+      <div class="video-hero__progress" id="videoProgress"></div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_controls %}
+    <div class="video-hero__controls">
+      <button class="video-hero__control-btn" id="playPauseBtn" aria-label="Play/Pause">
+        <svg id="playIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="display: none;">
+          <path d="M3 2l10 6-10 6V2z"/>
+        </svg>
+        <svg id="pauseIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M5 3h2v10H5V3zm4 0h2v10H9V3z"/>
+        </svg>
+      </button>
+      <button class="video-hero__control-btn" id="muteBtn" aria-label="Mute/Unmute">
+        <svg id="unmuteIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 3L4 7H1v2h3l4 4V3zm3.5 5a2.5 2.5 0 0 0-1.5-2.3v4.6a2.5 2.5 0 0 0 1.5-2.3z"/>
+        </svg>
+        <svg id="muteIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="display: none;">
+          <path d="M8 3L4 7H1v2h3l4 4V3zm5.5 5L15 6.5 13.5 8 15 9.5 13.5 11 12 9.5 10.5 11 9 9.5 10.5 8 9 6.5 10.5 5 12 6.5z"/>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_scroll_indicator %}
+    <div class="video-hero__scroll-indicator" id="scrollIndicator">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <div class="icon-arrows">
+        <span></span>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+// HOMEPAGE INTRO VIDEO SCRIPT WITH SEQUENTIAL PLAYBACK
+document.body.classList.add('playing-intro');
+
+document.addEventListener('DOMContentLoaded', function() {
+  const introContainer = document.getElementById('homepage-intro-video');
+  const introVideoDesktop = document.getElementById('intro-video-desktop');
+  const introVideoMobile = document.getElementById('intro-video-mobile');
+  const heroVideoDesktop = document.getElementById('heroVideoDesktop');
+  const heroVideoMobile = document.getElementById('heroVideoMobile');
+
+  // Check if intro container exists
+  if (!introContainer) {
+    // No intro video, start hero video immediately
+    startHeroVideo();
+    return;
+  }
+
+  // Determine which intro video to use based on screen size
+  function getActiveIntroVideo() {
+    return window.innerWidth <= 768 ? introVideoMobile : introVideoDesktop;
+  }
+
+  let activeIntroVideo = getActiveIntroVideo();
+
+  // If no video is available, hide intro and start hero
+  if (!activeIntroVideo) {
+    introContainer.classList.add('hidden');
+    setTimeout(function() {
+      introContainer.style.display = 'none';
+      document.body.classList.remove('playing-intro');
+    }, 800);
+    startHeroVideo();
+    return;
+  }
+
+  // Function to start hero video playback
+  function startHeroVideo() {
+    const heroVideo = window.innerWidth <= 768 ? heroVideoMobile : heroVideoDesktop;
+    if (heroVideo) {
+      heroVideo.play().catch(function(error) {
+        console.log('Hero video auto-play prevented:', error);
+      });
+    }
+  }
+
+  // Function to handle intro video end
+  function handleIntroVideoEnd() {
+    activeIntroVideo.pause();
+    introContainer.classList.add('hidden');
+    
+    // Remove from DOM after transition completes and start hero video
+    setTimeout(function() {
+      introContainer.style.display = 'none';
+      document.body.classList.remove('playing-intro');
+      startHeroVideo();
+    }, 800);
+  }
+
+  // Add event listeners to both intro videos
+  if (introVideoDesktop) {
+    introVideoDesktop.addEventListener('ended', handleIntroVideoEnd);
+    introVideoDesktop.addEventListener('error', function() {
+      console.log('Intro video error, starting hero video');
+      introContainer.classList.add('hidden');
+      setTimeout(function() {
+        introContainer.style.display = 'none';
+        document.body.classList.remove('playing-intro');
+      }, 800);
+      startHeroVideo();
+    });
+  }
+
+  if (introVideoMobile) {
+    introVideoMobile.addEventListener('ended', handleIntroVideoEnd);
+    introVideoMobile.addEventListener('error', function() {
+      console.log('Intro video error, starting hero video');
+      introContainer.classList.add('hidden');
+      setTimeout(function() {
+        introContainer.style.display = 'none';
+        document.body.classList.remove('playing-intro');
+      }, 800);
+      startHeroVideo();
+    });
+  }
+
+  // Start playing the intro video
+  if (activeIntroVideo) {
+    activeIntroVideo.play().catch(function(error) {
+      console.log('Intro video auto-play prevented:', error);
+      // If autoplay fails, hide intro and start hero
+      handleIntroVideoEnd();
+    });
+  }
+});
+
+// VIDEO HERO FUNCTIONALITY SCRIPT
+document.addEventListener('DOMContentLoaded', function() {
+  const videoDesktop = document.getElementById('heroVideoDesktop');
+  const videoMobile = document.getElementById('heroVideoMobile');
+  const progressBar = document.getElementById('videoProgress');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const muteBtn = document.getElementById('muteBtn');
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const muteIcon = document.getElementById('muteIcon');
+  const unmuteIcon = document.getElementById('unmuteIcon');
+
+  function getActiveVideo() {
+    return window.innerWidth <= 768 ? videoMobile : videoDesktop;
+  }
+
+  let activeVideo = getActiveVideo();
+
+  if (!activeVideo) return;
+
+  function updateProgress() {
+    activeVideo = getActiveVideo();
+    if (activeVideo && progressBar) {
+      const progress = (activeVideo.currentTime / activeVideo.duration) * 100;
+      progressBar.style.width = progress + '%';
+    }
+  }
+
+  if (videoDesktop) {
+    videoDesktop.addEventListener('timeupdate', updateProgress);
+  }
+  if (videoMobile) {
+    videoMobile.addEventListener('timeupdate', updateProgress);
+  }
+
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', function() {
+      activeVideo = getActiveVideo();
+      if (!activeVideo) return;
+
+      if (activeVideo.paused) {
+        activeVideo.play();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        activeVideo.pause();
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    });
+  }
+
+  if (muteBtn) {
+    muteBtn.addEventListener('click', function() {
+      activeVideo = getActiveVideo();
+      if (!activeVideo) return;
+
+      activeVideo.muted = !activeVideo.muted;
+      if (activeVideo.muted) {
+        muteIcon.style.display = 'block';
+        unmuteIcon.style.display = 'none';
+      } else {
+        muteIcon.style.display = 'none';
+        unmuteIcon.style.display = 'block';
+      }
+    });
+  }
+
+  window.addEventListener('resize', function() {
+    activeVideo = getActiveVideo();
+  });
+
+  const scrollIndicator = document.getElementById('scrollIndicator');
+  if (scrollIndicator) {
+    scrollIndicator.addEventListener('click', function() {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(window, {
+          scrollTo: window.innerHeight,
+          duration: 1,
+          ease: "power2.inOut"
+        });
+      } else {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    });
+  }
+});
+</script>
+
+<script>
+function setFullScreenHeight() {
+  const introVideos = document.querySelectorAll('.intro-video');
+  if (introVideos.length > 0) {
+    const vh = window.innerHeight;
+    introVideos.forEach(video => {
+      video.style.height = `${vh}px`;
+    });
+  }
+}
+
+window.addEventListener('load', setFullScreenHeight);
+window.addEventListener('resize', setFullScreenHeight);
+window.addEventListener('orientationchange', setFullScreenHeight);
+</script>
+
+{% schema %}
+{
+  "name": "Video Hero",
+  "tag": "section",
+  "class": "section-video-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎬 INTRO VIDEO SETTINGS (Plays Before Hero)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Upload videos to Settings > Files, then paste URLs here. The intro video will play once when the page loads, then transition to the hero video below."
+    },
+    {
+      "type": "text",
+      "id": "intro_video_url_desktop",
+      "label": "Desktop Intro Video URL",
+      "info": "Recommended: MP4 format, 1920x1080, max 20MB"
+    },
+    {
+      "type": "text",
+      "id": "intro_video_url_mobile",
+      "label": "Mobile Intro Video URL",
+      "info": "Recommended: MP4 format, 1080x1920 (vertical), smaller file size"
+    },
+    {
+      "type": "header",
+      "content": "🎥 HERO VIDEO SETTINGS (Loops After Intro)"
+    },
+    {
+      "type": "text",
+      "id": "video_url_desktop",
+      "label": "Desktop Hero Video URL",
+      "info": "This video loops continuously after the intro"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster_desktop",
+      "label": "Desktop Video Poster Image"
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Mobile Hero Video URL",
+      "info": "This video loops continuously after the intro"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster_mobile",
+      "label": "Mobile Video Poster Image"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Welcome to Our Store"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Discover our latest collection"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get a Free Quote"
+    },
+    {
+      "type": "text",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Color",
+      "default": "#ff741c"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 0.8,
+      "step": 0.1,
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Progress Bar Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "label": "Show Progress Bar",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_color",
+      "label": "Progress Bar Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Control Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show Video Controls",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show Scroll Down Indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Hero",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}

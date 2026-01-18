@@ -1,0 +1,1 @@
+const API_URL = 'https://shopify-quote-form-api.onrender.com/api/submit-quote';

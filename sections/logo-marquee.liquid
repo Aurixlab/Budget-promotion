@@ -1,0 +1,704 @@
+{% comment %}
+  Logo Marquee Section with Infinite Scroll
+  Add this to your sections folder as 'logo-marquee.liquid'
+{% endcomment %}
+
+<style>
+  .logo-marquee-section {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .logo-marquee__container {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .logo-marquee__title {
+    text-align: {{ section.settings.title_alignment }};
+    font-size: clamp(1.25rem, 4vw, {{ section.settings.title_size }}px);
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    margin-bottom: {% if section.settings.section_subtitle != blank %}{{ section.settings.subtitle_spacing }}px{% else %}{{ section.settings.title_spacing }}px{% endif %};
+    text-transform: {{ section.settings.title_transform }};
+    padding: 0 2rem;
+    letter-spacing: 0;
+    margin-top: 0;
+  }
+
+  .logo-marquee__subtitle {
+    text-align: {{ section.settings.title_alignment }};
+    font-size: clamp(1rem, 2.5vw, {{ section.settings.subtitle_size }}px);
+    font-weight: {{ section.settings.subtitle_weight }};
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: {{ section.settings.title_spacing }}px;
+    line-height: 1.6;
+    margin-left: {% if section.settings.title_alignment == 'center' %}auto{% else %}0{% endif %};
+    margin-right: {% if section.settings.title_alignment == 'center' %}auto{% elsif section.settings.title_alignment == 'right' %}0{% else %}auto{% endif %};
+  }
+
+  .logo-marquee__subtitle{
+    margin-top: -20px;
+    max-width: 100%;
+}
+  .logo-marquee__wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 20px;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 100px, black calc(100% - 100px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 100px, black calc(100% - 100px), transparent);
+  }
+
+  /* Gradient overlays for smooth fade effect */
+  .logo-marquee__wrapper::before,
+  .logo-marquee__wrapper::after {
+    display: none;
+  }
+
+  .logo-marquee__track {
+    display: flex;
+    gap: {{ section.settings.logo_spacing }}px;
+    width: fit-content;
+    animation: marquee {{ section.settings.animation_speed }}s linear infinite;
+  }
+
+  .logo-marquee__track:hover {
+    {% if section.settings.pause_on_hover %}
+      animation-play-state: paused;
+    {% endif %}
+  }
+
+  .logo-marquee__item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.logo_width }}px;
+    height: {{ section.settings.logo_height }}px;
+    padding: 0rem;
+    background: {{ section.settings.logo_bg_color }};
+    border-radius: {{ section.settings.logo_border_radius }}px;
+    border: {{ section.settings.logo_border_width }}px solid {{ section.settings.logo_border_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .logo-marquee__item:hover {
+    transform: translateY(-5px) scale(1.05);
+  }
+
+  .logo-marquee__image {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.logo_fit }};
+    filter: {{ section.settings.logo_filter }};
+    transition: filter 0.3s ease;
+  }
+
+  .logo-marquee__item:hover .logo-marquee__image {
+    filter: none;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-100% / 3));
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .logo-marquee__title {
+      padding: 0 1rem;
+    }
+
+    .logo-marquee__subtitle {
+      padding: 0 1rem;
+    }
+
+    .logo-marquee__item {
+        width: 120px;
+        height: auto;
+    }
+
+    .logo-marquee__wrapper {
+      mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 50px, black calc(100% - 50px), transparent);
+    }
+
+    .logo-marquee__title {
+      margin-bottom: 10px;
+    }
+
+    .logo-marquee__track {
+      gap: 20px;
+    }
+    .logo-marquee__subtitle {
+    margin-top: -5px;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+  }
+</style>
+
+<section class="logo-marquee-section">
+  <div class="logo-marquee__container">
+    {% if section.settings.section_title != blank %}
+      <h2 class="logo-marquee__title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+
+    {% if section.settings.section_subtitle != blank %}
+      <p class="logo-marquee__subtitle">{{ section.settings.section_subtitle }}</p>
+    {% endif %}
+
+    <div class="logo-marquee__wrapper">
+      <div class="logo-marquee__track">
+        {% comment %} First set of logos {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'logo' %}
+            <div class="logo-marquee__item" {{ block.shopify_attributes }}>
+              {% if block.settings.logo_image != blank %}
+                {% if block.settings.logo_link != blank %}
+                  <a href="{{ block.settings.logo_link }}" target="_blank" rel="noopener">
+                    <img 
+                      src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                      alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                      class="logo-marquee__image"
+                      loading="lazy"
+                    >
+                  </a>
+                {% else %}
+                  <img 
+                    src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                    alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                    class="logo-marquee__image"
+                    loading="lazy"
+                  >
+                {% endif %}
+              {% else %}
+                <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+                  Logo {{ forloop.index }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} Duplicate set for seamless loop {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'logo' %}
+            <div class="logo-marquee__item" aria-hidden="true">
+              {% if block.settings.logo_image != blank %}
+                {% if block.settings.logo_link != blank %}
+                  <a href="{{ block.settings.logo_link }}" target="_blank" rel="noopener">
+                    <img 
+                      src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                      alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                      class="logo-marquee__image"
+                      loading="lazy"
+                    >
+                  </a>
+                {% else %}
+                  <img 
+                    src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                    alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                    class="logo-marquee__image"
+                    loading="lazy"
+                  >
+                {% endif %}
+              {% else %}
+                <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+                  Logo {{ forloop.index }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} Third set for extra smoothness {% endcomment %}
+        {% for block in section.blocks %}
+          {% if block.type == 'logo' %}
+            <div class="logo-marquee__item" aria-hidden="true">
+              {% if block.settings.logo_image != blank %}
+                {% if block.settings.logo_link != blank %}
+                  <a href="{{ block.settings.logo_link }}" target="_blank" rel="noopener">
+                    <img 
+                      src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                      alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                      class="logo-marquee__image"
+                      loading="lazy"
+                    >
+                  </a>
+                {% else %}
+                  <img 
+                    src="{{ block.settings.logo_image | img_url: '300x' }}" 
+                    alt="{{ block.settings.logo_alt | default: 'Logo' }}"
+                    class="logo-marquee__image"
+                    loading="lazy"
+                  >
+                {% endif %}
+              {% else %}
+                <div style="width: 100%; height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999;">
+                  Logo {{ forloop.index }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+// Wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Logo Marquee Animation
+  const logoMarqueeSection = document.querySelector('.logo-marquee-section');
+  
+  if (logoMarqueeSection) {
+    const title = logoMarqueeSection.querySelector('.logo-marquee__title');
+    const subtitle = logoMarqueeSection.querySelector('.logo-marquee__subtitle');
+    const marqueeWrapper = logoMarqueeSection.querySelector('.logo-marquee__wrapper');
+    const logoItems = logoMarqueeSection.querySelectorAll('.logo-marquee__item');
+    
+    // Set initial states
+    gsap.set(logoMarqueeSection, { opacity: 0 });
+    if (title) gsap.set(title, { y: 50, opacity: 0 });
+    if (subtitle) gsap.set(subtitle, { y: 30, opacity: 0 });
+    if (marqueeWrapper) gsap.set(marqueeWrapper, { opacity: 0, scale: 0.95 });
+    gsap.set(logoItems, { opacity: 0, scale: 0.8, y: 20 });
+    
+    // Create main timeline
+    const mainTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: logoMarqueeSection,
+        start: 'top 80%',
+        end: 'top 20%',
+        toggleActions: 'play none none none',
+        once: true
+      }
+    });
+    
+    // Animate section fade in
+    mainTimeline.to(logoMarqueeSection, {
+      opacity: 1,
+      duration: 0.1
+    });
+    
+    // Animate title with elastic bounce
+    if (title) {
+      mainTimeline.to(title, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out'
+      }, '+=0.2');
+    }
+    
+    // Animate subtitle
+    if (subtitle) {
+      mainTimeline.to(subtitle, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out'
+      }, '-=0.6');
+    }
+    
+    // Animate marquee wrapper with scale
+    if (marqueeWrapper) {
+      mainTimeline.to(marqueeWrapper, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        ease: 'back.out(1.2)'
+      }, '-=0.4');
+    }
+    
+    // Animate each logo item with wave effect
+    mainTimeline.to(logoItems, {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      duration: 0.3,
+      stagger: {
+        each: 0.08,
+        from: 'start',
+        ease: 'power2.out'
+      },
+      ease: 'back.out(1.5)'
+    }, '-=0.5');
+    
+    // Add continuous floating animation to logos after initial animation
+    mainTimeline.add(() => {
+      logoItems.forEach((item, index) => {
+        gsap.to(item, {
+          y: -8,
+          duration: 2 + (index % 3) * 0.3,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: index * 0.1
+        });
+      });
+    });
+    
+    // Enhanced hover effects for individual logos
+    logoItems.forEach((item) => {
+      item.addEventListener('mouseenter', function() {
+        gsap.to(this, {
+          scale: 1.15,
+          rotation: 2,
+          duration: 0.4,
+          ease: 'back.out(2)'
+        });
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        gsap.to(this, {
+          scale: 1,
+          rotation: 0,
+          duration: 0.4,
+          ease: 'power2.out'
+        });
+      });
+    });
+    
+    // Add parallax effect to the entire marquee wrapper
+    gsap.to(marqueeWrapper, {
+      scrollTrigger: {
+        trigger: logoMarqueeSection,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1
+      },
+      y: -30,
+      ease: 'none'
+    });
+  }
+  
+});
+</script>
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Logo Marquee",
+  "tag": "section",
+  "class": "section-logo-marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Trusted by Leading Brands"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Join thousands of companies that trust our platform"
+    },
+    {
+      "type": "header",
+      "content": "Section Styling"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Title Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Title Bottom Spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle Settings"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Font Size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_spacing",
+      "label": "Space Between Title & Subtitle",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo Width",
+      "min": 100,
+      "max": 300,
+      "step": 10,
+      "default": 180,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo Height",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_spacing",
+      "label": "Space Between Logos",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "logo_bg_color",
+      "label": "Logo Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "logo_border_color",
+      "label": "Logo Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "logo_border_width",
+      "label": "Logo Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_border_radius",
+      "label": "Logo Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "logo_fit",
+      "label": "Logo Fit",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" },
+        { "value": "fill", "label": "Fill" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "select",
+      "id": "logo_filter",
+      "label": "Logo Filter",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "grayscale(100%)", "label": "Grayscale" },
+        { "value": "opacity(0.7)", "label": "Opacity 70%" },
+        { "value": "grayscale(100%) opacity(0.7)", "label": "Grayscale + Opacity" }
+      ],
+      "default": "grayscale(100%) opacity(0.7)",
+      "info": "Filter is removed on hover"
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation Speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "info": "Lower = Faster"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on Hover",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Alt Text"
+        },
+        {
+          "type": "url",
+          "id": "logo_link",
+          "label": "Logo Link (Optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo Marquee",
+      "blocks": [
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

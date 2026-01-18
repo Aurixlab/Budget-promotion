@@ -1,0 +1,4 @@
+{% assign configuration = item.properties._configuration | default: 0 %}
+{% if configuration != 0 %}
+	<a href="/apps/zakeke/c/{{ item.product.handle }}?variant={{ item.variant.id }}&composition={{ configuration }}" class="btn btn--small btn--secondary cart__remove">Edit</a>
+{% endif %}

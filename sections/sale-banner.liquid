@@ -1,0 +1,533 @@
+
+<style>
+  .hero-section-{{ section.id }} {
+    position: relative;
+    min-height: auto;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 32px 20px;
+    border-radius: 32px;
+  }
+
+  .hero-bg-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{{ section.settings.background_image | img_url: '2048x' }}');
+    background-size: cover;
+    background-position: {{ section.settings.bg_position }};
+    background-repeat: no-repeat;
+    transform-origin: bottom center;
+    will-change: transform;
+    opacity:0;
+  }
+
+
+
+  .hero-overlay-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+
+  .hero-content-{{ section.id }} {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0rem;
+    max-width: {{ section.settings.content_width }}px;
+    width: 100%;
+  }
+
+
+  .hero-title-{{ section.id }} {
+    font-size: {{ section.settings.title_size }}px;
+    font-weight:800;
+    color: {{ section.settings.title_color }};
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+    letter-spacing: 0.5em;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .hero-subtitle-{{ section.id }} {
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  
+  /* ========================================
+   OPTION 4: Neon Glow with Particles
+   ======================================== */
+.custom-cursor-{{ section.id }} {
+  position: fixed;
+  width: 140px;
+  height: 45px;
+  border-radius: 14px;
+  background: radial-gradient(circle, {{ section.settings.cursor_bg_color }}, transparent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease-out;
+  filter: drop-shadow(0 0 30px {{ section.settings.cursor_bg_color }})
+          drop-shadow(0 0 60px {{ section.settings.cursor_bg_color }});
+}
+
+.custom-cursor-{{ section.id }}.active {
+  transform: translate(-50%, -50%) scale(1);
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+.custom-cursor-{{ section.id }}::before,
+.custom-cursor-{{ section.id }}::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #fff;
+}
+
+.custom-cursor-{{ section.id }}::before {
+  top: 20%;
+  left: 30%;
+  animation: particle1 3s ease-in-out infinite;
+}
+
+.custom-cursor-{{ section.id }}::after {
+  bottom: 25%;
+  right: 25%;
+  animation: particle2 3s ease-in-out infinite 0.5s;
+}
+
+
+@keyframes neonPulse {
+  0%, 100% { 
+    filter: drop-shadow(0 0 30px {{ section.settings.cursor_bg_color }})
+            drop-shadow(0 0 60px {{ section.settings.cursor_bg_color }});
+  }
+  50% { 
+    filter: drop-shadow(0 0 50px {{ section.settings.cursor_bg_color }})
+            drop-shadow(0 0 100px {{ section.settings.cursor_bg_color }});
+  }
+}
+
+@keyframes particle1 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(10px, -10px); }
+  50% { transform: translate(-5px, 5px); }
+  75% { transform: translate(5px, 10px); }
+}
+
+@keyframes particle2 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-10px, 5px); }
+  50% { transform: translate(8px, -8px); }
+  75% { transform: translate(-5px, -5px); }
+}
+
+
+
+
+  @media (max-width: 768px) {
+    .hero-section-{{ section.id }} {
+      min-height: {{ section.settings.section_height_mobile }}px;
+    }
+
+    .hero-title-{{ section.id }} {
+      font-size: {{ section.settings.title_size | times: 0.6 }}px;
+    }
+
+    .hero-subtitle-{{ section.id }} {
+      font-size: {{ section.settings.subtitle_size | times: 0.8 }}px;
+    }
+
+    .custom-cursor-{{ section.id }} {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title-{{ section.id }} {
+      font-size: {{ section.settings.title_size | times: 0.5 }}px;
+    }
+
+    .hero-content-{{ section.id }} {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<div class="hero-section-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="hero-bg-{{ section.id }}"></div>
+  <div class="hero-overlay-{{ section.id }}"></div>
+  
+  <div class="hero-content-{{ section.id }}">
+    {% if section.settings.title != blank %}
+      <h2 class="hero-title-{{ section.id }}">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.subtitle != blank %}
+      <p class="hero-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+    {% endif %}
+  </div>
+
+  <div class="custom-cursor-{{ section.id }}">
+    {{ section.settings.cursor_text }}
+  </div>
+</div>
+
+
+
+{% comment %} <script>
+  (function() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    const bg = section.querySelector('.hero-bg-{{ section.id }}');
+    const content = section.querySelector('.hero-content-{{ section.id }}');
+    const cursor = section.querySelector('.custom-cursor-{{ section.id }}');
+
+    // Wait for page load and GSAP to be ready
+    window.addEventListener('load', function() {
+      // Register ScrollTrigger plugin
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Set initial states
+      gsap.set(bg, {
+        opacity: 0,
+        y: 20,
+        scale: 1.2
+      });
+
+      gsap.set(content, {
+        opacity: 0,
+        y: 30
+      });
+
+      // Create animation timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      });
+
+      // Background animation: y=20 to 0, scale 1.2 to 1, fade in
+      tl.to(bg, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power3.out'
+      });
+
+      // Title fade in up (with 0.4s delay from start)
+      tl.to(content, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out'
+      }, '-=0.8'); // Overlap with background animation
+
+    });
+
+    // Click handler
+    section.addEventListener('click', function(e) {
+      if (e.target !== cursor) {
+        const link = '{{ section.settings.link_url }}';
+        if (link && link !== '') {
+          window.location.href = link;
+        }
+      }
+    });
+
+    // Custom cursor for desktop
+    if (window.innerWidth > 768) {
+      section.addEventListener('mouseenter', function() {
+        cursor.classList.add('active');
+      });
+
+      section.addEventListener('mouseleave', function() {
+        cursor.classList.remove('active');
+      });
+
+      section.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+    }
+  })();
+</script> {% endcomment %}
+
+
+
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    const cursor = section.querySelector('.custom-cursor-{{ section.id }}');
+
+    // 👉 Click handler
+    section.addEventListener('click', function(e) {
+      if (e.target !== cursor) {
+        const link = '{{ section.settings.link_url }}';
+        if (link && link !== '') {
+          window.location.href = link;
+        }
+      }
+    });
+
+    // 👉 Custom cursor for desktop only
+    if (window.innerWidth > 768) {
+      section.addEventListener('mouseenter', function() {
+        cursor.classList.add('active');
+      });
+
+      section.addEventListener('mouseleave', function() {
+        cursor.classList.remove('active');
+      });
+
+      section.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+    }
+  })();
+</script>
+
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Winter Sale Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Background Position",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Section Size"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height (Desktop)",
+      "min": 200,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile",
+      "label": "Section Height (Mobile)",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "Content Max Width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "WINTER SALE"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "900",
+          "label": "Black"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Up to 50% off selected items"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Link Settings"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Custom Cursor Settings"
+    },
+    {
+      "type": "text",
+      "id": "cursor_text",
+      "label": "Cursor Text",
+      "default": "View More"
+    },
+    {
+      "type": "color",
+      "id": "cursor_bg_color",
+      "label": "Cursor Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cursor_text_color",
+      "label": "Cursor Text Color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Winter Sale Hero"
+    }
+  ]
+}
+{% endschema %}

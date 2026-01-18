@@ -1,0 +1,155 @@
+{% comment %}
+  Modified to show variant images for color swatches
+{% endcomment %}
+
+{% assign file_extension = 'png' %}
+
+{% assign swatch = product-swatch %}
+{% assign found_option = false %}
+{% assign is_color = false %}
+{% assign option_index = 0 %}
+
+{% for option in product.options %}
+  {% if option == swatch %}
+    {% assign found_option = true %}
+    {% assign option_index = forloop.index0 %}
+    {% assign downcased_option = swatch | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      {% assign is_color = true %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+<div class="swatch clearfix" data-option-index="{{ option_index }}">
+  <div class="option_title">{{ swatch }}</div>
+  {% assign values = '' %}
+  {% for variant in product.variants %}
+    {% assign value = variant.options[option_index] %}
+    {% unless values contains value %}
+      {% assign values = values | join: ',' %}
+      {% assign values = values | append: ',' | append: value %}
+      {% assign values = values | split: ',' %}
+
+      {% comment %} Find variant image for this color {% endcomment %}
+      {% assign variant_image = null %}
+      {% if is_color %}
+        {% for v in product.variants %}
+          {% if v.options[option_index] == value and v.image %}
+            {% assign variant_image = v.image %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+        
+        {% comment %} Fallback: find product image with matching alt or filename {% endcomment %}
+        {% unless variant_image %}
+          {% assign value_lower = value | downcase %}
+          {% assign value_handle = value | handleize %}
+          {% assign value_no_space = value | replace: ' ', '' | downcase %}
+          {% assign value_underscore = value | replace: ' ', '_' | downcase %}
+          {% assign value_dash = value | replace: ' ', '-' | downcase %}
+          
+          {% for image in product.images %}
+            {% assign image_alt_lower = image.alt | downcase %}
+            {% assign image_alt_handle = image.alt | handleize %}
+            {% assign image_src_lower = image.src | downcase %}
+            {% assign image_filename = image.src | split: '/' | last | split: '.' | first %}
+            {% assign image_filename_lower = image_filename | downcase %}
+            
+            {% comment %} Try multiple matching strategies {% endcomment %}
+            {% assign match_found = false %}
+            
+            {% comment %} 1. Exact match in alt text {% endcomment %}
+            {% if image_alt_lower == value_lower %}
+              {% assign match_found = true %}
+            {% endif %}
+            
+            {% comment %} 2. Alt text contains color name {% endcomment %}
+            {% if match_found == false and image_alt_lower contains value_lower %}
+              {% assign match_found = true %}
+            {% endif %}
+            
+            {% comment %} 3. Filename contains color with various formats {% endcomment %}
+            {% if match_found == false %}
+              {% if image_filename_lower contains value_lower or image_filename_lower contains value_handle or image_filename_lower contains value_no_space or image_filename_lower contains value_underscore or image_filename_lower contains value_dash %}
+                {% assign match_found = true %}
+              {% endif %}
+            {% endif %}
+            
+            {% comment %} 4. Color name contains filename (for short names) {% endcomment %}
+            {% if match_found == false %}
+              {% if value_lower contains image_filename_lower and image_filename_lower.size > 3 %}
+                {% assign match_found = true %}
+              {% endif %}
+            {% endif %}
+            
+            {% if match_found %}
+              {% assign variant_image = image %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endunless %}
+      {% endif %}
+
+      <input id="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" type="radio" name="option-{{ option_index }}" value="{{ value | escape }}"{% if forloop.first %} checked{% endif %} />
+      <div data-value="{{ value | escape }}" data-id="{{ variant.id }}" class="swatch-element {% if is_color %}color {% if variant_image %}has-variant-image{% endif %}{% endif %}{{ value | handle }}-swatch {% if variant.available %}available{% else %}soldout{% endif %}">
+        {% if is_color %}
+          <div class="tooltip">{{ value }}</div>
+        {% endif %}
+        
+        {% if is_color %}
+          {% if variant_image %}
+            {% comment %} Show variant image {% endcomment %}
+            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" class="variant-image-label">
+              <img src="{{ variant_image | img_url: '80x80', crop: 'center' }}" alt="{{ value }}" class="variant-swatch-image" />
+              <span class="color-name">{{ value }}</span>
+              <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}"/>
+            </label>
+          {% else %}
+            {% comment %} Fallback to color swatch {% endcomment %}
+            <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ value | handle | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
+              <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}"/>
+            </label>
+          {% endif %}
+        {% else %}
+          <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}">
+            {{ value }}
+            <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}"/>
+          </label>
+        {% endif %}
+      </div>
+    {% endunless %}
+  {% endfor %}
+</div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle swatch selection for variant images
+    const swatchInputs = document.querySelectorAll('.swatch input[type="radio"]');
+    
+    swatchInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        // Get parent swatch container
+        const swatchContainer = this.closest('.swatch');
+        if (!swatchContainer) return;
+        
+        // Remove active styling from all swatches in this option
+        swatchContainer.querySelectorAll('.swatch-element').forEach(function(el) {
+          el.classList.remove('active-swatch');
+        });
+        
+        // Add active styling to selected swatch
+        const selectedSwatch = swatchContainer.querySelector('input:checked + .swatch-element');
+        if (selectedSwatch) {
+          selectedSwatch.classList.add('active-swatch');
+        }
+      });
+      
+      // Trigger on page load for initially checked
+      if (input.checked) {
+        input.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+</script>

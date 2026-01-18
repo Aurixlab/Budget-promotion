@@ -1,0 +1,16 @@
+{% for p in item.properties %}
+  {% assign property_prefix = p.first | slice: 0 %}
+  {% unless p.last == blank or property_prefix == '_' %}
+    {{ p.first }}:
+
+    {% comment %}
+    	Check if there was an uploaded file associated
+    {% endcomment %}
+    {% if p.last contains '/uploads/' %}
+    	<a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                    {% else %}
+                {{ p.last }}
+    {% endif %}
+<br/>
+{% endunless %}
+{% endfor %}

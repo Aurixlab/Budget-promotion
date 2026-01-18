@@ -1,0 +1,27 @@
+{% comment %}  100 % AJAX CART - zero redirect  {% endcomment %}
+<script>
+/* =====  GLOBAL CONFIG  ===== */
+window.AjaxCart = {
+  strings: {
+    added       : 'Added to cart!',
+    qtyError    : 'Please enter a valid quantity.',
+    networkError: 'Network error. Try again.',
+    oos         : 'Sorry, this variant is out of stock.'
+  },
+  maxPerItem: 5,
+  currency  : {{ cart.currency | json }},
+  moneyFormat: {{ shop.money_format | json }}
+};
+
+/* =====  BLOCK OLD SUBMIT  ===== */
+document.addEventListener('submit', e => {
+  const f = e.target;
+  if (f.id === 'AddToCartForm' || f.matches('.product-form, [action*="/cart"]')) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+}, true);
+</script>
+
+{{ 'ajax-cart.js' | asset_url | script_tag }}
+{{ 'ajax-cart.css' | asset_url | stylesheet_tag }}

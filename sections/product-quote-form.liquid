@@ -1,0 +1,3105 @@
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<section class="quote-section" id="getQuote">
+  <h2 class="quote-title" data-aos="fade-up" data-aos-duration="800">Bulk Pricing Ladder</h2>
+
+  <form id="quoteForm" class="quote-form">
+    <div class="pricing-ladder" data-aos="fade-up" data-aos-duration="800" data-aos-delay="50">
+      {% assign ranges = product.metafields.custom.bulk_ranges.value %}
+      {% assign prices = product.metafields.custom.bulk_prices.value %}
+      {% assign savings = product.metafields.custom.bulk_savings.value %}
+
+      {% if ranges and prices and savings %}
+        {% assign total = ranges.size | minus: 1 %}
+        {% for i in (0..total) %}
+          {% assign range = ranges[i] %}
+          {% assign price = prices[i] %}
+          {% assign save = savings[i] %}
+          <label class="price-option {% if forloop.first %}active{% endif %}">
+            <input
+              type="radio"
+              name="bulk_range"
+              value="{{ range }}"
+              {% if forloop.first %}
+                checked
+              {% endif %}
+            >
+            <div class="price-box">
+              <div class="price-range">{{ range }}</div>
+              <div class="price-value">
+                Starting from <strong>{{ price }}</strong>
+              </div>
+              <div class="price-note">per piece</div>
+              <div class="price-status save">
+                {{ save }}
+              </div>
+              <div class="price-status current">Current</div>
+            </div>
+          </label>
+        {% endfor %}
+      {% else %}
+        <p>No bulk pricing data available.</p>
+      {% endif %}
+    </div>
+
+    <p class="price-disclaimer">Prices shown are estimates. Final pricing may vary based on customization options.</p>
+
+    <!-- SIZE-WISE QUANTITY -->
+    <h2 class="quote-title">Size</h2>
+    <div class="size-quantity">
+      {% assign sizes = 'S,M,L,XL,2XL,3XL' | split: ',' %}
+      {% for size in sizes %}
+        <div class="size-item">
+          <span class="size-label">{{ size }}</span>
+          <div class="size-counter">
+            <button type="button" class="qty-btn minus" data-size="{{ size }}">−</button>
+            <input type="number" name="qty_{{ size }}" class="qty-input" value="0" min="0">
+            <button type="button" class="qty-btn plus" data-size="{{ size }}">+</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- PRODUCTION & SHIPPING -->
+    <div class="production-shipping-wrapper">
+      <!-- Left: Production -->
+      <div class="production">
+        <h3 class="quote-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="250">Production</h3>
+
+        <div class="pp-f-data">
+          <label class="prod-option" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+            <input type="radio" name="production_type" value="standard" checked>
+            <div class="prod-box">
+              <span class="prod-title">Standard Production</span>
+              <span class="prod-sub">7–10 business days</span>
+            </div>
+          </label>
+
+          <label class="prod-option rush" data-aos="fade-up" data-aos-duration="800" data-aos-delay="350">
+            <input type="radio" name="production_type" value="rush">
+            <div class="prod-box">
+              <span class="prod-title">Rush Production</span>
+              <span class="prod-sub">3–5 business days</span>
+              <span class="prod-extra">+ $2.50 per piece</span>
+              <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_193.png?v=1760284821">
+            </div>
+          </label>
+        </div>
+
+        <div class="custom-date-box" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+          <div class="date-input-wrapper">
+            <input type="text" id="customDate" name="custom_date" placeholder="Add Custom Date">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_83.svg?v=1760292075"
+              alt="Calendar"
+              class="calendar-icon"
+              id="calendarIcon"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Shipping -->
+      {% comment %}
+        <div class="shipping">
+          <h3 class="quote-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="450">Shipping Estimates</h3>
+
+          <div class="sms-opo">
+            <!-- ZIP Code box -->
+            <div class="ship-box" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
+              <div class="ship-icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_1.svg?v=1760305143" alt="Location Icon">
+              </div>
+              <div class="ship-content">
+                <input type="text" name="zip_code" placeholder="Enter Zip Code" maxlength="10">
+              </div>
+            </div>
+            <!-- Estimated Delivery box -->
+            <div class="ship-box estimate-box" data-aos="fade-up" data-aos-duration="800" data-aos-delay="550">
+              <div class="ship-icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_2.svg?v=1760305157" alt="Delivery Icon">
+              </div>
+              <div class="ship-content">
+                <label>Estimated Delivery</label>
+                <div id="estimatedDelivery" class="estimate-text"><em>Dec 28 – Jan 3</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endcomment %}
+    </div>
+
+    <p class="team-note" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+      Our Sales and Design team will be in touch with you within <strong>1 hour.</strong>
+    </p>
+
+    <!--
+      =====================
+      GET YOUR FREE QUOTE
+      =====================
+    -->
+    <h2 class="quote-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="650">Get Your Free Quote</h2>
+    <div class="quote-fields-grid" data-aos="fade-up" data-aos-duration="800" data-aos-delay="700">
+      <div class="form-group">
+        <input type="text" name="company_name" placeholder="Add Company Name">
+      </div>
+      <div class="form-group">
+        <input type="text" name="contact_name" placeholder="Contact Name*" required>
+      </div>
+      <div class="form-group">
+        <input type="email" name="email" placeholder="Email Address*" required>
+      </div>
+      <div class="form-group">
+        <input type="tel" name="phone" placeholder="Phone Number*" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="province" placeholder="Province/City">
+      </div>
+      {% comment %}
+        <div class="form-group">
+          <input type="text" name="referral" placeholder="How did you hear about us?">
+        </div>
+      {% endcomment %}
+      <div class="form-group">
+        <select name="referral" required>
+          <option value="" disabled selected>How did you hear about us?</option>
+          <option value="From other organization">From other organization</option>
+          <option value="Google">Google</option>
+          <option value="Social media">Social media</option>
+          <option value="Referral">Referral</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      =====================
+      ORDER PROCESS
+      =====================
+    -->
+    <div class="order-wrapper">
+      <div class="order-col">
+        <h2 class="quote-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="750">Upload Your Logo</h2>
+        <div class="upload-logo-box" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
+          <label for="logo_upload" class="upload-area">
+            <svg width="100%" height="100%" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M111.33 90.8199C110.138 90.8199 108.94 90.3959 107.984 89.5339L83.8008 67.7349L59.8148 89.5209C57.7708 91.3769 54.6078 91.2249 52.7528 89.1819C50.8968 87.1379 51.0478 83.9749 53.0928 82.1189L80.4278 57.2909C82.3288 55.5629 85.2298 55.5599 87.1368 57.2779L114.681 82.1059C116.732 83.9549 116.896 87.1159 115.047 89.1679C114.059 90.2629 112.697 90.8199 111.33 90.8199Z" fill="#FF741C"/>
+              <path d="M83.7876 160C81.0256 160 78.7876 157.761 78.7876 155V60.9919C78.7876 58.2309 81.0256 55.9919 83.7876 55.9919C86.5496 55.9919 88.7876 58.2309 88.7876 60.9919V155C88.7876 157.761 86.5496 160 83.7876 160Z" fill="#FF741C"/>
+              <path d="M123 112.318H31.5C14.131 112.318 0 98.266 0 80.994C0 68.975 6.821 58.225 17.377 52.983C17.126 51.414 17 49.82 17 48.212C17 31.487 30.683 17.881 47.5 17.881C52.073 17.881 56.476 18.864 60.497 20.76C66.443 8.278 79.226 0 93.5 0C113.626 0 130 16.28 130 36.291C130 37.322 129.957 38.348 129.87 39.367C147.155 42.546 160 57.481 160 75.53C160 95.815 143.402 112.318 123 112.318ZM47.5 27.881C36.196 27.881 27 37.002 27 48.212C27 50.345 27.33 52.435 27.981 54.424L29.539 59.184L24.777 60.734C15.939 63.612 10 71.753 10 80.994C10 92.752 19.645 102.318 31.5 102.318H123C137.888 102.318 150 90.301 150 75.53C150 61.001 138.547 49.242 123.925 48.759L117.736 48.555L119.24 42.547C119.745 40.533 120.001 38.428 120.001 36.292C120 21.794 108.112 10 93.5 10C81.519 10 70.99 18.006 67.896 29.468L65.945 36.7L60.014 32.124C56.417 29.348 52.09 27.881 47.5 27.881Z" fill="#FF741C"/>
+            </svg>
+
+            <input type="file" name="logo_upload" id="logo_upload" accept="image/*" style="display:none;">
+          </label>
+          <div id="upload-status" class="upload-status"></div>
+        </div>
+      </div>
+      <div class="order-col" data-aos="fade-up" data-aos-duration="800" data-aos-delay="850">
+        <h2 class="quote-title">Order Process</h2>
+
+        <div class="order-process">
+          <div class="order-box">
+            <div class="order-icon">
+              <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-art.png?v=1760204642" alt="Send Art">
+            </div>
+            <div class="order-content">
+              <strong>SEND ART & QUANTITY</strong>
+              <p>Send us your art and quantity</p>
+            </div>
+          </div>
+
+          <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" d="M7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L15.0711 6.34315C15.4616 5.95262 15.4616 5.31946 15.0711 4.92893C14.6805 4.53841 14.0474 4.53841 13.6569 4.92893L8 10.5858L2.34315 4.92893C1.95262 4.53841 1.31946 4.53841 0.928932 4.92893C0.538408 5.31946 0.538408 5.95262 0.928932 6.34315L7.29289 12.7071ZM8 0L7 4.37114e-08L7 12L8 12L9 12L9 -4.37114e-08L8 0Z" fill="#FF741C"/>
+          </svg>
+
+          <div class="order-box">
+            <div class="order-icon">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-quote.png?v=1760204642"
+                alt="Approve Quote"
+              >
+            </div>
+            <div class="order-content">
+              <strong>APPROVE QUOTE & PAY</strong>
+              <p>Review your quote and make payment</p>
+            </div>
+          </div>
+
+          <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" d="M7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L15.0711 6.34315C15.4616 5.95262 15.4616 5.31946 15.0711 4.92893C14.6805 4.53841 14.0474 4.53841 13.6569 4.92893L8 10.5858L2.34315 4.92893C1.95262 4.53841 1.31946 4.53841 0.928932 4.92893C0.538408 5.31946 0.538408 5.95262 0.928932 6.34315L7.29289 12.7071ZM8 0L7 4.37114e-08L7 12L8 12L9 12L9 -4.37114e-08L8 0Z" fill="#FF741C"/>
+          </svg>
+
+          <div class="order-box">
+            <div class="order-icon">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-artwork.png?v=1760204641"
+                alt="Approve Artwork"
+              >
+            </div>
+            <div class="order-content">
+              <strong>APPROVE ARTWORK</strong>
+              <p>Check your digital mockup and approve</p>
+            </div>
+          </div>
+
+          <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.4" d="M7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L15.0711 6.34315C15.4616 5.95262 15.4616 5.31946 15.0711 4.92893C14.6805 4.53841 14.0474 4.53841 13.6569 4.92893L8 10.5858L2.34315 4.92893C1.95262 4.53841 1.31946 4.53841 0.928932 4.92893C0.538408 5.31946 0.538408 5.95262 0.928932 6.34315L7.29289 12.7071ZM8 0L7 4.37114e-08L7 12L8 12L9 12L9 -4.37114e-08L8 0Z" fill="#FF741C"/>
+          </svg>
+
+          <div class="order-box">
+            <div class="order-icon">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-status.png?v=1760204641"
+                alt="Order Status"
+              >
+            </div>
+            <div class="order-content">
+              <strong>ORDER STATUS UPDATE</strong>
+              <p>You'll be notified once your order is ready</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Preview -->
+    <div id="customizedDesignPreview" class="customized-preview" style="display:none">
+      <h3>Your Customized Design</h3>
+      <div class="preview-images-container">
+        <div class="preview-image-wrapper" id="frontPreviewWrapper">
+          <h4>Front View</h4>
+          <img id="finalDesignImageFront" src="" alt="Customized Design Front">
+        </div>
+        <div class="preview-image-wrapper" id="backPreviewWrapper" style="display:none">
+          <h4>Back View</h4>
+          <img id="finalDesignImageBack" src="" alt="Customized Design Back">
+        </div>
+      </div>
+    </div>
+
+    <!--
+      =====================
+      SUBMIT BUTTON
+      =====================
+    -->
+
+    <div class="submit-wrapper" data-aos="fade-up" data-aos-duration="800" data-aos-delay="900">
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+  </form>
+
+  <div class="success-popup-overlay" id="successPopup">
+    <div class="success-popup">
+      <div class="success-popup-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </svg>
+      </div>
+      <h2 class="success-popup-title">Quote request submitted successfully!</h2>
+      <p class="success-popup-message">Our Sales and Design team will contact you within 1 hour.</p>
+      <button class="success-popup-button" onclick="closeSuccessPopup()">OK</button>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED PRODUCTS SECTION -->
+<div class="product-details__blocks clearfix">
+  <h2 class="quote-title">You might also like</h2>
+  {% for block in section.blocks %}
+    {% if block.type == 'related_products' %}
+      <!-- Related Products -->
+      {% include 'include-related-products', type: 'block' %}
+    {% endif %}
+  {% endfor %}
+</div>
+
+<!-- WHY CHOOSE SECTION -->
+<section class="why-choose">
+  <h2 class="section-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="950">
+    Why Choose Budget Promotion
+  </h2>
+  <div class="why-grid">
+    <div class="why-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1000">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0777/5879/files/transaction_history_x2C__clock.png?v=1760298683"
+        alt="Fast Turnarounds"
+      >
+      <h3>Fast Turnarounds</h3>
+      <p>Most apparel orders are produced in ~5–10 business days after mockup approval, with rush options available</p>
+    </div>
+    <div class="why-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1050">
+      <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_89.png?v=1760298682" alt="No Minimums">
+      <h3>No Minimums</h3>
+      <p>From small runs to bulk, order exactly the quantities you need</p>
+    </div>
+    <div class="why-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1100">
+      <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Layer_2.png?v=1760298683" alt="Customer Service">
+      <h3>Unmatched Customer Service</h3>
+      <p>Calgary-based team with unlimited mockup revisions and excellent client reviews</p>
+    </div>
+    <div class="why-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1150">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_d0756027-1af3-4422-9e93-abbe0c29cbe1.png?v=1760298683"
+        alt="Price Match"
+      >
+      <h3>Price Match</h3>
+      <p>We’ll do our best to match or beat any competitor’s quote — same quality, better value!</p>
+    </div>
+    <div class="why-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1200">
+      <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group-1.png?v=1760298683" alt="Unlimited Colours">
+      <h3>Unlimited Colours</h3>
+      <p>Full-colour prints with gradients and photo-level detail—no colour limits</p>
+    </div>
+  </div>
+</section>
+
+<!-- IN-HOUSE PRODUCTION SECTION -->
+<section class="inhouse">
+  <div class="inhouse-image">
+    <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/Group_91.webp?v=1760298750" alt="In-house Production">
+  </div>
+  <div class="inhouse-overlay">
+    <h2 data-aos="fade-up" data-aos-duration="800" data-aos-delay="1250">CANADIAN IN-HOUSE PRODUCTION</h2>
+    <p data-aos="fade-up" data-aos-duration="800" data-aos-delay="1300">Trusted by <strong>999+</strong> Companies</p>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="faq-section">
+  <h2 class="section-title" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1350">
+    Frequently Asked Questions
+  </h2>
+  <div class="faq-list" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1400">
+    {% assign faqs = 'What’s the turnaround time?,Can I get help with my design?,Can I print on any colour?,Do you offer samples?,What’s your return policy?,Can I track my order?,Do you ship internationally?'
+      | split: ','
+    %}
+    {% for question in faqs %}
+      <div class="faq-item">
+        <button class="faq-header">
+          {{ question -}}
+          <span class="faq-symbol">+</span>
+        </button>
+        <div class="faq-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Add real answers here later.</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach((item) => {
+      const header = item.querySelector('.faq-header');
+      header.addEventListener('click', () => {
+        // Close all others
+        faqItems.forEach((i) => {
+          if (i !== item) i.classList.remove('active');
+        });
+
+        // Toggle the clicked one
+        item.classList.toggle('active');
+      });
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const options = document.querySelectorAll('.price-option');
+
+    options.forEach((option) => {
+      const radio = option.querySelector('input[type="radio"]');
+      radio.addEventListener('change', () => {
+        // Remove active class from all options
+        options.forEach((o) => {
+          o.classList.remove('active');
+        });
+
+        // Add active class to the selected option
+        option.classList.add('active');
+      });
+    });
+  });
+</script>
+
+<script>
+  // COMPLETE PRODUCTION DATE PICKER WITH FLATPICKR - FIXED VERSION
+  (function () {
+    'use strict';
+
+    console.log('🚀 Date picker script loading...');
+
+    function initializeDatePicker() {
+      // Check if Flatpickr is loaded
+      if (typeof flatpickr === 'undefined') {
+        console.error('❌ Flatpickr not loaded yet, retrying...');
+        setTimeout(initializeDatePicker, 200);
+        return;
+      }
+
+      console.log('✅ Flatpickr loaded, initializing...');
+
+      // === Quantity buttons ===
+      document.querySelectorAll('.qty-btn').forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const input = this.parentElement.querySelector('.qty-input');
+          let val = parseInt(input.value) || 0;
+          if (this.classList.contains('plus')) val++;
+          if (this.classList.contains('minus') && val > 0) val--;
+          input.value = val;
+        });
+      });
+
+      // === Helper: Add business days (excludes weekends) ===
+      function addBusinessDays(startDate, days) {
+        const result = new Date(startDate);
+        result.setHours(0, 0, 0, 0);
+        let added = 0;
+        while (added < days) {
+          result.setDate(result.getDate() + 1);
+          const day = result.getDay();
+          if (day !== 0 && day !== 6) added++;
+        }
+        return result;
+      }
+
+      // === Format date for display ===
+      function formatDisplayDate(date) {
+        const options = { month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+      }
+
+      // === Calculate delivery range ===
+      function calculateDeliveryDays(type) {
+        const current = new Date();
+        const minDays = type === 'rush' ? 3 : 7;
+        const maxDays = type === 'rush' ? 5 : 10;
+
+        const startDate = addBusinessDays(current, minDays);
+        const endDate = addBusinessDays(current, maxDays);
+
+        const range = `${formatDisplayDate(startDate)} – ${formatDisplayDate(endDate)}`;
+
+        const deliveryElement = document.getElementById('estimatedDelivery');
+        if (deliveryElement) {
+          deliveryElement.innerHTML = `<em>${range}</em>`;
+        }
+      }
+
+      // === Initialize Flatpickr ===
+      const dateInput = document.getElementById('customDate');
+      const dateWrapper = document.querySelector('.date-input-wrapper');
+      const calendarIcon = document.getElementById('calendarIcon');
+
+      if (!dateInput) {
+        console.error('❌ customDate input not found');
+        return;
+      }
+
+      console.log('✅ Date input found');
+
+      // Force text type and readonly
+      dateInput.setAttribute('type', 'text');
+      dateInput.setAttribute('readonly', 'readonly');
+
+      const today = new Date();
+
+      // Initialize Flatpickr
+      const flatpickrInstance = flatpickr(dateInput, {
+        dateFormat: 'M d, Y',
+        minDate: addBusinessDays(today, 7),
+
+        disable: [
+          function (date) {
+            return date.getDay() === 0 || date.getDay() === 6;
+          },
+        ],
+
+        static: false,
+        disableMobile: false,
+
+        onChange: function (selectedDates, dateStr) {
+          if (dateStr) {
+            console.log('✅ Date selected:', dateStr);
+          }
+        },
+
+        onOpen: function () {
+          if (dateWrapper) {
+            dateWrapper.classList.add('active');
+          }
+        },
+
+        onClose: function () {
+          if (dateWrapper) {
+            dateWrapper.classList.remove('active');
+          }
+        },
+      });
+
+      console.log('✅ Flatpickr initialized');
+
+      // === Update minimum date ===
+      function updateMinimumDate(productionType) {
+        const businessDays = productionType === 'rush' ? 3 : 7;
+        const minDate = addBusinessDays(new Date(), businessDays);
+
+        console.log(`📅 ${productionType}: min date = ${businessDays} business days`);
+
+        flatpickrInstance.set('minDate', minDate);
+
+        const selectedDate = flatpickrInstance.selectedDates[0];
+        if (selectedDate && selectedDate < minDate) {
+          console.log('⚠️ Clearing invalid date');
+          flatpickrInstance.clear();
+        }
+      }
+
+      // === Make wrapper clickable ===
+      if (dateWrapper) {
+        dateWrapper.style.cursor = 'pointer';
+        dateWrapper.addEventListener('click', function (e) {
+          if (e.target !== dateInput) {
+            e.preventDefault();
+            e.stopPropagation();
+            flatpickrInstance.open();
+          }
+        });
+      }
+
+      // === Make icon clickable ===
+      if (calendarIcon) {
+        calendarIcon.style.cursor = 'pointer';
+        calendarIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          flatpickrInstance.open();
+        });
+      }
+
+      // === Setup production radios ===
+      const prodOptions = document.querySelectorAll('.prod-option');
+
+      if (prodOptions.length > 0) {
+        console.log('✅ Found', prodOptions.length, 'production options');
+
+        prodOptions.forEach((opt) => {
+          const radio = opt.querySelector('input[type="radio"]');
+
+          if (radio) {
+            // Set initial state
+            if (radio.checked && radio.value === 'standard') {
+              opt.classList.add('active');
+            }
+
+            // Listen for changes
+            radio.addEventListener('change', function () {
+              console.log('🔄 Changed to:', this.value);
+
+              // Update active class
+              prodOptions.forEach((o) => o.classList.remove('active'));
+              opt.classList.add('active');
+
+              // Update delivery
+              calculateDeliveryDays(this.value);
+
+              // Update min date
+              updateMinimumDate(this.value);
+            });
+          }
+        });
+
+        // Initialize with default
+        const checkedRadio = document.querySelector('input[name="production_type"]:checked');
+        calculateDeliveryDays(checkedRadio ? checkedRadio.value : 'standard');
+      } else {
+        console.error('❌ Production options not found');
+      }
+
+      console.log('✅ Initialization complete!');
+    }
+
+    // Wait for DOM
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(initializeDatePicker, 300);
+      });
+    } else {
+      setTimeout(initializeDatePicker, 300);
+    }
+  })();
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('logo_upload');
+    const status = document.getElementById('upload-status');
+
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        // Validate type (optional)
+        if (!file.type.startsWith('image/')) {
+          status.textContent = 'Please upload an image file only.';
+          status.className = 'upload-status error';
+          return;
+        }
+
+        status.textContent = 'File uploaded successfully ✅';
+        status.className = 'upload-status success';
+
+        // Optional image preview
+        const preview = document.createElement('img');
+        preview.src = URL.createObjectURL(file);
+        preview.className = 'upload-preview';
+
+        // Clear old preview if exists
+        const oldPreview = document.querySelector('.upload-preview');
+        if (oldPreview) oldPreview.remove();
+
+        status.after(preview);
+      } else {
+        status.textContent = '';
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const quoteBtn = document.getElementById('openQuoteForm');
+    const targetSection = document.querySelector('#getQuote');
+
+    if (quoteBtn && targetSection) {
+      quoteBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  });
+</script>
+
+<script>
+  // Updated form submission script with preview images
+  (function () {
+    console.log('🚀 Quote form API handler loading...');
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFormSubmission);
+    } else {
+      initFormSubmission();
+    }
+
+    // Helper function to compress image
+    function compressImage(file, maxSizeMB = 2) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const img = new Image();
+
+          img.onload = function () {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            const maxWidth = 1920;
+            const maxHeight = 1920;
+
+            if (width > maxWidth || height > maxHeight) {
+              if (width > height) {
+                height = (height / width) * maxWidth;
+                width = maxWidth;
+              } else {
+                width = (width / height) * maxHeight;
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            let quality = 0.9;
+            let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+            while (compressedDataUrl.length > maxSizeMB * 1024 * 1024 * 1.37 && quality > 0.1) {
+              quality -= 0.1;
+              compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            }
+
+            const compressedSize = Math.round((compressedDataUrl.length * 0.75) / 1024);
+            console.log(
+              `✅ Image compressed: ${Math.round(file.size / 1024)}KB → ${compressedSize}KB (quality: ${Math.round(
+                quality * 100
+              )}%)`
+            );
+
+            resolve({
+              filename: file.name.replace(/\.[^/.]+$/, '') + '.jpg',
+              content: compressedDataUrl.split(',')[1],
+              contentType: 'image/jpeg',
+              size: compressedSize * 1024,
+              originalSize: file.size,
+            });
+          };
+
+          img.onerror = function () {
+            reject(new Error('Failed to load image'));
+          };
+
+          img.src = e.target.result;
+        };
+
+        reader.onerror = function () {
+          reject(new Error('Failed to read file'));
+        };
+
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Helper function to convert data URL to compressed format
+    async function compressDataUrl(dataUrl, filename, maxSizeMB = 1.5) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Resize if too large
+          const maxWidth = 1200;
+          const maxHeight = 1200;
+
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = (height / width) * maxWidth;
+              width = maxWidth;
+            } else {
+              width = (width / height) * maxHeight;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let quality = 0.85;
+          let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+          while (compressedDataUrl.length > maxSizeMB * 1024 * 1024 * 1.37 && quality > 0.3) {
+            quality -= 0.1;
+            compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+          }
+
+          const compressedSize = Math.round((compressedDataUrl.length * 0.75) / 1024);
+          console.log(`✅ Preview image compressed: ${compressedSize}KB (quality: ${Math.round(quality * 100)}%)`);
+
+          resolve({
+            filename: filename,
+            content: compressedDataUrl.split(',')[1],
+            contentType: 'image/jpeg',
+            size: compressedSize * 1024,
+          });
+        };
+
+        img.onerror = function () {
+          reject(new Error('Failed to process preview image'));
+        };
+
+        img.src = dataUrl;
+      });
+    }
+
+    function initFormSubmission() {
+      console.log('✅ Initializing form submission handler...');
+
+      const form = document.getElementById('quoteForm');
+      const API_URL = 'https://shopify-quote-form-api.onrender.com/api/submit-quote';
+
+      if (!form) {
+        console.error('❌ Form with id "quoteForm" not found!');
+        return;
+      }
+
+      console.log('✅ Form found:', form);
+      console.log('📡 API URL:', API_URL);
+
+      // Ping API on page load to wake it up (for Render free tier)
+      fetch(API_URL.replace('/api/submit-quote', '/'))
+        .then((res) => res.json())
+        .then((data) => console.log('✅ API is awake:', data.status))
+        .catch((err) => console.log('⚠️ API not responding yet'));
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        console.log('📤 Form submission triggered');
+
+        const submitBtn = form.querySelector('.submit-btn');
+        if (!submitBtn) {
+          console.error('❌ Submit button not found');
+          return;
+        }
+
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+        submitBtn.disabled = true;
+
+        try {
+          const formData = new FormData(form);
+
+          // Get bulk range details
+          const selectedRange = document.querySelector('input[name="bulk_range"]:checked');
+          const selectedOption = selectedRange?.closest('.price-option');
+          const bulkRange = selectedRange?.value || '';
+          const priceValue = selectedOption?.querySelector('.price-value')?.textContent.trim() || '';
+          const savings = selectedOption?.querySelector('.price-status.save')?.textContent.trim() || '';
+
+          // Get size quantities
+          const sizes = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+          const sizeQuantities = sizes
+            .map((size) => {
+              const qty = formData.get(`qty_${size}`) || '0';
+              return `${size}: ${qty}`;
+            })
+            .join(', ');
+
+          // Get production type
+          const prodType = document.querySelector('input[name="production_type"]:checked')?.value || 'standard';
+          const prodLabel = prodType === 'rush' ? 'Rush Production' : 'Standard Production';
+
+          // Get product data from global variable (title and color only)
+          const productData = window.productQuoteData || null;
+          const productTitle = productData ? productData.title : 'N/A';
+          const selectedColor = productData ? productData.currentColor : 'N/A';
+          const productUrl = productData ? productData.productUrl : window.location.href;
+
+          console.log('📦 Product info:', {
+            title: productTitle,
+            color: selectedColor,
+            url: productUrl,
+          });
+
+          // Handle logo file with compression
+          const logoInput = document.getElementById('logo_upload');
+          const logoFile = logoInput?.files[0];
+          let logoData = null;
+
+          if (logoFile) {
+            console.log('📎 Processing logo file:', logoFile.name, `(${Math.round(logoFile.size / 1024)}KB)`);
+
+            try {
+              if (!logoFile.type.startsWith('image/')) {
+                throw new Error('Please upload an image file (JPG, PNG, etc.)');
+              }
+
+              const fileSizeMB = logoFile.size / (1024 * 1024);
+              if (fileSizeMB > 10) {
+                throw new Error('File too large! Please upload an image smaller than 10MB.');
+              }
+
+              submitBtn.textContent = 'Compressing logo...';
+
+              if (logoFile.size > 500 * 1024) {
+                console.log('🔄 Compressing large image...');
+                logoData = await compressImage(logoFile, 2);
+              } else {
+                const reader = new FileReader();
+                logoData = await new Promise((resolve, reject) => {
+                  reader.onload = (e) => {
+                    resolve({
+                      filename: logoFile.name,
+                      content: e.target.result.split(',')[1],
+                      contentType: logoFile.type,
+                      size: logoFile.size,
+                      originalSize: logoFile.size,
+                    });
+                  };
+                  reader.onerror = reject;
+                  reader.readAsDataURL(logoFile);
+                });
+              }
+
+              console.log('✅ Logo file ready:', logoData.filename, `(${Math.round(logoData.size / 1024)}KB)`);
+            } catch (fileError) {
+              console.error('⚠️ Error processing file:', fileError);
+              submitBtn.textContent = originalText;
+              submitBtn.disabled = false;
+              alert('❌ ' + fileError.message);
+              return;
+            }
+          } else {
+            console.log('ℹ️ No logo file uploaded');
+          }
+
+          // Process customized preview images
+          let frontPreviewData = null;
+          let backPreviewData = null;
+
+          const frontPreviewImg = document.getElementById('finalDesignImageFront');
+          const backPreviewImg = document.getElementById('finalDesignImageBack');
+          const frontWrapper = document.getElementById('frontPreviewWrapper');
+          const backWrapper = document.getElementById('backPreviewWrapper');
+
+          // Check if front preview exists and is visible
+          if (
+            frontPreviewImg &&
+            frontWrapper &&
+            frontWrapper.style.display !== 'none' &&
+            frontPreviewImg.src &&
+            frontPreviewImg.src.startsWith('data:')
+          ) {
+            console.log('🖼️ Processing front preview image...');
+            submitBtn.textContent = 'Processing front design...';
+
+            try {
+              frontPreviewData = await compressDataUrl(frontPreviewImg.src, 'customized-front-view.jpg', 1.5);
+              console.log('✅ Front preview ready:', `(${Math.round(frontPreviewData.size / 1024)}KB)`);
+            } catch (error) {
+              console.warn('⚠️ Failed to process front preview:', error);
+            }
+          }
+
+          // Check if back preview exists and is visible
+          if (
+            backPreviewImg &&
+            backWrapper &&
+            backWrapper.style.display !== 'none' &&
+            backPreviewImg.src &&
+            backPreviewImg.src.startsWith('data:')
+          ) {
+            console.log('🖼️ Processing back preview image...');
+            submitBtn.textContent = 'Processing back design...';
+
+            try {
+              backPreviewData = await compressDataUrl(backPreviewImg.src, 'customized-back-view.jpg', 1.5);
+              console.log('✅ Back preview ready:', `(${Math.round(backPreviewData.size / 1024)}KB)`);
+            } catch (error) {
+              console.warn('⚠️ Failed to process back preview:', error);
+            }
+          }
+
+          submitBtn.textContent = 'Submitting...';
+
+          // Prepare submission data
+          const submissionData = {
+            product_title: productTitle,
+            product_color: selectedColor,
+            product_url: productUrl,
+            bulk_range: bulkRange,
+            price_value: priceValue,
+            savings: savings,
+            size_quantities: sizeQuantities,
+            production_type: prodLabel,
+            custom_date: formData.get('custom_date') || 'Not specified',
+            zip_code: formData.get('zip_code') || '',
+            estimated_delivery: document.getElementById('estimatedDelivery')?.textContent.trim() || '',
+            company_name: formData.get('company_name') || '',
+            contact_name: formData.get('contact_name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || '',
+            province: formData.get('province') || '',
+            referral: formData.get('referral') || '',
+            logo_file: logoData,
+            customized_front: frontPreviewData,
+            customized_back: backPreviewData,
+          };
+
+          console.log('📦 Submitting data:');
+          console.log('  - Logo:', logoData ? 'included' : 'not included');
+          console.log('  - Front preview:', frontPreviewData ? 'included' : 'not included');
+          console.log('  - Back preview:', backPreviewData ? 'included' : 'not included');
+          console.log('📡 Sending to:', API_URL);
+
+          // Try to fetch with retry logic (for sleeping Render service)
+          let response;
+          let retries = 3;
+
+          while (retries > 0) {
+            try {
+              response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json',
+                },
+                body: JSON.stringify(submissionData),
+              });
+
+              // If successful, break the loop
+              break;
+            } catch (fetchError) {
+              retries--;
+              console.warn(`⚠️ Fetch attempt failed. Retries left: ${retries}`);
+
+              if (retries === 0) {
+                throw new Error(
+                  'Cannot connect to server. Please check your internet connection or try again in a moment.'
+                );
+              }
+
+              // Wait before retrying (Render free tier can take 30s to wake up)
+              submitBtn.textContent = `Connecting... (${3 - retries}/3)`;
+              await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 5 seconds
+            }
+          }
+
+          console.log('📬 Response status:', response.status);
+          console.log('📬 Response ok:', response.ok);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Server error:', errorText);
+            throw new Error(`Server returned ${response.status}: ${errorText}`);
+          }
+
+          const result = await response.json();
+          console.log('✅ Response data:', result);
+
+          if (result.success) {
+            showSuccessPopup();
+
+            form.reset();
+
+            const uploadStatus = document.getElementById('upload-status');
+            if (uploadStatus) uploadStatus.textContent = '';
+
+            const preview = document.querySelector('.upload-preview');
+            if (preview) preview.remove();
+
+            const options = document.querySelectorAll('.price-option');
+            options.forEach((o, index) => {
+              o.classList.remove('active');
+              if (index === 0) {
+                o.classList.add('active');
+                const radio = o.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+              }
+            });
+
+            console.log('✅ Form reset complete');
+          } else {
+            throw new Error(result.error || 'Submission failed');
+          }
+        } catch (error) {
+          console.error('❌ Submission error:', error);
+          alert(
+            '❌ Error submitting form: ' + error.message + '\n\nPlease try again or contact us at aurixlab@gmail.com'
+          );
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+
+      console.log('✅ Form submission handler attached successfully!');
+    }
+
+    // Success popup functions
+    window.showSuccessPopup = function () {
+      const popup = document.getElementById('successPopup');
+      if (popup) {
+        popup.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    window.closeSuccessPopup = function () {
+      const popup = document.getElementById('successPopup');
+      if (popup) {
+        popup.classList.remove('show');
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('click', function (e) {
+      const popup = document.getElementById('successPopup');
+      if (popup && e.target === popup) {
+        closeSuccessPopup();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeSuccessPopup();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Product Template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Custom Product Layout"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "related_products",
+      "name": "Related products",
+      "settings": [
+        {
+          "type": "radio",
+          "id": "related_products_style",
+          "label": "Layout",
+          "default": "grid",
+          "options": [
+            { "value": "slider", "label": "Slider" },
+            { "value": "grid", "label": "Grid" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "related_products_limit",
+          "label": "Limit products",
+          "min": 2,
+          "max": 50,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "products_per",
+          "label": "Products per row",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "related_products"
+      }
+    ]
+  }
+}
+{% endschema %}
+
+<div id="productCustomizerContainer">
+  <script>
+    window.colorImageMap = {};
+    window.allProductVariants = [];
+
+    {% for variant in product.variants %}
+      {%- liquid
+        assign front_img = variant.metafields.custom.front_view_image
+        assign back_img = variant.metafields.custom.back_view_image
+        assign color_name = variant.option1
+      -%}
+
+      {%- comment -%}Store all variants for reference{%- endcomment -%}
+      window.allProductVariants.push({
+        id: {{ variant.id | json }},
+        color: {{ color_name | json }},
+        size: {{ variant.option2 | json }},
+        price: {{ variant.price | json }},
+        available: {{ variant.available | json }}
+      });
+
+      {%- comment -%}Only map colors that have metafield images{%- endcomment -%}
+      {% if front_img != blank or back_img != blank %}
+        window.colorImageMap[{{ color_name | json }}] = {
+          color: {{ color_name | json }},
+          frontImage: {{ front_img | image_url: width: 1024 | json }},
+          backImage: {{ back_img | image_url: width: 1024 | json }},
+          frontImageFull: {{ front_img | image_url: width: 2048 | json }},
+          backImageFull: {{ back_img | image_url: width: 2048 | json }}
+        };
+      {% endif %}
+    {% endfor %}
+  </script>
+
+  {%- comment -%}
+    =============================================================================
+    STEP 2: CSS STYLES (Scoped to wrapper)
+    =============================================================================
+  {%- endcomment -%}
+
+  <style>
+    /* Base Container Styles */
+    #productCustomizerContainer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    #productCustomizerContainer * {
+      box-sizing: border-box;
+    }
+
+    /* Button Styles */
+    #productCustomizerContainer .btn-primary {
+      background: #FF741C;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 200px;
+    }
+
+    #productCustomizerContainer .btn-primary:hover {
+      background: #e66619;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 116, 28, 0.3);
+    }
+
+    #productCustomizerContainer .btn-secondary {
+      background: #e5e5e5;
+      color: #333;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #productCustomizerContainer .btn-secondary:hover {
+      background: #d0d0d0;
+    }
+
+    /* Modal Overlay */
+    #productCustomizerContainer .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.2s ease;
+      padding: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Modal Content */
+    #productCustomizerContainer .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 1200px;
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Modal Header */
+    #productCustomizerContainer .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid #e5e5e5;
+      background: #f9f9f9;
+      flex-shrink: 0;
+    }
+
+    #productCustomizerContainer .modal-header h2 {
+      margin: 0;
+      font-size: 22px;
+      color: #222;
+      font-weight: 600;
+    }
+
+    /* Modal Body */
+    #productCustomizerContainer .modal-body {
+      display: flex;
+      gap: 28px;
+      padding: 28px;
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    #productCustomizerContainer .modal-body > div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Modal Footer */
+    #productCustomizerContainer .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 20px 28px;
+      border-top: 1px solid #e5e5e5;
+      background: #f9f9f9;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    /* Close Button */
+    #productCustomizerContainer .modal-close {
+      font-size: 32px;
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    #productCustomizerContainer .modal-close:hover {
+      background: #e5e5e5;
+      color: #333;
+    }
+
+    /* Color Selector */
+    #productCustomizerContainer .color-selector-modal h3 {
+      font-size: 16px;
+      margin: 0 0 12px 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    #productCustomizerContainer .color-swatches-modal {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    /* Color Swatches */
+    #productCustomizerContainer .swatch {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px #ddd;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    #productCustomizerContainer .swatch:hover {
+      transform: scale(1.12);
+      box-shadow: 0 0 0 2px #FF741C;
+    }
+
+    #productCustomizerContainer .swatch.active {
+      box-shadow: 0 0 0 3px #FF741C;
+      transform: scale(1.08);
+    }
+
+    #productCustomizerContainer .swatch-label {
+      position: absolute;
+      bottom: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #666;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #productCustomizerContainer .swatch:hover .swatch-label {
+      opacity: 1;
+    }
+
+    /* View Toggle */
+    #productCustomizerContainer .view-toggle {
+      display: flex;
+      gap: 8px;
+      margin: 24px 0;
+      background: #f5f5f5;
+      padding: 4px;
+      border-radius: 8px;
+      width: fit-content;
+    }
+
+    #productCustomizerContainer .view-btn {
+      padding: 10px 20px;
+      background: transparent;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    #productCustomizerContainer .view-btn:hover {
+      background: rgba(255, 116, 28, 0.1);
+      color: #FF741C;
+    }
+
+    #productCustomizerContainer .view-btn.active {
+      background: #FF741C;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(255, 116, 28, 0.3);
+    }
+
+    /* Tool Section */
+    #productCustomizerContainer .tool-section {
+      margin-top: 24px;
+    }
+
+    #productCustomizerContainer .tool-section h3 {
+      font-size: 16px;
+      margin: 0 0 12px 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    /* Upload Area */
+    #productCustomizerContainer .upload-area {
+      padding: 32px 24px;
+      border: 2px dashed #ccc;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+
+    #productCustomizerContainer .upload-area:hover {
+      border-color: #FF741C;
+      background: #fff5f0;
+    }
+
+    #productCustomizerContainer .upload-area p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Text Input */
+    #productCustomizerContainer #customText {
+      width: 100%;
+      padding: 10px 14px;
+      margin-top: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    #productCustomizerContainer #customText:focus {
+      outline: none;
+      border-color: #FF741C;
+    }
+
+    /* Text Controls */
+    #productCustomizerContainer .text-controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    #productCustomizerContainer .text-controls label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    #productCustomizerContainer #textColor {
+      width: 64px;
+      height: 36px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #productCustomizerContainer #fontSizeSlider {
+      width: 120px;
+    }
+
+    #productCustomizerContainer #fontSizeValue {
+      font-size: 13px;
+      min-width: 38px;
+      font-weight: 600;
+      color: #FF741C;
+    }
+
+    /* Add Text Button */
+    #productCustomizerContainer .btn-add-text {
+      margin-top: 12px;
+      background: #FF741C;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    #productCustomizerContainer .btn-add-text:hover {
+      background: #e66619;
+    }
+
+    /* Preview Area */
+    #productCustomizerContainer .preview-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 24px;
+      min-height: 400px;
+      max-height: 600px;
+    }
+
+    #productCustomizerContainer #customCanvas {
+      background: transparent;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      max-width: 100%;
+      max-height: 100%;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      touch-action: none;
+    }
+
+    #productCustomizerContainer .canvas-placeholder {
+      display: none;
+    }
+
+    #productCustomizerContainer #pinchIndicator {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-size: 11px;
+      color: #666;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 6px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      pointer-events: none;
+    }
+
+    /* Layers List */
+    #productCustomizerContainer .layers-list {
+      max-height: 220px;
+      overflow: auto;
+      border: 1px solid #e0e0e0;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      background: #fafafa;
+    }
+
+    #productCustomizerContainer .layer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      background: #fff;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #productCustomizerContainer .layer-item:hover {
+      background: #f5f5f5;
+      border-color: #e0e0e0;
+    }
+
+    #productCustomizerContainer .layer-item.active {
+      background: #FF741C;
+      color: #fff;
+      border-color: #FF741C;
+    }
+
+    /* ========================================================================
+       FINAL PREVIEW SECTION (Outside main container)
+       ======================================================================== */
+
+    .customized-preview {
+      margin-top: 32px;
+      padding: 24px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      border: 1px solid #e5e5e5;
+    }
+
+    .customized-preview h3 {
+      margin: 0 0 24px 0;
+      font-size: 22px;
+      color: #222;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .preview-images-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .preview-image-wrapper {
+      text-align: center;
+    }
+
+    .preview-image-wrapper h4 {
+      margin: 0 0 14px 0;
+      font-size: 16px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .preview-image-wrapper img {
+      max-width: 100%;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ========================================================================
+       RESPONSIVE BREAKPOINTS
+       ======================================================================== */
+
+    /* Tablets and below (768px) */
+    @media (max-width: 768px) {
+      #productCustomizerContainer {
+        padding: 15px;
+      }
+
+      #productCustomizerContainer .modal-content {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+
+      #productCustomizerContainer .modal-header {
+        padding: 15px 20px;
+      }
+
+      #productCustomizerContainer .modal-header h2 {
+        font-size: 18px;
+      }
+
+      #productCustomizerContainer .modal-body {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      #productCustomizerContainer .modal-footer {
+        padding: 15px 20px;
+        justify-content: stretch;
+      }
+
+      #productCustomizerContainer .modal-footer button {
+        flex: 1;
+      }
+
+      #productCustomizerContainer .btn-primary,
+      #productCustomizerContainer .btn-secondary {
+        max-width: none;
+        width: 100%;
+      }
+
+      #productCustomizerContainer .view-toggle {
+        width: 100%;
+        justify-content: stretch;
+      }
+
+      #productCustomizerContainer .view-btn {
+        flex: 1;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      #productCustomizerContainer .color-swatches-modal {
+        gap: 8px;
+      }
+
+      #productCustomizerContainer .swatch {
+        width: 42px;
+        height: 42px;
+      }
+
+      #productCustomizerContainer .preview-area {
+        min-height: 300px;
+        max-height: 400px;
+        padding: 15px;
+      }
+
+      #productCustomizerContainer .tool-section {
+        margin-top: 20px;
+      }
+
+      #productCustomizerContainer .upload-area {
+        padding: 24px 16px;
+      }
+
+      #productCustomizerContainer .text-controls {
+        gap: 12px;
+      }
+
+      #productCustomizerContainer #fontSizeSlider {
+        width: 100px;
+      }
+
+      #productCustomizerContainer .layers-list {
+        max-height: 180px;
+      }
+
+      /* Final Preview */
+      .customized-preview {
+        padding: 20px;
+        margin-top: 24px;
+      }
+
+      .customized-preview h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .preview-images-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* Mobile devices (480px) */
+    @media (max-width: 480px) {
+      #productCustomizerContainer {
+        padding: 10px;
+      }
+
+      #productCustomizerContainer .modal-overlay {
+        padding: 0;
+      }
+
+      #productCustomizerContainer .modal-header {
+        padding: 12px 15px;
+      }
+
+      #productCustomizerContainer .modal-header h2 {
+        font-size: 16px;
+      }
+
+      #productCustomizerContainer .modal-close {
+        width: 32px;
+        height: 32px;
+        font-size: 28px;
+      }
+
+      #productCustomizerContainer .modal-body {
+        padding: 15px;
+        gap: 15px;
+      }
+
+      #productCustomizerContainer .modal-footer {
+        padding: 12px 15px;
+        gap: 8px;
+      }
+
+      #productCustomizerContainer .btn-primary {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+
+      #productCustomizerContainer .btn-secondary {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      #productCustomizerContainer .view-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      #productCustomizerContainer .color-swatches-modal {
+        gap: 6px;
+      }
+
+      #productCustomizerContainer .swatch {
+        width: 38px;
+        height: 38px;
+      }
+
+      #productCustomizerContainer .tool-section h3 {
+        font-size: 14px;
+      }
+
+      #productCustomizerContainer .upload-area {
+        padding: 20px 12px;
+      }
+
+      #productCustomizerContainer .upload-area p {
+        font-size: 13px;
+      }
+
+      #productCustomizerContainer #customText {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      #productCustomizerContainer .text-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      #productCustomizerContainer .text-controls label {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      #productCustomizerContainer #fontSizeSlider {
+        width: 100%;
+        max-width: 150px;
+      }
+
+      #productCustomizerContainer .btn-add-text {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+
+      #productCustomizerContainer .preview-area {
+        min-height: 250px;
+        max-height: 350px;
+        padding: 12px;
+      }
+
+      #productCustomizerContainer #pinchIndicator {
+        font-size: 10px;
+        padding: 5px 10px;
+        bottom: 12px;
+        right: 12px;
+      }
+
+      #productCustomizerContainer .layers-list {
+        max-height: 150px;
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      #productCustomizerContainer .layer-item {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      /* Final Preview */
+      .customized-preview {
+        padding: 15px;
+        margin-top: 20px;
+      }
+
+      .customized-preview h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+
+      .preview-image-wrapper h4 {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .preview-images-container {
+        gap: 15px;
+      }
+    }
+
+    /* Extra small devices (360px) */
+    @media (max-width: 360px) {
+      #productCustomizerContainer .modal-header h2 {
+        font-size: 14px;
+      }
+
+      #productCustomizerContainer .modal-body {
+        padding: 12px;
+      }
+
+      #productCustomizerContainer .swatch {
+        width: 36px;
+        height: 36px;
+      }
+
+      #productCustomizerContainer .preview-area {
+        min-height: 220px;
+        max-height: 300px;
+      }
+
+      .customized-preview h3 {
+        font-size: 16px;
+      }
+    }
+
+    /* Landscape mode adjustments */
+    @media (max-height: 600px) and (orientation: landscape) {
+      #productCustomizerContainer .modal-content {
+        max-height: 98vh;
+      }
+
+      #productCustomizerContainer .modal-body {
+        flex-direction: row;
+      }
+
+      #productCustomizerContainer .preview-area {
+        min-height: 300px;
+        max-height: 400px;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      #productCustomizerContainer .modal-overlay {
+        display: none !important;
+      }
+    }
+  </style>
+
+  {%- comment -%}
+    =============================================================================
+    STEP 3: HTML STRUCTURE
+    =============================================================================
+    Note: The trigger button already exists in your template as:
+    <button type="button" class="btn-customize" id="productCustomizerWrapper">Customize</button>
+    We'll attach the click handler to it in JavaScript
+  {%- endcomment -%}
+
+  <!-- Modal -->
+  <div id="customizationModal" class="modal-overlay" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Customize Your Product</h2>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Left Column: Controls -->
+        <div>
+          <div class="color-selector-modal">
+            <h3>Select Product Colour</h3>
+            <div class="color-swatches-modal" id="colorSwatchesContainer"></div>
+          </div>
+
+          <input type="hidden" name="properties[_selectedColor]" id="modalColorSelection" value="">
+          <input type="hidden" name="properties[Color]" id="checkoutColorDisplay" value="">
+
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="front">Front View</button>
+            <button class="view-btn" data-view="back">Back View</button>
+          </div>
+
+          <div class="customization-tools">
+            <div class="tool-section">
+              <h3>Upload Logo / Image</h3>
+              <div class="upload-area" id="imageUploadArea">
+                <p>Click to upload image (PNG, JPG, SVG)</p>
+                <input type="file" id="logoUpload" accept="image/*" style="display:none">
+              </div>
+            </div>
+
+            <div class="tool-section">
+              <h3>✏️ Add Custom Text</h3>
+              <input type="text" id="customText" placeholder="Enter your text" maxlength="50">
+              <div class="text-controls">
+                <label>Color: <input type="color" id="textColor" value="#000000"></label>
+                <label
+                  >Size:
+                  <input type="range" id="fontSizeSlider" min="12" max="80" value="28">
+                  <span id="fontSizeValue">28px</span>
+                </label>
+              </div>
+              <button type="button" class="btn-add-text" id="addTextBtn">Add Text</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Preview -->
+        <div>
+          <div class="preview-area">
+            <canvas id="customCanvas"></canvas>
+            <div id="pinchIndicator">Drag to move • Resize corners</div>
+          </div>
+
+          <div class="tool-section">
+            <h3>Layers</h3>
+            <div class="layers-list" id="layersList">
+              <p>No customizations yet</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary modal-close">Cancel</button>
+        <button class="btn-primary" id="saveCustomization">Save Design</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===================== PRODUCT CUSTOMIZATION LOGIC =====================
+    // Initialize global layers array BEFORE DOMContentLoaded
+    if (!window.customizationLayers) {
+      window.customizationLayers = [];
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const log = (...args) => console.log('[Customizer]', ...args);
+      log('Initializing customization modal...');
+
+      // DOM Elements
+      const modal = document.getElementById('customizationModal');
+      const customizeBtn = document.getElementById('productCustomizerWrapper');
+      const closeBtns = document.querySelectorAll('#productCustomizerContainer .modal-close');
+      const viewBtns = document.querySelectorAll('#productCustomizerContainer .view-btn');
+      const canvas = document.getElementById('customCanvas');
+      const ctx = canvas?.getContext('2d');
+      const logoUpload = document.getElementById('logoUpload');
+      const uploadArea = document.getElementById('imageUploadArea');
+      const customTextInput = document.getElementById('customText');
+      const textColorInput = document.getElementById('textColor');
+      const fontSizeSlider = document.getElementById('fontSizeSlider');
+      const fontSizeValue = document.getElementById('fontSizeValue');
+      const addTextBtn = document.getElementById('addTextBtn');
+      const layersList = document.getElementById('layersList');
+      const saveBtn = document.getElementById('saveCustomization');
+      const pinchIndicator = document.getElementById('pinchIndicator');
+      const colorSwatchesContainer = document.getElementById('colorSwatchesContainer');
+
+      if (!modal || !canvas) {
+        log('ERROR: Modal or canvas not found');
+        return;
+      }
+
+      // State Variables
+      const colorImageMap = window.colorImageMap || {};
+      const uniqueColors = Object.keys(colorImageMap);
+      let currentView = 'front';
+      let selectedColorName = uniqueColors[0];
+      let activeLayer = null;
+      let isDragging = false;
+      let isResizing = false;
+      let isRotating = false;
+      let dragOffset = { x: 0, y: 0 };
+      let lastTouchDistance = 0;
+      let lastTouchAngle = 0;
+      let previewCanvasWidth = 0;
+      let previewCanvasHeight = 0;
+      let baseImageLoaded = null;
+      let resizeStartSize = { width: 0, height: 0 };
+      let resizeStartPos = { x: 0, y: 0 };
+
+      if (uniqueColors.length === 0) {
+        log('ERROR: No color variants found');
+        // Don't show alert here - will show when button is clicked
+        return;
+      }
+
+      log('✅ Found colors:', uniqueColors);
+
+      // =========================================================================
+      // HELPER FUNCTIONS
+      // =========================================================================
+
+      // ✅ Step 1: Normalize color names
+      function normalizeColorName(str) {
+        return str
+          .toString()
+          .toLowerCase()
+          .trim()
+          .replace(/[\s\-]+/g, '_');
+      }
+
+      // ✅ Step 2: Extract dominant color from actual product image
+      function extractDominantColor(imageUrl, callback) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          // Sample a small portion for performance
+          canvas.width = 100;
+          canvas.height = 100;
+
+          ctx.drawImage(img, 0, 0, 100, 100);
+
+          try {
+            const imageData = ctx.getImageData(25, 25, 50, 50).data; // Center area only
+            let r = 0,
+              g = 0,
+              b = 0,
+              count = 0;
+
+            for (let i = 0; i < imageData.length; i += 4) {
+              // Skip very light/dark pixels (likely background/shadows)
+              const brightness = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
+              if (brightness > 30 && brightness < 225) {
+                r += imageData[i];
+                g += imageData[i + 1];
+                b += imageData[i + 2];
+                count++;
+              }
+            }
+
+            if (count > 0) {
+              r = Math.round(r / count);
+              g = Math.round(g / count);
+              b = Math.round(b / count);
+
+              const hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+              callback(hex);
+            } else {
+              callback(null);
+            }
+          } catch (e) {
+            console.warn('Could not extract color:', e);
+            callback(null);
+          }
+        };
+
+        img.onerror = function () {
+          console.warn('Failed to load image for color extraction');
+          callback(null);
+        };
+
+        img.src = imageUrl;
+      }
+
+      // ✅ Step 3: Fallback color map with normalized keys
+      function getColorValue(colorName) {
+        const colorMap = {
+          navy: '#000080',
+          dark_navy: '#000080',
+          navy_blue: '#000080',
+          royal_blue: '#4169E1',
+          light_blue: '#ADD8E6',
+          sky_blue: '#87CEEB',
+          dark_green: '#006400',
+          forest_green: '#228B22',
+          olive: '#808000',
+          lime: '#00FF00',
+          mint: '#98FF98',
+          antique_irish_green: '#2F4F2F',
+          irish_green: '#009A49',
+          maroon: '#800000',
+          burgundy: '#800020',
+          cardinal: '#C41E3A',
+          hot_pink: '#FF69B4',
+          light_pink: '#FFB6C1',
+          gold: '#FFD700',
+          mustard: '#FFDB58',
+          orange: '#FFA500',
+          burnt_orange: '#CC5500',
+          purple: '#800080',
+          violet: '#8F00FF',
+          lavender: '#E6E6FA',
+          charcoal: '#36454F',
+          heather_gray: '#B0B0B0',
+          heather_grey: '#B0B0B0',
+          ash: '#B2BEB5',
+          sand: '#C2B280',
+          tan: '#D2B48C',
+          khaki: '#C3B091',
+          cream: '#FFFDD0',
+          ivory: '#FFFFF0',
+          beige: '#F5F5DC',
+          black: '#000000',
+          white: '#FFFFFF',
+          red: '#FF0000',
+          blue: '#0000FF',
+          green: '#008000',
+          yellow: '#FFFF00',
+          gray: '#808080',
+          grey: '#808080',
+          brown: '#A52A2A',
+          pink: '#FFC0CB',
+        };
+
+        const normalizedName = normalizeColorName(colorName);
+
+        // Exact match
+        if (colorMap[normalizedName]) {
+          return colorMap[normalizedName];
+        }
+
+        // Partial match
+        for (const [key, value] of Object.entries(colorMap)) {
+          if (normalizedName.includes(key)) {
+            return value;
+          }
+        }
+
+        return '#808080'; // Neutral fallback
+      }
+
+      // ✅ NEW: Extract dominant color from image
+      function extractDominantColor(imageUrl, callback) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          // Use small sample for performance
+          canvas.width = 50;
+          canvas.height = 50;
+
+          ctx.drawImage(img, 0, 0, 50, 50);
+
+          try {
+            const imageData = ctx.getImageData(0, 0, 50, 50).data;
+            let r = 0,
+              g = 0,
+              b = 0,
+              count = 0;
+
+            // Sample center area to avoid background
+            for (let i = 0; i < imageData.length; i += 4) {
+              r += imageData[i];
+              g += imageData[i + 1];
+              b += imageData[i + 2];
+              count++;
+            }
+
+            r = Math.round(r / count);
+            g = Math.round(g / count);
+            b = Math.round(b / count);
+
+            const hex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            callback(hex);
+          } catch (e) {
+            console.warn('Could not extract color, using fallback');
+            callback(null);
+          }
+        };
+
+        img.onerror = function () {
+          callback(null);
+        };
+
+        img.src = imageUrl;
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.parentElement?.getBoundingClientRect();
+        if (!rect || rect.width <= 0) return;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(rect.width * dpr);
+        canvas.height = Math.floor(rect.height * dpr);
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        previewCanvasWidth = rect.width;
+        previewCanvasHeight = rect.height;
+
+        if (baseImageLoaded) updateCanvas();
+        log('Canvas resized:', previewCanvasWidth, 'x', previewCanvasHeight);
+      }
+
+      function showMainPageSuccess(message) {
+        const existing = document.getElementById('mainPageSuccess');
+        if (existing) existing.remove();
+
+        const successDiv = document.createElement('div');
+        successDiv.id = 'mainPageSuccess';
+        successDiv.style.cssText = `
+      background: #4CAF50; color: white; padding: 15px 20px; border-radius: 8px;
+      margin: 20px 0; text-align: center; font-weight: 600; position: fixed;
+      top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    `;
+        successDiv.textContent = message;
+        document.body.appendChild(successDiv);
+
+        setTimeout(() => {
+          if (successDiv.parentNode) successDiv.remove();
+        }, 3000);
+      }
+
+      // =========================================================================
+      // COLOR SWATCHES
+      // =========================================================================
+
+      function createColorSwatches() {
+        if (!colorSwatchesContainer) return;
+        colorSwatchesContainer.innerHTML = '';
+
+        uniqueColors.forEach((colorName, index) => {
+          const swatch = document.createElement('div');
+          swatch.className = 'swatch';
+          swatch.title = colorName;
+          swatch.dataset.colorName = colorName;
+
+          if (index === 0) swatch.classList.add('active');
+
+          const variantData = colorImageMap[colorName];
+
+          // ✅ PRIORITY 1: Extract actual color from product image
+          if (variantData && variantData.frontImage) {
+            // Set fallback color immediately
+            swatch.style.backgroundColor = getColorValue(colorName);
+
+            // Then extract real color from image
+            extractDominantColor(variantData.frontImage, (extractedColor) => {
+              if (extractedColor) {
+                swatch.style.backgroundColor = extractedColor;
+                log(`✅ Extracted color for ${colorName}: ${extractedColor}`);
+              } else {
+                log(`⚠️ Using fallback color for ${colorName}`);
+              }
+            });
+          } else {
+            // ✅ PRIORITY 2: Use color map fallback
+            swatch.style.backgroundColor = getColorValue(colorName);
+            log(`ℹ️ No image for ${colorName}, using map color`);
+          }
+
+          colorSwatchesContainer.appendChild(swatch);
+        });
+
+        log('✅ Color swatches created');
+      }
+
+      // =========================================================================
+      // LOAD VARIANT IMAGE
+      // =========================================================================
+
+      function loadVariantImage(colorName, view) {
+        const variantData = colorImageMap[colorName];
+        if (!variantData) {
+          log('ERROR: No variant data for color:', colorName);
+          return;
+        }
+
+        const imageUrl = view === 'front' ? variantData.frontImage : variantData.backImage;
+
+        if (!imageUrl || imageUrl === 'null') {
+          log(`No ${view} image for color: ${colorName}`);
+          baseImageLoaded = null;
+          updateCanvas();
+          return;
+        }
+
+        log(`Loading ${view} image for ${colorName}:`, imageUrl);
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+          baseImageLoaded = img;
+          updateCanvas();
+          log('✅ Base image loaded');
+        };
+        img.onerror = function () {
+          log('ERROR: Failed to load image');
+          baseImageLoaded = null;
+          updateCanvas();
+        };
+        img.src = imageUrl;
+      }
+
+      function updateHiddenFields(colorName) {
+        const modalColorField = document.getElementById('modalColorSelection');
+        const checkoutColorField = document.getElementById('checkoutColorDisplay');
+        if (modalColorField) modalColorField.value = colorName;
+        if (checkoutColorField) checkoutColorField.value = colorName;
+      }
+
+      // =========================================================================
+      // TEXT WIDTH CALCULATION
+      // =========================================================================
+
+      function measureTextDimensions(text, fontSize) {
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        const metrics = ctx.measureText(text);
+        return {
+          width: metrics.width,
+          height: fontSize * 1.2, // Approximate height
+        };
+      }
+
+      // =========================================================================
+      // CANVAS DRAWING
+      // =========================================================================
+
+      function updateCanvas() {
+        if (!ctx || previewCanvasWidth === 0 || previewCanvasHeight === 0) return;
+
+        ctx.clearRect(0, 0, previewCanvasWidth, previewCanvasHeight);
+
+        // Draw base image
+        if (baseImageLoaded) {
+          const scale = Math.min(
+            previewCanvasWidth / baseImageLoaded.width,
+            previewCanvasHeight / baseImageLoaded.height
+          );
+
+          const x = (previewCanvasWidth - baseImageLoaded.width * scale) / 2;
+          const y = (previewCanvasHeight - baseImageLoaded.height * scale) / 2;
+
+          ctx.drawImage(baseImageLoaded, x, y, baseImageLoaded.width * scale, baseImageLoaded.height * scale);
+        }
+
+        // Draw customization layers
+        if (!window.customizationLayers || !Array.isArray(window.customizationLayers)) {
+          window.customizationLayers = [];
+          return;
+        }
+
+        window.customizationLayers.forEach((layer) => {
+          if (!layer || layer.view !== currentView) return;
+
+          ctx.save();
+          ctx.translate(layer.x, layer.y);
+          ctx.rotate(((layer.rotation || 0) * Math.PI) / 180);
+
+          if (layer.type === 'image' && layer.image) {
+            ctx.drawImage(layer.image, -layer.width / 2, -layer.height / 2, layer.width, layer.height);
+          } else if (layer.type === 'text') {
+            // Update text dimensions dynamically
+            const dims = measureTextDimensions(layer.text, layer.fontSize);
+            layer.width = dims.width;
+            layer.height = dims.height;
+
+            ctx.fillStyle = layer.color;
+            ctx.font = `bold ${layer.fontSize}px Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(layer.text, 0, 0);
+          }
+
+          // Draw selection handles
+          if (layer === activeLayer) {
+            const width = layer.width;
+            const height = layer.height;
+
+            // Selection box
+            ctx.strokeStyle = '#FF741C';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(-width / 2 - 5, -height / 2 - 5, width + 10, height + 10);
+            ctx.setLineDash([]);
+
+            // Resize handle (bottom-right corner)
+            ctx.fillStyle = '#FF741C';
+            ctx.fillRect(width / 2 - 6, height / 2 - 6, 12, 12);
+
+            // Rotate handle (top center)
+            ctx.fillStyle = '#03AED0';
+            ctx.beginPath();
+            ctx.arc(0, -height / 2 - 25, 8, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+        });
+      }
+
+      // =========================================================================
+      // MOUSE/TOUCH HELPERS
+      // =========================================================================
+
+      function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      }
+
+      function getTouchPos(touch) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+      }
+
+      function getLayerAtPosition(x, y) {
+        if (!window.customizationLayers || !Array.isArray(window.customizationLayers)) {
+          return null;
+        }
+
+        // Iterate in reverse order to check top layers first
+        for (let i = window.customizationLayers.length - 1; i >= 0; i--) {
+          const layer = window.customizationLayers[i];
+          if (!layer || layer.view !== currentView) continue;
+
+          // Transform mouse position to layer's local coordinate system
+          const cos = Math.cos((-(layer.rotation || 0) * Math.PI) / 180);
+          const sin = Math.sin((-(layer.rotation || 0) * Math.PI) / 180);
+          const dx = x - layer.x;
+          const dy = y - layer.y;
+          const localX = dx * cos - dy * sin;
+          const localY = dx * sin + dy * cos;
+
+          const width = layer.width;
+          const height = layer.height;
+
+          // Add padding for easier selection
+          const padding = 10;
+          if (Math.abs(localX) < width / 2 + padding && Math.abs(localY) < height / 2 + padding) {
+            return layer;
+          }
+        }
+        return null;
+      }
+
+      function isNearResizeHandle(pos, layer) {
+        if (!layer) return false;
+
+        const cos = Math.cos((-(layer.rotation || 0) * Math.PI) / 180);
+        const sin = Math.sin((-(layer.rotation || 0) * Math.PI) / 180);
+        const dx = pos.x - layer.x;
+        const dy = pos.y - layer.y;
+        const localX = dx * cos - dy * sin;
+        const localY = dx * sin + dy * cos;
+
+        const width = layer.width;
+        const height = layer.height;
+
+        // Check if near bottom-right corner handle
+        return Math.abs(localX - width / 2) < 15 && Math.abs(localY - height / 2) < 15;
+      }
+
+      function isNearRotateHandle(pos, layer) {
+        if (!layer) return false;
+
+        const dx = pos.x - layer.x;
+        const dy = pos.y - layer.y + layer.height / 2 + 25;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < 15;
+      }
+
+      // =========================================================================
+      // MOUSE EVENTS
+      // =========================================================================
+
+      canvas.addEventListener('mousedown', (e) => {
+        const pos = getMousePos(e);
+        const clickedLayer = getLayerAtPosition(pos.x, pos.y);
+
+        if (clickedLayer) {
+          activeLayer = clickedLayer;
+
+          if (isNearRotateHandle(pos, activeLayer)) {
+            isRotating = true;
+            canvas.style.cursor = 'crosshair';
+          } else if (isNearResizeHandle(pos, activeLayer)) {
+            isResizing = true;
+            resizeStartPos = pos; // ✅ This is correct
+            resizeStartSize = { width: activeLayer.width, height: activeLayer.height };
+            canvas.style.cursor = 'nwse-resize';
+          } else {
+            isDragging = true;
+            dragOffset = { x: pos.x - activeLayer.x, y: pos.y - activeLayer.y };
+            canvas.style.cursor = 'move';
+          }
+
+          updateLayersList();
+          updateCanvas();
+        } else {
+          activeLayer = null;
+          updateLayersList();
+          updateCanvas();
+        }
+      });
+
+      canvas.addEventListener('mousemove', (e) => {
+        const pos = getMousePos(e);
+
+        if (isDragging && activeLayer) {
+          activeLayer.x = pos.x - dragOffset.x;
+          activeLayer.y = pos.y - dragOffset.y;
+          updateCanvas();
+        } else if (isResizing && activeLayer) {
+          // Calculate distance from layer center to current mouse position
+          const currentDx = pos.x - activeLayer.x;
+          const currentDy = pos.y - activeLayer.y;
+          const currentDistance = Math.sqrt(currentDx * currentDx + currentDy * currentDy);
+
+          // Calculate initial distance from layer center to resize start position
+          const startDx = resizeStartPos.x - activeLayer.x;
+          const startDy = resizeStartPos.y - activeLayer.y;
+          const startDistance = Math.sqrt(startDx * startDx + startDy * startDy);
+
+          // Calculate scale factor
+          const scale = currentDistance / startDistance;
+
+          // ✅ FIXED: Now resizes both images AND text
+          if (activeLayer.type === 'image') {
+            activeLayer.width = Math.max(30, resizeStartSize.width * scale);
+            activeLayer.height = Math.max(30, resizeStartSize.height * scale);
+          } else if (activeLayer.type === 'text') {
+            const newFontSize = Math.max(12, Math.min(120, Math.round(resizeStartSize.height * scale)));
+            activeLayer.fontSize = newFontSize;
+            if (fontSizeSlider) fontSizeSlider.value = newFontSize;
+            if (fontSizeValue) fontSizeValue.textContent = newFontSize + 'px';
+          }
+
+          updateCanvas();
+        } else if (isRotating && activeLayer) {
+          const angle = (Math.atan2(pos.y - activeLayer.y, pos.x - activeLayer.x) * 180) / Math.PI;
+          activeLayer.rotation = angle + 90; // Adjust for handle position
+          updateCanvas();
+        } else {
+          // Update cursor based on hover position
+          const hoveredLayer = getLayerAtPosition(pos.x, pos.y);
+          if (hoveredLayer === activeLayer && activeLayer) {
+            if (isNearRotateHandle(pos, activeLayer)) {
+              canvas.style.cursor = 'crosshair';
+            } else if (isNearResizeHandle(pos, activeLayer)) {
+              canvas.style.cursor = 'nwse-resize';
+            } else {
+              canvas.style.cursor = 'move';
+            }
+          } else if (hoveredLayer) {
+            canvas.style.cursor = 'pointer';
+          } else {
+            canvas.style.cursor = 'default';
+          }
+        }
+      });
+
+      canvas.addEventListener('mouseup', () => {
+        isDragging = isResizing = isRotating = false;
+        canvas.style.cursor = 'default';
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        isDragging = isResizing = isRotating = false;
+        canvas.style.cursor = 'default';
+      });
+
+      // =========================================================================
+      // TOUCH EVENTS
+      // =========================================================================
+
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (e.touches.length === 2 && activeLayer) {
+          const [t1, t2] = e.touches;
+          lastTouchDistance = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+          lastTouchAngle = (Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180) / Math.PI;
+          if (pinchIndicator) pinchIndicator.style.display = 'block';
+        } else if (e.touches.length === 1) {
+          const pos = getTouchPos(e.touches[0]);
+          const clickedLayer = getLayerAtPosition(pos.x, pos.y);
+          if (clickedLayer) {
+            activeLayer = clickedLayer;
+            isDragging = true;
+            dragOffset = { x: pos.x - activeLayer.x, y: pos.y - activeLayer.y };
+            updateLayersList();
+            updateCanvas();
+          }
+        }
+      });
+
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches.length === 2 && activeLayer) {
+          const [t1, t2] = e.touches;
+          const currentDistance = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+          const currentAngle = (Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180) / Math.PI;
+
+          if (lastTouchDistance > 0) {
+            const scale = currentDistance / lastTouchDistance;
+            if (activeLayer.type === 'image') {
+              activeLayer.width = Math.max(30, activeLayer.width * scale);
+              const aspectRatio = activeLayer.image.width / activeLayer.image.height;
+              activeLayer.height = activeLayer.width / aspectRatio;
+            } else if (activeLayer.type === 'text') {
+              activeLayer.fontSize = Math.max(12, Math.min(120, Math.round(activeLayer.fontSize * scale)));
+              if (fontSizeSlider) fontSizeSlider.value = activeLayer.fontSize;
+              if (fontSizeValue) fontSizeValue.textContent = activeLayer.fontSize + 'px';
+            }
+          }
+
+          if (lastTouchAngle !== 0) {
+            activeLayer.rotation = (activeLayer.rotation || 0) + (currentAngle - lastTouchAngle);
+          }
+
+          lastTouchDistance = currentDistance;
+          lastTouchAngle = currentAngle;
+          updateCanvas();
+        } else if (e.touches.length === 1 && isDragging && activeLayer) {
+          const pos = getTouchPos(e.touches[0]);
+          activeLayer.x = pos.x - dragOffset.x;
+          activeLayer.y = pos.y - dragOffset.y;
+          updateCanvas();
+        }
+      });
+
+      canvas.addEventListener('touchend', () => {
+        isDragging = false;
+        lastTouchDistance = 0;
+        lastTouchAngle = 0;
+        if (pinchIndicator) pinchIndicator.style.display = 'none';
+      });
+
+      // =========================================================================
+      // LAYERS MANAGEMENT
+      // =========================================================================
+
+      function updateLayersList() {
+        if (!layersList) return;
+
+        if (!window.customizationLayers || window.customizationLayers.length === 0) {
+          layersList.innerHTML = '<p style="color: #999; text-align: center; margin: 0;">No customizations yet</p>';
+          return;
+        }
+
+        layersList.innerHTML = window.customizationLayers
+          .map(
+            (layer) => `
+      <div class="layer-item ${layer === activeLayer ? 'active' : ''}" onclick="window._selectLayer(${layer.id})">
+        <span>${layer.type === 'image' ? '🖼️ Image' : '📝 ' + layer.text}</span>
+        <small style="color: ${layer === activeLayer ? '#fff' : '#666'}; margin-left: 10px;">${
+              layer.view === 'front' ? 'Front' : 'Back'
+            }</small>
+        <button class="btn-delete" onclick="window._deleteLayer(${layer.id}, event)" style="background: ${
+              layer === activeLayer ? '#c82333' : '#dc3545'
+            }; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Delete</button>
+      </div>
+    `
+          )
+          .join('');
+      }
+
+      window._selectLayer = (id) => {
+        if (!window.customizationLayers) return;
+        activeLayer = window.customizationLayers.find((l) => l.id === id);
+        if (activeLayer && activeLayer.view !== currentView) {
+          // Switch to the layer's view
+          currentView = activeLayer.view;
+          viewBtns.forEach((btn) => {
+            btn.classList.toggle('active', btn.dataset.view === currentView);
+          });
+          loadVariantImage(selectedColorName, currentView);
+        }
+        updateLayersList();
+        updateCanvas();
+      };
+
+      window._deleteLayer = (id, event) => {
+        event.stopPropagation();
+        if (!window.customizationLayers) return;
+        window.customizationLayers = window.customizationLayers.filter((l) => l.id !== id);
+        if (activeLayer?.id === id) activeLayer = null;
+        updateLayersList();
+        updateCanvas();
+      };
+
+      // =========================================================================
+      // EVENT LISTENERS
+      // =========================================================================
+
+      // Modal open/close
+      if (customizeBtn) {
+        customizeBtn.addEventListener('click', () => {
+          // Check if customization is available
+          if (uniqueColors.length === 0) {
+            alert('Product customization is not available for this product.');
+            return;
+          }
+
+          if (modal) modal.style.display = 'flex';
+          setTimeout(resizeCanvas, 200);
+          log('✅ Modal opened');
+        });
+      }
+
+      closeBtns.forEach((btn) =>
+        btn.addEventListener('click', () => {
+          if (modal) modal.style.display = 'none';
+          isDragging = isResizing = isRotating = false;
+          activeLayer = null;
+          updateCanvas();
+        })
+      );
+
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.style.display = 'none';
+            isDragging = isResizing = isRotating = false;
+            activeLayer = null;
+            updateCanvas();
+          }
+        });
+      }
+
+      // Color selection
+      if (colorSwatchesContainer) {
+        colorSwatchesContainer.addEventListener('click', (e) => {
+          const colorName = e.target.dataset.colorName;
+          if (!colorName) return;
+
+          selectedColorName = colorName;
+
+          document.querySelectorAll('#productCustomizerContainer .swatch').forEach((s) => {
+            s.classList.remove('active');
+          });
+          e.target.classList.add('active');
+
+          loadVariantImage(selectedColorName, currentView);
+          updateHiddenFields(selectedColorName);
+
+          log('Color changed to:', selectedColorName);
+        });
+      }
+
+      // View toggle
+      viewBtns.forEach((btn) =>
+        btn.addEventListener('click', () => {
+          viewBtns.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentView = btn.dataset.view;
+          loadVariantImage(selectedColorName, currentView);
+          activeLayer = null; // Deselect when switching views
+          updateLayersList();
+          log('View changed to:', currentView);
+        })
+      );
+
+      // Image upload
+      if (uploadArea) {
+        uploadArea.addEventListener('click', () => {
+          if (logoUpload) logoUpload.click();
+        });
+      }
+
+      if (logoUpload) {
+        logoUpload.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file?.type.startsWith('image/')) {
+            alert('Please upload a valid image file');
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File must be under 5MB');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+              const scale = Math.min(
+                (previewCanvasWidth * 0.4) / img.width,
+                (previewCanvasHeight * 0.4) / img.height,
+                1
+              );
+              window.customizationLayers.push({
+                id: Date.now(),
+                type: 'image',
+                image: img,
+                x: previewCanvasWidth / 2,
+                y: previewCanvasHeight / 2,
+                width: img.width * scale,
+                height: img.height * scale,
+                rotation: 0,
+                view: currentView,
+              });
+              activeLayer = window.customizationLayers[window.customizationLayers.length - 1];
+              updateLayersList();
+              updateCanvas();
+              log('✅ Image added');
+            };
+            img.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+
+          // Reset file input
+          e.target.value = '';
+        });
+      }
+
+      // Add text
+      if (addTextBtn) {
+        addTextBtn.addEventListener('click', () => {
+          const text = customTextInput?.value.trim();
+          if (!text) {
+            alert('Please enter text');
+            return;
+          }
+
+          const fontSize = parseInt(fontSizeSlider?.value || 28);
+          const dims = measureTextDimensions(text, fontSize);
+
+          window.customizationLayers.push({
+            id: Date.now(),
+            type: 'text',
+            text,
+            color: textColorInput?.value || '#000000',
+            fontSize: fontSize,
+            x: previewCanvasWidth / 2,
+            y: previewCanvasHeight / 2,
+            width: dims.width,
+            height: dims.height,
+            rotation: 0,
+            view: currentView,
+          });
+
+          activeLayer = window.customizationLayers[window.customizationLayers.length - 1];
+          updateLayersList();
+          updateCanvas();
+          if (customTextInput) customTextInput.value = '';
+          log('✅ Text added');
+        });
+      }
+
+      // Font size slider
+      if (fontSizeSlider) {
+        fontSizeSlider.addEventListener('input', (e) => {
+          if (fontSizeValue) fontSizeValue.textContent = e.target.value + 'px';
+          if (activeLayer?.type === 'text') {
+            activeLayer.fontSize = parseInt(e.target.value);
+            updateCanvas();
+          }
+        });
+      }
+
+      // Text color
+      if (textColorInput) {
+        textColorInput.addEventListener('input', (e) => {
+          if (activeLayer?.type === 'text') {
+            activeLayer.color = e.target.value;
+            updateCanvas();
+          }
+        });
+      }
+
+      // Save design
+      if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+          log('Save button clicked');
+
+          if (saveBtn.classList.contains('btn-loading')) return;
+
+          saveBtn.classList.add('btn-loading');
+          saveBtn.textContent = 'Saving...';
+
+          try {
+            const hasBackCustomization = window.customizationLayers.some((l) => l.view === 'back');
+
+            // Export canvas for both views
+            const frontDataUrl = await exportCanvasDataUrl('front');
+            const backDataUrl = hasBackCustomization ? await exportCanvasDataUrl('back') : '';
+
+            // Update preview
+            const frontImg = document.getElementById('finalDesignImageFront');
+            const backImg = document.getElementById('finalDesignImageBack');
+            const frontWrapper = document.getElementById('frontPreviewWrapper');
+            const backWrapper = document.getElementById('backPreviewWrapper');
+            const preview = document.getElementById('customizedDesignPreview');
+
+            if (frontImg && frontDataUrl) {
+              frontImg.src = frontDataUrl;
+              if (frontWrapper) frontWrapper.style.display = 'block';
+            }
+
+            if (backImg && backDataUrl) {
+              backImg.src = backDataUrl;
+              if (backWrapper) backWrapper.style.display = 'block';
+            } else if (backWrapper) {
+              backWrapper.style.display = 'none';
+            }
+
+            if (preview) preview.style.display = 'block';
+            if (modal) modal.style.display = 'none';
+
+            showMainPageSuccess('✅ Design saved successfully!');
+          } catch (error) {
+            console.error('Save failed:', error);
+            alert('❌ Failed to save design. Please try again.');
+            log('ERROR:', error);
+          } finally {
+            saveBtn.classList.remove('btn-loading');
+            saveBtn.textContent = '💾 Save Design';
+          }
+        });
+      }
+
+      async function exportCanvasDataUrl(view) {
+        const tempView = currentView;
+        const tempActiveLayer = activeLayer;
+
+        currentView = view;
+        activeLayer = null; // Don't show selection handles in export
+        updateCanvas();
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        const dataUrl = canvas.toDataURL('image/png', 1.0);
+
+        currentView = tempView;
+        activeLayer = tempActiveLayer;
+        updateCanvas();
+
+        return dataUrl;
+      }
+
+      // =========================================================================
+      // INITIALIZATION
+      // =========================================================================
+
+      createColorSwatches();
+      window.addEventListener('resize', resizeCanvas);
+
+      setTimeout(() => {
+        resizeCanvas();
+        loadVariantImage(selectedColorName, currentView);
+        updateHiddenFields(selectedColorName);
+        updateLayersList();
+        log('✅ Customization modal initialized');
+      }, 100);
+    });
+  </script>
+</div>

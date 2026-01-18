@@ -1,0 +1,1 @@
+mmWireSlices[1]={"html":"<li class=\"buddha-menu-item\" itemid=\"mf2UC\" ><a data-href=\"no-link\" href=\"javascript:void(0);\" aria-label=\"Apparels\" data-no-instant=\"\" onclick=\"mmGoToPage(this, event); return false;\" ><span class=\"mm-title\">Apparels</span></a></li>"};

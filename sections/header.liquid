@@ -1,0 +1,2304 @@
+<style>
+      body {
+        background: #FDFAF3 !important;
+    }
+    div#shopify-section-newsletter {
+        display: none;
+    }
+
+
+
+      /* ======= TOP BAR ======= */
+      .bp-topbar {
+        background: #ff661f;
+        color: #fff;
+        padding: 0.75rem 0;
+        z-index: 10;
+        position: relative;
+      }
+
+      .bp-topbar-container {
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1.25rem;
+      }
+
+      .bp-social-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      .bp-social-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .bp-social-links a:hover {
+        color: #000;
+      }
+    .bp-menu-link svg {
+        width: 16px;
+    }
+      .bp-topbar-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .bp-topbar-actions a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .bp-topbar-actions a:hover {
+        color: #000;
+      }
+
+      /* ======= BP NAVBAR ======= */
+      #bp-header {
+        position: fixed;
+        top: 2.5rem;
+        width: 100%;
+        z-index: 999;
+        transition: top 0.3s ease;
+      }
+
+      #bp-header.sticky {
+        top: 0;
+      }
+
+      #bp-header.sticky nav.bp-navbar {
+          margin-top: 0;
+      }
+
+      .bp-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0rem 1rem 0rem 2rem;
+        background: #fff;
+        flex-wrap: wrap;
+        margin: 32px 20px 0;
+        box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.25);
+        border-radius: 92px;
+        transition: margin-top 0.3s ease;
+      }
+
+      .bp-navbar-left,
+      .bp-navbar-center,
+      .bp-navbar-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .bp-navbar-left {
+        gap: 1rem;
+        flex-direction: row-reverse;
+      }
+
+      section.bp-navbar-right {
+        gap: 32px;
+      }
+
+      .bp-brand {
+        display: flex;
+        align-items: center;
+      }
+
+      .bp-brand img {
+        width: 190px;
+        height: auto;
+      }
+
+      /* Burger */
+      .bp-burger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      .bp-burger-line {
+        width: 25px;
+        height: 3px;
+        background: #000;
+        transition: all 0.3s ease;
+      }
+
+      .bp-burger.active .bp-burger-line:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+
+      .bp-burger.active .bp-burger-line:nth-child(2) {
+        opacity: 0;
+      }
+
+      .bp-burger.active .bp-burger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+
+      /* Overlay */
+      .bp-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+
+      .bp-overlay.active {
+        display: block;
+      }
+
+      /* Menu Layout */
+      .bp-menu {
+        display: flex;
+        position: relative;
+        justify-content: center;
+      }
+
+      .bp-menu-header {
+        display: none;
+      }
+
+      .bp-menu-inner {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .bp-menu-item {
+        position: static;
+        margin: 0;
+      }
+
+      .bp-menu-link {
+      cursor: pointer;
+          color: #000 !important;
+          font-weight: 600;
+          text-transform: uppercase;
+          text-decoration: none;
+          display: flex;
+          padding: 1.5rem 0;
+          transition: color 0.3s ease;
+          font-size: 1rem;
+          user-select: none;
+          align-items: center;
+          gap: 5px;
+      }
+      li.bp-menu-item.bp-menu-dropdown svg path{
+        transition: all 0.3s ease;
+      }
+
+      .bp-menu-item:hover > .bp-menu-link {
+        color: #FF741C !important;
+      }
+      {% comment %} li.bp-menu-item.bp-menu-dropdown:hover svg path{
+        fill: #FF741C !important;
+      } {% endcomment %}
+      /* MEGA MENU - DESKTOP */
+      .bp-submenu {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        top: 100%;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        background: white;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        width: 1200px;
+        max-width: 95vw;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .bp-submenu-wrapper {
+        display: grid;
+        grid-template-columns: 65% 35%;
+        height: 550px;
+      }
+
+      /* Left Side - Categories */
+      .bp-submenu-categories {
+    background: linear-gradient(135deg, #FF741C 0%, #FF8C42 100%);
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        overflow-y: auto;
+        max-height: 596px;
+      }
+
+      .bp-submenu-categories::-webkit-scrollbar {
+        width: 6px;
+      }
+  .bp-category-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0px;
+      margin: 0;
+      line-height: 1.2;
+  }
+      .bp-submenu-categories::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+      }
+
+      .bp-category-block {
+        animation: fadeInUp 0.5s ease forwards;
+        opacity: 0;
+      }
+
+      .bp-category-block:nth-child(1) { animation-delay: 0.05s; }
+      .bp-category-block:nth-child(2) { animation-delay: 0.1s; }
+      .bp-category-block:nth-child(3) { animation-delay: 0.15s; }
+      .bp-category-block:nth-child(4) { animation-delay: 0.2s; }
+      .bp-category-block:nth-child(5) { animation-delay: 0.25s; }
+      .bp-category-block:nth-child(6) { animation-delay: 0.3s; }
+      .bp-category-block:nth-child(7) { animation-delay: 0.35s; }
+      .bp-category-block:nth-child(8) { animation-delay: 0.4s; }
+      .bp-category-block:nth-child(9) { animation-delay: 0.45s; }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        from {
+          transform: translateY(10px);
+        }
+      }
+
+      .bp-category-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+    .bp-category-list li {
+        margin: 0;
+    }
+      .bp-category-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 10px;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+
+      .bp-category-block:hover .bp-category-icon {
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .bp-category-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: white;
+      }
+
+      .bp-category-title a {
+        font-size: 1rem;
+        font-weight: 700;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0px;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .bp-category-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .bp-category-list li a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: block;
+        padding: 0.1rem 0.75rem;
+        border-radius: 6px;
+        position: relative;
+        font-weight: 500;
+      }
+
+
+
+      .bp-category-list li a:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.15);
+        padding-left: 1.25rem;
+      }
+
+      .bp-category-list li a:hover::before {
+        width: 12px;
+        left: 0.5rem;
+      }
+
+      /* Right Side - New Arrivals */
+      .bp-submenu-newarrivals {
+        background: #000;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .bp-submenu-newarrivals::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 116, 28, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .bp-newarrivals-header {
+        color: white;
+        font-size: 1.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        letter-spacing: 0px;
+        position: relative;
+        z-index: 1;
+        text-align: left;
+      }
+
+      {% comment %} .bp-newarrivals-header::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #FF741C, #FF8C42);
+        margin: 0.75rem auto 0;
+        border-radius: 2px;
+      } {% endcomment %}
+
+      .bp-newarrivals-slider {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        z-index: 1;
+      }
+
+      .bp-slider-container {
+        display: flex;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+      }
+
+      .bp-slider-item {
+        min-width: 100%;
+        height: 100%;
+        padding: 0;
+      }
+
+      .bp-slider-product {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+            max-height: 440px;
+        transition: all 0.4s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .bp-slider-product:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 35px rgba(255, 116, 28, 0.3);
+      }
+
+      .bp-slider-image-wrapper {
+        width: 100%;
+        aspect-ratio: 1;
+        overflow: hidden;
+        background: #f8f8f8;
+        position: relative;
+      }
+
+      .bp-slider-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .bp-slider-product:hover .bp-slider-image {
+        transform: scale(1.08);
+      }
+
+      .bp-slider-info {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background: white;
+      }
+
+      .bp-slider-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0px;
+        line-height: 1.4;
+        min-height: 2.8em;
+        padding:0;
+      }
+
+      .bp-slider-colors {
+        display: none;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .bp-color-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .bp-color-dot:hover {
+        transform: scale(1.4);
+        border-color: #FF741C;
+        box-shadow: 0 4px 12px rgba(255, 116, 28, 0.4);
+        z-index: 10;
+      }
+
+      .bp-slider-controls {
+        display: flex;
+        justify-content: center;
+        gap: 0.6rem;
+        margin-top: 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .bp-slider-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .bp-slider-dot:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(1.2);
+      }
+
+      .bp-slider-dot.active {
+        background: #FF741C;
+        width: 32px;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(255, 116, 28, 0.5);
+      }
+
+      /* Hide submenu header on desktop */
+      .bp-submenu-header {
+        display: none;
+      }
+
+      /* Desktop Hover */
+      @media (min-width: 1141px) {
+        .bp-menu-dropdown:hover > .bp-submenu {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      /* Countdown */
+      .bp-countdown-btn {
+        background: linear-gradient(135deg, #FF741C 0%, #FF5722 100%);
+        color: #fff !important;
+        border: none;
+        border-radius: 50px;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 6px 20px rgba(255, 116, 28, 0.35);
+        text-transform: uppercase;
+        letter-spacing: 0px;
+        position: relative;
+        overflow: hidden;
+      }
+      .bp-countdown-btn span{
+      color:#fff;
+          line-height: 16px;
+      }
+
+      .bp-countdown-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.6s ease;
+      }
+
+      .bp-countdown-btn:hover::before {
+        left: 100%;
+      }
+
+      .bp-countdown-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 116, 28, 0.5);
+      }
+
+      .bp-countdown-btn:active {
+        transform: translateY(-1px);
+      }
+
+      span#bp-timer {
+        font-style: normal;
+        font-weight: 600;
+        color: #fff;
+        padding-left: 1rem;
+        border-left: 2px solid rgba(255, 255, 255, 0.4);
+        letter-spacing: 0px;
+        min-width: 90px;
+        text-align: center;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        font-style: italic;
+      }
+
+      /* MOBILE STYLES */
+      @media (max-width: 1230px) {
+  .bp-submenu-image-display {
+    display: none !important;
+  }
+
+        .bp-topbar-container {
+          padding: 0 1rem;
+        }
+
+        .bp-navbar {
+          padding: 1rem;
+        }
+
+        .bp-burger {
+          display: flex;
+        }
+
+        .bp-navbar-center {
+          order: 3;
+          width: 100%;
+        }
+
+        .bp-menu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 380px;
+          max-width: 90%;
+          height: 100vh;
+          background: #fff;
+          flex-direction: column;
+          transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 1000;
+          overflow-y: auto;
+          box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+              justify-content: flex-start;
+        }
+
+        .bp-menu.active {
+          right: 0;
+        }
+
+        .bp-menu-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1.5rem;
+          border-bottom: 1px solid #f0f0f0;
+          position: sticky;
+          top: 0;
+          background: #fff;
+          z-index: 10;
+        }
+
+        .bp-menu-arrow {
+          cursor: pointer;
+          font-size: 1.5rem;
+          font-weight: 700;
+          line-height: 1;
+          color: #FF741C;
+        }
+
+        .bp-menu-title {
+          font-weight: 700;
+          font-size: 1.2rem;
+          color: #1a1a1a;
+        }
+
+        .bp-menu-inner {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .bp-menu-item {
+          border-bottom: 1px solid #f5f5f5;
+        }
+
+        .bp-menu-link {
+          padding: 1.25rem 1.5rem;
+          justify-content: space-between;
+          font-size: 1rem;
+        }
+
+        .bp-menu-link svg {
+          transform: rotate(-90deg);
+        }
+
+        /* Mobile Submenu */
+        .bp-submenu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          left: auto;
+          transform: none;
+          width: 380px;
+          max-width: 90%;
+          height: 100vh;
+          border-radius: 0;
+          opacity: 1 !important;
+          visibility: visible !important;
+          transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow-y: auto;
+          box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+          z-index: 1002;
+          pointer-events: auto !important;
+        }
+
+        .bp-menu-dropdown.active > .bp-submenu {
+          right: 0 !important;
+        }
+
+        .bp-submenu-wrapper {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+
+        .bp-submenu-categories {
+          grid-template-columns: 1fr;
+          padding: 0;
+          gap: 0;
+          background: white;
+          max-height: none;
+        }
+
+        .bp-category-block {
+          border-bottom: 1px solid #f5f5f5;
+          padding: 1.5rem;
+          animation: none;
+          opacity: 1;
+        }
+
+        .bp-category-header {
+          margin-bottom: 1rem;
+        }
+
+        .bp-category-icon {
+          background: linear-gradient(135deg, #FF741C 0%, #FF8C42 100%);
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+        }
+
+        .bp-category-icon svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        .bp-category-title a, .bp-category-title {
+          color: #1a1a1a;
+          font-size: 0.95rem;
+        }
+
+
+        .bp-category-list {
+          gap: 0.3rem;
+        }
+
+        .bp-category-list li a {
+          color: #666;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+        }
+
+
+
+        .bp-category-list li a:hover {
+          color: #FF741C;
+          background: #fff5f0;
+          padding-left: 1rem;
+        }
+
+        .bp-submenu-newarrivals {
+          background: #f9f9f9;
+          padding: 2rem 1.5rem;
+        }
+
+        .bp-newarrivals-header {
+          color: #1a1a1a;
+          font-size: 1.35rem;
+          text-align: left;
+          margin-bottom: 1.5rem;
+        }
+
+        .bp-newarrivals-header::after {
+          margin: 0.75rem 0 0 0;
+        }
+
+        .bp-slider-item {
+          padding: 0;
+        }
+
+        .bp-slider-product {
+          border-radius: 12px;
+        }
+
+        .bp-slider-info {
+          padding: 1.25rem;
+        }
+
+        .bp-slider-title {
+          font-size: 0.9rem;
+          min-height: auto;
+        }
+
+        .bp-slider-colors {
+          gap: 0.4rem;
+        }
+
+        .bp-color-dot {
+          width: 16px;
+          height: 16px;
+        }
+
+        /* Show submenu header on mobile */
+        .bp-submenu-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1.5rem;
+          border-bottom: 1px solid #f0f0f0;
+          position: sticky;
+          top: 0;
+          background: #fff;
+          z-index: 10;
+        }
+
+        .bp-submenu-back {
+          cursor: pointer;
+          font-size: 1.5rem;
+          font-weight: 700;
+          line-height: 1;
+          color: #FF741C;
+        }
+
+        .bp-submenu-header-title {
+          font-weight: 700;
+          font-size: 1.2rem;
+          color: #1a1a1a;
+        }
+
+        .bp-countdown-btn {
+          padding: 0.7rem 1.35rem;
+          font-size: 0.85rem;
+          gap: 0.75rem;
+        }
+
+        span#bp-timer {
+          font-size: 0.9rem;
+          padding-left: 0.75rem;
+          min-width: 65px;
+        }
+      }
+
+      @media (max-width: 768px) {
+
+        .inhouse {
+        padding: 0 !important;
+    }
+    .inhouse-overlay h2 {
+        line-height: 54px;
+    }
+
+
+        .bp-menu,
+        .bp-submenu {
+          width: 340px;
+        }
+
+        .bp-brand img {
+          height: 42px;
+        }
+
+        .bp-topbar {
+          padding: 0.6rem 0;
+        }
+
+        .bp-social-links a,
+        .bp-topbar-actions a {
+          font-size: 1.1rem;
+        }
+
+        .bp-social-links,
+        .bp-topbar-actions {
+          gap: 1.25rem;
+        }
+
+        .bp-submenu-wrapper {
+          grid-template-columns: 1fr;
+        }
+
+        .bp-submenu-categories {
+          max-height: none;
+        }
+
+        .bp-category-block {
+          padding: 1.25rem 1.5rem;
+        }
+
+        .bp-slider-info {
+          padding: 1rem;
+        }
+
+        .bp-countdown-btn {
+          padding: 0.75rem 1.25rem;
+          font-size: 0.8rem;
+        }
+    .bp-social-links svg {
+        width: 16px;
+    }
+    .bp-topbar-actions svg {
+        width: 18px;
+    }
+        span#bp-timer {
+          font-size: 0.85rem;
+          min-width: 60px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        #bp-header {
+        top: 1.5rem;
+    }
+
+        .inhouse-image img {
+        height: 340px !important;
+    }
+    .inhouse-image {
+        padding-bottom: 10px;
+    }
+    .logo-marquee__title {
+        margin-bottom: 20px;
+    }
+    .inhouse-overlay h2 {
+        font-size: 30px !important;
+        line-height: 34px !important;
+    }
+    .inhouse-overlay p {
+        font-size: 20px !important;
+    }
+    .inhouse-overlay p strong {
+        font-size: 32px  !important;
+    }
+    div.container {
+        padding: 0;
+    }
+        .bp-menu,
+        .bp-submenu {
+          width: 310px;
+        }
+
+        .bp-navbar {
+          padding: 0.85rem;
+        }
+
+        .bp-brand img {
+            height: auto;
+            width: 120px;
+        }
+
+        .bp-topbar-container {
+          padding: 0 0.75rem;
+        }
+
+        .bp-social-links,
+        .bp-topbar-actions {
+          gap: 1rem;
+        }
+
+        .bp-social-links a,
+        .bp-topbar-actions a {
+          font-size: 1rem;
+        }
+
+        .bp-menu-header,
+        .bp-submenu-header {
+          padding: 1.25rem;
+        }
+
+        .bp-menu-link {
+          padding: 1.1rem 1.25rem;
+          font-size: 0.95rem;
+        }
+
+        .bp-category-block {
+          padding: 1.25rem;
+        }
+
+        .bp-category-title {
+          font-size: 0.9rem;
+        }
+
+        .bp-category-list li a {
+          font-size: 0.85rem;
+          padding: 0.45rem 0.65rem;
+        }
+
+        .bp-newarrivals-header {
+          font-size: 1.2rem;
+        }
+
+        .bp-slider-info {
+          padding: 0.9rem;
+        }
+
+        .bp-slider-title {
+          font-size: 0.85rem;
+        }
+
+        .bp-color-dot {
+          width: 14px;
+          height: 14px;
+        }
+
+        .bp-countdown-btn {
+          gap: 0.4rem;
+        }
+
+        span#bp-timer {
+          font-size: 0.8rem;
+          padding-left: 0.6rem;
+          min-width: 55px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .bp-menu,
+        .bp-submenu {
+          width: 290px;
+        }
+    .bp-navbar-left {
+        gap: .5rem;
+    }
+        .bp-brand img {
+          height: 34px;
+        }
+
+        .bp-navbar {
+          padding: 0.75rem;
+        }
+
+        .bp-menu-link {
+          padding: 1rem;
+          font-size: 0.9rem;
+        }
+
+        .bp-category-block {
+          padding: 1rem;
+        }
+
+        .bp-countdown-btn {
+          padding: 0.5rem .5rem;
+          font-size: 0.7rem;
+        }
+
+        span#bp-timer {
+          font-size: 0.75rem;
+          min-width: 70px;
+        }
+      }
+
+      /* Hide menu header by default */
+      .bp-menu-header {
+        display: none;
+      }
+
+      @media (max-width: 1230px) {
+        .bp-menu-header {
+          display: flex;
+        }
+
+        .bp-menu-arrow.show {
+          display: block;
+        }
+
+        .bp-menu-arrow:not(.show) {
+          display: none;
+        }
+      }
+
+  /* Category Description Styling */
+  .bp-category-description {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0.75rem 0 0 0;
+    font-weight: 400;
+  }
+
+  /* Make descriptions visible in mobile */
+  @media (max-width: 1140px) {
+    .bp-category-description {
+      color: #666;
+      margin: 0.5rem 0 0 0;
+    }
+
+    .bp-category-block a {
+      display: block;
+    }
+  }
+
+
+
+
+
+
+  /* Right Side - Dynamic Image Display */
+  .bp-submenu-image-display {
+    background: #fdfaf3;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bp-submenu-image-display::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 116, 28, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .bp-image-display-header {
+    color: #000;
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0px;
+    position: relative;
+    z-index: 1;
+    text-align: left;
+    min-height: 2.5rem;
+  }
+
+  .bp-image-display-container {
+    flex: 1;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        max-height: 480px;
+      height: 100%;
+  }
+
+  .bp-display-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .bp-display-image.active {
+    opacity: 1;
+    position: relative;
+  }
+
+  .bp-image-placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 2rem;
+  }
+</style>
+
+<!-- TOP BAR -->
+<div class="bp-topbar">
+  <div class="bp-topbar-container">
+    <div class="bp-social-links">
+      <a href="#" aria-label="Facebook">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Instagram">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="LinkedIn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="YouTube">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="bp-topbar-actions">
+      <a href="/cart" aria-label="Cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Account">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="Contact">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Image Cache Script -->
+<script>
+  // Enhanced image cache for dynamic navigation images with preloading
+  window.BP_NavImageCache = {
+    imageCache: {},
+    preloadedImages: {},
+    fetchingPromises: {}, // Track ongoing fetch requests to prevent duplicates
+
+    // Preload an image for instant display
+    preloadImage(url) {
+      if (!url || url === '' || this.preloadedImages[url]) return;
+
+      const img = new Image();
+      img.src = url;
+      this.preloadedImages[url] = img;
+      console.log('✓ Preloaded:', url.substring(0, 60) + '...');
+    },
+
+    // Normalize subcategory names for better matching
+    normalizeSubcategory(subcategory) {
+      return decodeURIComponent(subcategory.replace(/\+/g, ' ')).toLowerCase().trim();
+    },
+
+    // Create handleized version (matches your filter code logic)
+    handleize(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    },
+
+    // Generate search variations for better matching
+    generateSearchTerms(subcategory) {
+      const normalized = this.normalizeSubcategory(subcategory);
+      return [
+        normalized,
+        this.handleize(normalized),
+        normalized.replace(/[^a-z0-9]/g, ''),
+        normalized.replace(/\s+/g, '-'),
+        normalized.replace(/\s+/g, ''),
+        normalized.replace(/\//g, ''), // Handle "3/4" cases
+      ];
+    },
+
+    // Fetch product image for subcategories with enhanced matching
+    async fetchSubcategoryProductImage(collectionHandle, subcategory) {
+      const cacheKey = `${collectionHandle}-${subcategory}`;
+
+      // Return cached image if available
+      if (this.imageCache[cacheKey]) {
+        console.log('✓ Cache hit:', cacheKey);
+        return this.imageCache[cacheKey];
+      }
+
+      // Return ongoing fetch promise if already fetching
+      if (this.fetchingPromises[cacheKey]) {
+        console.log('⏳ Waiting for ongoing fetch:', cacheKey);
+        return this.fetchingPromises[cacheKey];
+      }
+
+      console.log('🔍 Fetching:', collectionHandle, '/', subcategory);
+
+      // Create and store fetch promise
+      this.fetchingPromises[cacheKey] = (async () => {
+        try {
+          const response = await fetch(`/collections/${collectionHandle}/products.json`);
+          const data = await response.json();
+
+          if (!data.products || data.products.length === 0) {
+            console.warn('⚠️ No products found in collection:', collectionHandle);
+            this.imageCache[cacheKey] = null;
+            return null;
+          }
+
+          console.log(`📦 Found ${data.products.length} products`);
+
+          const searchTerms = this.generateSearchTerms(subcategory);
+          console.log('🔎 Search terms:', searchTerms);
+
+          // Enhanced matching with weighted scoring
+          let matchingProduct = null;
+          let highestScore = 0;
+
+          for (const product of data.products) {
+            let score = 0;
+            const tags = (product.tags || []).map((tag) => tag.toLowerCase().trim());
+            const productType = (product.product_type || '').toLowerCase().trim();
+            const title = (product.title || '').toLowerCase().trim();
+            const variants = product.variants || [];
+
+            // Score-based matching (higher score = better match)
+            for (const term of searchTerms) {
+              // Exact tag match (highest priority)
+              if (tags.includes(term)) {
+                score += 100;
+              }
+              // Tag contains term
+              else if (tags.some((tag) => tag.includes(term))) {
+                score += 50;
+              }
+
+              // Product type exact match
+              if (productType === term) {
+                score += 80;
+              }
+              // Product type contains term
+              else if (productType.includes(term)) {
+                score += 40;
+              }
+
+              // Title contains term
+              if (title.includes(term)) {
+                score += 30;
+              }
+
+              // Variant option matching
+              for (const variant of variants) {
+                const options = [
+                  (variant.option1 || '').toLowerCase().trim(),
+                  (variant.option2 || '').toLowerCase().trim(),
+                  (variant.option3 || '').toLowerCase().trim(),
+                ];
+
+                if (options.some((opt) => opt === term)) {
+                  score += 60;
+                } else if (options.some((opt) => opt.includes(term))) {
+                  score += 20;
+                }
+              }
+            }
+
+            if (score > highestScore) {
+              highestScore = score;
+              matchingProduct = product;
+            }
+          }
+
+          // Use best match or fallback to first product
+          const product = matchingProduct || data.products[0];
+
+          if (matchingProduct) {
+            console.log(`✓ MATCH (score: ${highestScore}):`, product.title);
+          } else {
+            console.log('⚠️ No match, using first product:', product.title);
+          }
+
+          // Get product image with fallback chain
+          let imageUrl = null;
+
+          // Priority 1: Variant-specific image
+          if (product.variants) {
+            for (const variant of product.variants) {
+              if (variant.featured_image?.src) {
+                imageUrl = variant.featured_image.src;
+                break;
+              }
+              if (variant.image?.src) {
+                imageUrl = variant.image.src;
+                break;
+              }
+            }
+          }
+
+          // Priority 2: Product images array
+          if (!imageUrl && product.images?.length > 0) {
+            imageUrl = product.images[0].src || product.images[0];
+          }
+
+          // Priority 3: Featured image
+          if (!imageUrl && product.featured_image) {
+            imageUrl = product.featured_image;
+          }
+
+          if (imageUrl) {
+            console.log('✓ Image found:', imageUrl.substring(0, 60) + '...');
+            this.imageCache[cacheKey] = imageUrl;
+            this.preloadImage(imageUrl);
+            delete this.fetchingPromises[cacheKey];
+            return imageUrl;
+          } else {
+            console.warn('⚠️ No image found for:', product.title);
+            this.imageCache[cacheKey] = null;
+            delete this.fetchingPromises[cacheKey];
+            return null;
+          }
+        } catch (error) {
+          console.error('❌ Error fetching:', error);
+          this.imageCache[cacheKey] = null;
+          delete this.fetchingPromises[cacheKey];
+          return null;
+        }
+      })();
+
+      return this.fetchingPromises[cacheKey];
+    },
+  };
+</script>
+
+<div id="bp-header">
+  <nav class="bp-navbar">
+    <div class="bp-navbar-left">
+      <a href="/" class="bp-brand">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0777/5879/files/Budget_Promotion.png?v=1760896617"
+          alt="Budget Promotion Logo"
+        >
+      </a>
+      <div class="bp-burger" id="bp-burger">
+        <span class="bp-burger-line"></span>
+        <span class="bp-burger-line"></span>
+        <span class="bp-burger-line"></span>
+      </div>
+    </div>
+
+    <div class="bp-navbar-center">
+      <span class="bp-overlay" id="bp-overlay"></span>
+      <div class="bp-menu" id="bp-menu">
+        <div class="bp-menu-header">
+          <span class="bp-menu-arrow" id="bp-back-arrow">←</span>
+          <span class="bp-menu-title" id="bp-menu-title">Menu</span>
+        </div>
+
+        <ul class="bp-menu-inner">
+          <li class="bp-menu-item bp-menu-dropdown" data-menu="Collections">
+            <a href="/pages/collection-list" class="bp-menu-link">
+              Collections
+              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path d="m44 20.3431-18 18v-34.3431h-4v34.3431l-18-18v5.6569l18 18h4l18-18z" fill="currentColor"/>
+              </svg>
+            </a>
+
+            <div class="bp-submenu bp-megamenu">
+              <div class="bp-submenu-header">
+                <span class="bp-submenu-back">←</span>
+                <span class="bp-submenu-header-title">Collections</span>
+              </div>
+
+              <div class="bp-submenu-wrapper">
+                <!-- Left Side: Collection Categories -->
+                <div class="bp-submenu-categories">
+                  <!-- EVENTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="events"
+                    data-collection-image="{{ collections.events.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/events" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Events</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Custom apparel for conferences, festivals, concerts, and special occasions.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- TRADES -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="trades"
+                    data-collection-image="{{ collections.trade.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/trade" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Trades</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Durable workwear for construction, plumbing, electrical, and skilled trades.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- CAMPS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="camps"
+                    data-collection-image="{{ collections.camps.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/camps" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3L1 11.4l1.6 1.8L4 12v8h16v-8l1.4 1.2L23 11.4 12 3zm6 16h-5v-5h-2v5H6v-9l6-5.1 6 5.1v9z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Camps</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Fun designs for summer camps, sports camps, and outdoor adventures.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- SCHOOLS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="schools"
+                    data-collection-image="{{ collections.school.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/school" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Schools</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Spirit wear, uniforms, and custom gear for educational institutions.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- SPORTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="sports"
+                    data-collection-image="{{ collections.sport.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/sport" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Sports</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Team jerseys, practice gear, and fan apparel for all athletic programs.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- NON-PROFITS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="non-profits"
+                    data-collection-image="{{ collections['non-profits'].image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/non-profits" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Non-Profits</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Branded apparel for charities, foundations, and community organizations.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- RESTAURANTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="restaurants"
+                    data-collection-image="{{ collections.restaurant.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/restaurant" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Restaurants</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Professional uniforms and branded apparel for food service industry.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- CORPORATES -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="corporates"
+                    data-collection-image="{{ collections.corporates.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/corporates" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 7h-4V5l-2-2h-4L8 5v2H4c-1.1 0-2 .9-2 2v5c0 .75.4 1.38 1 1.73V19c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2v-3.28c.59-.35 1-.99 1-1.72V9c0-1.1-.9-2-2-2zM10 5h4v2h-4V5zM4 9h16v5h-5v-3H9v3H4V9zm9 6h-2v-2h2v2zm6 4H5v-3h4v1h6v-1h4v3z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Corporates</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Professional branded merchandise for businesses and corporate teams.
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- RETAIL -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="retail"
+                    data-collection-image="{{ collections.retail.image | img_url: '800x800' }}"
+                  >
+                    <a href="/collections/retail" style="text-decoration: none;">
+                      <div class="bp-category-header">
+                        <div class="bp-category-icon">
+                          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                          </svg>
+                        </div>
+                        <h4 class="bp-category-title">Retail</h4>
+                      </div>
+                      <p class="bp-category-description">
+                        Custom merchandise and branded clothing for retail businesses.
+                      </p>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Right Side: Dynamic Image Display -->
+                <div class="bp-submenu-image-display">
+                  <h3 class="bp-image-display-header" id="collections-image-title">Hover to Preview</h3>
+                  <div class="bp-image-display-container">
+                    <div class="bp-image-placeholder">Hover over a category to see images</div>
+                    <img id="collections-display-image" class="bp-display-image" src="" alt="Category Image">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="bp-menu-item bp-menu-dropdown" data-menu="Custom Apparel">
+            <a href="/collections" class="bp-menu-link">
+              Custom Apparel
+              <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path d="m44 20.3431-18 18v-34.3431h-4v34.3431l-18-18v5.6569l18 18h4l18-18z" fill="currentColor"/>
+              </svg>
+            </a>
+
+            <div class="bp-submenu bp-megamenu">
+              <div class="bp-submenu-header">
+                <span class="bp-submenu-back">←</span>
+                <span class="bp-submenu-header-title">Custom Apparel</span>
+              </div>
+
+              <div class="bp-submenu-wrapper">
+                <!-- Left Side: Categories -->
+                <div class="bp-submenu-categories">
+                  <!-- T-SHIRTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="t-shirts"
+                    data-collection-image="{{ collections['t-shirts'].image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 4L18 6L22 4L20 2L18 6L16 4ZM8 4L6 6L2 4L4 2L6 6L8 4ZM12 6C8.5 6 6 8 6 8V20C6 21 7 22 8 22H16C17 22 18 21 18 20V8C18 8 15.5 6 12 6Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/t-shirts">T-Shirts</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Short+Sleeves">
+                        <a href="/collections/t-shirts?subcategory=Short+Sleeves">Short Sleeve</a>
+                      </li>
+                      <li data-subcategory="Long+Sleeves">
+                        <a href="/collections/t-shirts?subcategory=Long+Sleeves">Long Sleeve</a>
+                      </li>
+                      <li data-subcategory="3%2F4+Sleeves">
+                        <a href="/collections/t-shirts?subcategory=3%2F4+Sleeves">3/4 Sleeve</a>
+                      </li>
+                      <li data-subcategory="Tank+Top">
+                        <a href="/collections/t-shirts?subcategory=Tank+Top">Tank Top</a>
+                      </li>
+                      <li data-subcategory="Youth">
+                        <a href="/collections/t-shirts?subcategory=Youth">Youth & Toddler</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- OUTERWEAR -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="outerwear"
+                    data-collection-image="{{ collections.outerwear.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M21 6L18 2L16 4L12 2L8 4L6 2L3 6V20C3 21 4 22 5 22H19C20 22 21 21 21 20V6ZM12 4L16 6V8L12 10L8 8V6L12 4ZM19 20H5V8L7 10V12L12 14L17 12V10L19 8V20Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/outerwear">Outerwear</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Fleece"><a href="/collections/outerwear?subcategory=Fleece">Fleece</a></li>
+                      <li data-subcategory="Windbreaker">
+                        <a href="/collections/outerwear?subcategory=Windbreaker">Windbreaker</a>
+                      </li>
+                      <li data-subcategory="Softshells">
+                        <a href="/collections/outerwear?subcategory=Softshells">Softshells</a>
+                      </li>
+                      <li data-subcategory="Winter+Jackets">
+                        <a href="/collections/outerwear?subcategory=Winter+Jackets">Winter Jackets</a>
+                      </li>
+                      <li data-subcategory="Vests"><a href="/collections/outerwear?subcategory=Vests">Vests</a></li>
+                    </ul>
+                  </div>
+
+                  <!-- POLOS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="polos"
+                    data-collection-image="{{ collections.polos.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 3L18 5L22 3L20 1L18 5L16 3ZM8 3L6 5L2 3L4 1L6 5L8 3ZM12 7C12 7 9 7 7 9V11H9V22H15V11H17V9C15 7 12 7 12 7Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/polos">Polos</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Short+Sleeve">
+                        <a href="/collections/polos?subcategory=Short+Sleeve">Short Sleeve</a>
+                      </li>
+                      <li data-subcategory="Long+Sleeve">
+                        <a href="/collections/polos?subcategory=Long+Sleeve">Long Sleeve</a>
+                      </li>
+                      <li data-subcategory="Ladies"><a href="/collections/polos?subcategory=Ladies">Ladies</a></li>
+                    </ul>
+                  </div>
+
+                  <!-- SWEATSHIRTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="sweatshirts"
+                    data-collection-image="{{ collections.sweatshirts.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 2L18 4L22 2L20 0L18 4L16 2ZM8 2L6 4L2 2L4 0L6 4L8 2ZM12 5C8.5 5 6 7 6 7V9H7V22H17V9H18V7C18 7 15.5 5 12 5ZM12 7C13 7 14 7.5 14 7.5V9H10V7.5C10 7.5 11 7 12 7Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/sweatshirts">Sweatshirts</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Hooded">
+                        <a href="/collections/sweatshirts?subcategory=Pullover+Hoodie">Hooded</a>
+                      </li>
+                      <li data-subcategory="Crewneck">
+                        <a href="/collections/sweatshirts?subcategory=Crewneck">Crewneck</a>
+                      </li>
+                      <li data-subcategory="Zip-Up">
+                        <a href="/collections/sweatshirts?subcategory=Zip-Up">Zip-Up</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- JERSEYS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="jerseys"
+                    data-collection-image="{{ collections.jersey.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3 3V7L5 9V21H19V9L21 7V3H15L12 6L9 3H3ZM12 8L14 10H10L12 8Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/jersey">Jerseys</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Hockey"><a href="/collections/jerseys?subcategory=Hockey">Hockey</a></li>
+                      <li data-subcategory="Volleyball">
+                        <a href="/collections/jerseys?subcategory=Volleyball">Volleyball</a>
+                      </li>
+                      <li data-subcategory="Soccer"><a href="/collections/jerseys?subcategory=Soccer">Soccer</a></li>
+                      <li data-subcategory="Basketball">
+                        <a href="/collections/jerseys?subcategory=Basketball">Basketball</a>
+                      </li>
+                      <li data-subcategory="Other"><a href="/collections/jerseys?subcategory=Other">Other</a></li>
+                    </ul>
+                  </div>
+
+                  <!-- PANTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="pants"
+                    data-collection-image="{{ collections.pants.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8 2V22H10V12H14V22H16V2H14V10H10V2H8Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/pants">Pants</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Sweatpants">
+                        <a href="/collections/pants?subcategory=Sweatpants">Sweatpants</a>
+                      </li>
+                      <li data-subcategory="Shorts"><a href="/collections/pants?subcategory=Shorts">Shorts</a></li>
+                    </ul>
+                  </div>
+
+                  <!-- HEADWEAR -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="headwear"
+                    data-collection-image="{{ collections.headwear-1.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 2C6.5 2 2 6.5 2 12V18H6V12C6 8.7 8.7 6 12 6C15.3 6 18 8.7 18 12V18H22V12C22 6.5 17.5 2 12 2Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/headwear-1">Headwear</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Hats"><a href="/collections/headwear-1?subcategory=Hats">Hats</a></li>
+                      <li data-subcategory="Toques"><a href="/collections/headwear-1?subcategory=Toques">Toques</a></li>
+                    </ul>
+                  </div>
+
+                  <!-- WOVEN & DRESS SHIRTS -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="dress-shirts"
+                    data-collection-image="{{ collections['woven-dress-shirts'].image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M17 2L19 4L23 2L21 0L19 4L17 2ZM7 2L5 4L1 2L3 0L5 4L7 2ZM12 6C9 6 6 8 6 8V22H18V8C18 8 15 6 12 6ZM12 8C13 8 14 8.5 14 8.5V11H10V8.5C10 8.5 11 8 12 8ZM8 13H16V15H8V13ZM8 17H16V19H8V17Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/woven-dress-shirts">WOVEN & DRESS SHIRTS</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Short+Sleeve">
+                        <a href="/collections/woven-dress-shirts?subcategory=Short+Sleeve">Short Sleeve</a>
+                      </li>
+                      <li data-subcategory="Long+Sleeve">
+                        <a href="/collections/woven-dress-shirts?subcategory=Long+Sleeve">Long Sleeve</a>
+                      </li>
+                      <li data-subcategory="Ladies">
+                        <a href="/collections/woven-dress-shirts?subcategory=Ladies">Ladies</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- ACCESSORIES -->
+                  <div
+                    class="bp-category-block"
+                    data-collection="accessories"
+                    data-collection-image="{{ collections.accessories.image | img_url: '800x800' }}"
+                  >
+                    <div class="bp-category-header">
+                      <div class="bp-category-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 2L2 7V17L12 22L22 17V7L12 2ZM12 4.5L19 8.25V15.75L12 19.5L5 15.75V8.25L12 4.5Z"/>
+                        </svg>
+                      </div>
+                      <h4 class="bp-category-title">
+                        <a href="/collections/accessories">ACCESSORIES</a>
+                      </h4>
+                    </div>
+                    <ul class="bp-category-list">
+                      <li data-subcategory="Tote+Bags">
+                        <a href="/collections/accessories?subcategory=Tote+Bags">Tote Bags</a>
+                      </li>
+                      <li data-subcategory="Aprons">
+                        <a href="/collections/accessories?subcategory=Aprons">Aprons</a>
+                      </li>
+                      <li data-subcategory="Backpacks">
+                        <a href="/collections/accessories?subcategory=Backpacks">Backpacks</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Right Side: Dynamic Image Display -->
+                <div class="bp-submenu-image-display">
+                  <h3 class="bp-image-display-header" id="apparel-image-title">Hover to Preview</h3>
+                  <div class="bp-image-display-container">
+                    <div class="bp-image-placeholder">Hover over a category to see images</div>
+                    <img id="apparel-display-image" class="bp-display-image" src="" alt="Category Image">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="bp-menu-item">
+            <a href="/collections/promotional-products" class="bp-menu-link">Promotional Products</a>
+          </li>
+
+          <li class="bp-menu-item">
+            <a href="/collections/new-arrivals" class="bp-menu-link">New Arrivals</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bp-navbar-right">
+      <a href="/pages/same-day-delivery" class="bp-countdown-btn">
+        <span>Same Day</span>
+        <span id="bp-timer">00:00:00</span>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const burger = document.getElementById('bp-burger');
+    const menu = document.getElementById('bp-menu');
+    const overlay = document.getElementById('bp-overlay');
+    const menuTitle = document.getElementById('bp-menu-title');
+    const mainBackArrow = document.getElementById('bp-back-arrow');
+    const dropdowns = document.querySelectorAll('.bp-menu-dropdown');
+
+    // Image cache reference
+    const imageCache = window.BP_NavImageCache;
+
+    // Track current displayed image to prevent flickering
+    let currentCollectionImage = '';
+    let currentApparelImage = '';
+
+    function isMobile() {
+      return window.innerWidth <= 1230;
+    }
+
+    // Burger menu toggle
+    burger.addEventListener('click', () => {
+      menu.classList.toggle('active');
+      burger.classList.toggle('active');
+      overlay.classList.toggle('active');
+      document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Overlay click to close
+    overlay.addEventListener('click', () => {
+      closeAllMenus();
+    });
+
+    // Close all menus function
+    function closeAllMenus() {
+      menu.classList.remove('active');
+      burger.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      mainBackArrow.classList.remove('show');
+      dropdowns.forEach((dropdown) => {
+        dropdown.classList.remove('active');
+      });
+      menuTitle.textContent = 'Menu';
+    }
+
+    // Function to display image with smooth transition
+    function displayImage(imageUrl, title, imageElementId, titleElementId, trackingVar) {
+      if (!imageUrl) {
+        console.log('No image URL provided');
+        return;
+      }
+
+      // Prevent re-displaying the same image
+      if (trackingVar === 'collections' && currentCollectionImage === imageUrl) {
+        return;
+      }
+      if (trackingVar === 'apparel' && currentApparelImage === imageUrl) {
+        return;
+      }
+
+      const imgElement = document.getElementById(imageElementId);
+      const titleElement = document.getElementById(titleElementId);
+      const placeholder = imgElement.previousElementSibling;
+
+      console.log('Displaying image:', imageUrl);
+      console.log('Title:', title);
+
+      // Hide placeholder
+      if (placeholder && placeholder.classList.contains('bp-image-placeholder')) {
+        placeholder.style.display = 'none';
+      }
+
+      // Fade out current image
+      imgElement.classList.remove('active');
+
+      // Wait for fade out, then change image
+      setTimeout(() => {
+        imgElement.src = imageUrl;
+        titleElement.textContent = title;
+
+        // Fade in new image
+        setTimeout(() => {
+          imgElement.classList.add('active');
+        }, 50);
+      }, 300);
+
+      // Update tracking
+      if (trackingVar === 'collections') {
+        currentCollectionImage = imageUrl;
+      } else if (trackingVar === 'apparel') {
+        currentApparelImage = imageUrl;
+      }
+    }
+
+    // Preload all collection images on page load for instant display
+    function preloadAllCollectionImages() {
+      console.log('=== PRELOADING COLLECTION IMAGES ===');
+      const allCategoryBlocks = document.querySelectorAll('.bp-category-block[data-collection-image]');
+      console.log('Found collection blocks:', allCategoryBlocks.length);
+
+      allCategoryBlocks.forEach((block) => {
+        const imageUrl = block.dataset.collectionImage;
+        const collection = block.dataset.collection;
+        console.log(`Collection: ${collection}, Image: ${imageUrl}`);
+
+        if (imageUrl && imageUrl !== '' && !imageUrl.includes('null') && !imageUrl.includes('undefined')) {
+          imageCache.preloadImage(imageUrl);
+        } else {
+          console.warn(`⚠️ No valid image for collection: ${collection}`);
+        }
+      });
+    }
+
+    // Call preload after a short delay to not block initial page load
+    setTimeout(preloadAllCollectionImages, 100);
+
+    // Setup hover listeners for Collections menu (main categories show collection images)
+    const collectionsMenu = document.querySelector('[data-menu="Collections"]');
+    if (collectionsMenu) {
+      const categoryBlocks = collectionsMenu.querySelectorAll('.bp-category-block[data-collection]');
+      console.log('Setting up Collections menu hover listeners for', categoryBlocks.length, 'blocks');
+
+      categoryBlocks.forEach((block) => {
+        block.addEventListener('mouseenter', function () {
+          if (isMobile()) return;
+
+          let imageUrl = this.dataset.collectionImage;
+          const collectionHandle = this.dataset.collection;
+
+          console.log('Hovered on collection:', collectionHandle);
+          console.log('Image URL:', imageUrl);
+
+          // Handle cases where Liquid might output empty or malformed URLs
+          if (!imageUrl || imageUrl === '' || imageUrl.includes('null') || imageUrl.includes('undefined')) {
+            console.warn('⚠️ No collection image found for:', collectionHandle);
+            return;
+          }
+
+          const title = this.querySelector('.bp-category-title').textContent.trim();
+          displayImage(imageUrl, title, 'collections-display-image', 'collections-image-title', 'collections');
+        });
+      });
+    }
+
+    // Setup hover listeners for Custom Apparel menu
+    const apparelMenu = document.querySelector('[data-menu="Custom Apparel"]');
+    if (apparelMenu) {
+      const categoryBlocks = apparelMenu.querySelectorAll('.bp-category-block[data-collection]');
+      console.log('Setting up Custom Apparel menu hover listeners for', categoryBlocks.length, 'blocks');
+
+      categoryBlocks.forEach((block) => {
+        const collectionHandle = block.dataset.collection;
+        let subcategoriesPreloaded = false;
+
+        // Hover on main category - show collection image and preload subcategories
+        block.addEventListener('mouseenter', function () {
+          if (isMobile()) return;
+
+          let imageUrl = this.dataset.collectionImage;
+
+          console.log('Hovered on apparel collection:', collectionHandle);
+          console.log('Image URL:', imageUrl);
+
+          // Handle cases where Liquid might output empty or malformed URLs
+          if (!imageUrl || imageUrl === '' || imageUrl.includes('null') || imageUrl.includes('undefined')) {
+            console.warn('⚠️ No collection image found for:', collectionHandle);
+            return;
+          }
+
+          const title = this.querySelector('.bp-category-title a').textContent.trim();
+          displayImage(imageUrl, title, 'apparel-display-image', 'apparel-image-title', 'apparel');
+        });
+      });
+    }
+
+    // Dropdown handling
+    dropdowns.forEach((dropdown) => {
+      const submenu = dropdown.querySelector('.bp-submenu');
+      const submenuBackBtn = submenu ? submenu.querySelector('.bp-submenu-back') : null;
+      const menuLink = dropdown.querySelector('.bp-menu-link');
+      const menuSvg = menuLink ? menuLink.querySelector('svg') : null;
+
+      // Handle SVG icon click to open dropdown (mobile only)
+      if (menuSvg) {
+        menuSvg.addEventListener('click', function (e) {
+          if (!isMobile()) return;
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          dropdowns.forEach((d) => {
+            if (d !== dropdown) {
+              d.classList.remove('active');
+            }
+          });
+
+          if (!dropdown.classList.contains('active')) {
+            dropdown.classList.add('active');
+            const title = dropdown.getAttribute('data-menu') || 'Submenu';
+            menuTitle.textContent = title;
+            mainBackArrow.classList.add('show');
+          } else {
+            dropdown.classList.remove('active');
+            menuTitle.textContent = 'Menu';
+            mainBackArrow.classList.remove('show');
+          }
+        });
+      }
+
+      // Submenu back button
+      if (submenuBackBtn) {
+        submenuBackBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropdown.classList.remove('active');
+          menuTitle.textContent = 'Menu';
+          mainBackArrow.classList.remove('show');
+        });
+      }
+    });
+
+    // Main back arrow
+    mainBackArrow.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const activeDropdown = document.querySelector('.bp-menu-dropdown.active');
+      if (activeDropdown) {
+        activeDropdown.classList.remove('active');
+        menuTitle.textContent = 'Menu';
+        mainBackArrow.classList.remove('show');
+      }
+    });
+
+    // Countdown Timer
+    const timer = document.getElementById('bp-timer');
+
+    function getNextEndTimeMST() {
+      const now = new Date();
+      const nowMST = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+      const endTimeMST = new Date(nowMST);
+
+      endTimeMST.setHours(11, 0, 0, 0);
+
+      const day = nowMST.getDay();
+
+      if (day === 5 && nowMST.getTime() < endTimeMST.getTime()) {
+        return endTimeMST;
+      } else if (day === 5 && nowMST.getTime() >= endTimeMST.getTime()) {
+        const daysUntilMonday = 3;
+        endTimeMST.setDate(endTimeMST.getDate() + daysUntilMonday);
+      } else if (day === 6 || day === 0) {
+        const daysUntilMonday = (1 + 7 - day) % 7;
+        endTimeMST.setDate(endTimeMST.getDate() + daysUntilMonday);
+      } else {
+        if (nowMST.getTime() >= endTimeMST.getTime()) {
+          endTimeMST.setDate(endTimeMST.getDate() + 1);
+        }
+      }
+
+      return endTimeMST;
+    }
+
+    let endTimeMST = getNextEndTimeMST();
+
+    function updateTimer() {
+      const now = new Date();
+      const nowMST = new Date(now.toLocaleString('en-US', { timeZone: 'America/Denver' }));
+      let diff = endTimeMST - nowMST;
+
+      if (diff <= 0) {
+        endTimeMST = getNextEndTimeMST();
+        diff = endTimeMST - nowMST;
+      }
+
+      const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+      const m = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
+      const s = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+
+      timer.textContent = `${h}:${m}:${s}`;
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    // Close menus on window resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1230) {
+        closeAllMenus();
+      }
+    });
+  });
+</script>
+
+<script>
+  // Sticky Header on Scroll
+  const header = document.getElementById('bp-header');
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > 50) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
+  });
+</script>

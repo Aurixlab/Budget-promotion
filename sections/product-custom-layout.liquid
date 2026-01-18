@@ -1,0 +1,892 @@
+<style>
+.pcq-img,
+.pcq-title,
+.pcq-short-desc > *,
+.pcq-options,
+.btn-quote,
+.btn-customize,
+.product-accordion {
+  opacity: 0;
+}
+
+/* Button styles with enhanced transitions */
+.btn-quote,
+.btn-customize {
+  transition: box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.btn-quote:hover,
+.btn-customize:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Image container improvements */
+.pcq-img {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Performance optimization */
+.pcq-media-grid {
+  transform: translateZ(0);
+  will-change: transform;
+}
+</style>
+
+<section class="pcq-product-layout" role="region" aria-label="Product custom quote layout">
+  <div class="pcq-container">
+    <!-- LEFT: 2x2 image grid -->
+    <div class="pcq-media">
+      <div class="pcq-media-grid">
+        {% assign imgs = product.images %}
+        <img
+          id="pcq-img-1"
+          class="pcq-img"
+          src="{% if imgs.size > 0 %}{{ imgs[0] | img_url: '1024x' }}{% else %}{{ 'no-image.svg' | asset_url }}{% endif %}"
+          alt="{{ product.title }} image 1"
+        >
+        <img
+          id="pcq-img-2"
+          class="pcq-img"
+          src="{% if imgs.size > 1 %}{{ imgs[1] | img_url: '1024x' }}{% else %}{{ imgs[0] | img_url: '1024x' }}{% endif %}"
+          alt="{{ product.title }} image 2"
+        >
+        <img
+          id="pcq-img-3"
+          class="pcq-img"
+          src="{% if imgs.size > 2 %}{{ imgs[2] | img_url: '1024x' }}{% else %}{{ imgs[0] | img_url: '1024x' }}{% endif %}"
+          alt="{{ product.title }} image 3"
+        >
+        <img
+          id="pcq-img-4"
+          class="pcq-img"
+          src="{% if imgs.size > 3 %}{{ imgs[3] | img_url: '1024x' }}{% else %}{{ imgs[0] | img_url: '1024x' }}{% endif %}"
+          alt="{{ product.title }} image 4"
+        >
+      </div>
+    </div>
+
+    <!-- RIGHT: product info, options and small summary -->
+    <div class="pcq-info">
+      <h1 class="pcq-title">{{ product.title }}</h1>
+
+      <!-- PRODUCT SHORT DESCRIPTION -->
+      <div class="pcq-short-desc">
+        {% if product.metafields.custom.product_style_number != blank %}
+          <p class="italic-sms">Style: {{ product.metafields.custom.product_style_number }}</p>
+        {% endif %}
+
+        {% if product.metafields.custom.price_info != blank %}
+          <p class="sms-bold">{{ product.metafields.custom.price_info }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Shopify default options (Color, Size, etc) shown as selects -->
+      <!-- Product options (Color swatches, Size buttons, etc.) -->
+      <div class="pcq-options">
+        {% include 'product-form' with 'product' %}
+      </div>
+
+      <!-- Product action buttons -->
+      <div class="product-action-buttons">
+        <button
+          type="button"
+          class="btn-quote"
+          id="openQuoteForm"
+        >
+          Get a Free Quote
+        </button>
+
+        <button type="button" class="btn-customize" id="productCustomizerWrapper">Customize</button>
+      </div>
+
+      <div class="product-accordion">
+        <!-- Accordion 1 -->
+        {% assign texts1 = product.metafields.custom.accordion1_texts.value %}
+        {% assign icons1_json = product.metafields.custom.accordion1_icons.value | json %}
+        {% if texts1 and texts1.size > 0 %}
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-feature.png?v=1760034684" alt="">
+              </span>
+              <span class="accordion-title">Product Features</span>
+              <span class="accordion-symbol">+</span>
+            </button>
+            <div class="accordion-content">
+              <ul>
+                {% assign icons_array = icons1_json | remove: '[' | remove: ']' | remove: '"' | split: ',' %}
+                {% for text in texts1 %}
+                  <li>
+                    {% assign icon_url = icons_array[forloop.index0] %}
+                    {% if icon_url and icon_url != '' %}
+                      <img src="https:{{ icon_url }}" alt="icon" class="li-icon">
+                    {% endif %}
+                    {{ text }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Accordion 2 -->
+        {% assign texts2 = product.metafields.custom.accordion2_texts.value %}
+        {% assign icons2_json = product.metafields.custom.accordion2_icons.value | json %}
+        {% if texts2 and texts2.size > 0 %}
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-formal.png?v=1760034685" alt="">
+              </span>
+              <span class="accordion-title">Best Use for </span>
+              <span class="accordion-symbol">+</span>
+            </button>
+            <div class="accordion-content">
+              <ul>
+                {% assign icons_array = icons2_json | remove: '[' | remove: ']' | remove: '"' | split: ',' %}
+                {% for text in texts2 %}
+                  <li>
+                    {% assign icon_url = icons_array[forloop.index0] %}
+                    {% if icon_url and icon_url != '' %}
+                      <img src="https:{{ icon_url }}" alt="icon" class="li-icon">
+                    {% endif %}
+                    {{ text }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Accordion 3 -->
+        {% assign texts3 = product.metafields.custom.accordion3_texts.value %}
+        {% assign icons3_json = product.metafields.custom.accordion3_icons.value | json %}
+        {% if texts3 and texts3.size > 0 %}
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-material.png?v=1760034685" alt="">
+              </span>
+              <span class="accordion-title">Material and Care</span>
+              <span class="accordion-symbol">+</span>
+            </button>
+            <div class="accordion-content">
+              <ul>
+                {% assign icons_array = icons3_json | remove: '[' | remove: ']' | remove: '"' | split: ',' %}
+                {% for text in texts3 %}
+                  <li>
+                    {% assign icon_url = icons_array[forloop.index0] %}
+                    {% if icon_url and icon_url != '' %}
+                      <img src="https:{{ icon_url }}" alt="icon" class="li-icon">
+                    {% endif %}
+                    {{ text }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Accordion 4 -->
+        {% assign texts4 = product.metafields.custom.accordion4_texts.value %}
+        {% assign icons4_json = product.metafields.custom.accordion4_icons.value | json %}
+        {% if texts4 and texts4.size > 0 %}
+          <div class="accordion-item">
+            <button class="accordion-header">
+              <span class="icon">
+                <img src="https://cdn.shopify.com/s/files/1/0777/5879/files/icon-fit.png?v=1760034684" alt="">
+              </span>
+              <span class="accordion-title">Customization & Fit</span>
+              <span class="accordion-symbol">+</span>
+            </button>
+            <div class="accordion-content">
+              <ul>
+                {% assign icons_array = icons4_json | remove: '[' | remove: ']' | remove: '"' | split: ',' %}
+                {% for text in texts4 %}
+                  <li>
+                    {% assign icon_url = icons_array[forloop.index0] %}
+                    {% if icon_url and icon_url != '' %}
+                      <img src="https:{{ icon_url }}" alt="icon" class="li-icon">
+                    {% endif %}
+                    {{ text }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- schema for theme editor -->
+  {% schema %}
+{
+  "name": "Product custom layout",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Product custom layout"
+    }
+  ]
+}
+  {% endschema %}
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Build JS arrays from Liquid (safe JSON output)
+    var allImages = [
+      {% for img in product.images %}
+        { src: {{ img | img_url: '1024x' | json }}, alt: {{ img.alt | json }} }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ];
+
+    var productOptions = {{ product.options_with_values | json }};
+    var productVariants = {{ product.variants | json }};
+
+    // Helper: derive color key from image object (alt or filename prefix)
+    // Extracts color name, ignoring numeric suffixes (e.g., "purple-11" -> "purple")
+    function imageColorKey(img) {
+      var result = null;
+
+      // Try filename first (most reliable for your naming scheme)
+      try {
+        var filename = img.src.split('/').pop().split('?')[0];
+        // Remove file extension and decode URL encoding
+        var name = decodeURIComponent(filename.split('.')[0]);
+
+        console.log('📸 Processing image filename:', name);
+
+        if (name.indexOf('-') > -1 || name.indexOf('_') > -1) {
+          var parts = name.split(/[-_]/);
+          var colorParts = [];
+
+          for (var i = 0; i < parts.length; i++) {
+            var part = parts[i].trim();
+            // Stop when we hit a numeric-only part
+            if (/^\d+$/.test(part)) break;
+            if (part) colorParts.push(part);
+          }
+
+          if (colorParts.length > 0) {
+            result = colorParts.join('-').toLowerCase();
+            console.log('  ✅ Extracted color from filename:', result);
+            return result;
+          }
+        }
+      } catch(e){
+        console.log('  ⚠️ Error extracting from filename:', e);
+      }
+
+      // Try alt text as fallback
+      var alt = (img.alt || '').toString().trim();
+      if (alt && alt.toLowerCase().indexOf('image') === -1) {
+        console.log('📝 Trying alt text:', alt);
+
+        if (alt.indexOf('-') > -1 || alt.indexOf('_') > -1) {
+          var parts = alt.split(/[-_]/);
+          var colorParts = [];
+
+          for (var i = 0; i < parts.length; i++) {
+            var part = parts[i].trim();
+            // Stop when we hit a numeric-only part
+            if (/^\d+$/.test(part)) break;
+            if (part) colorParts.push(part);
+          }
+
+          if (colorParts.length > 0) {
+            result = colorParts.join('-').toLowerCase();
+            console.log('  ✅ Extracted color from alt:', result);
+            return result;
+          }
+        }
+      }
+
+      console.log('  ⚠️ Could not extract color, returning null');
+      return null;
+    }
+
+    // Group images by colorKey
+    var imagesByColor = {};
+    allImages.forEach(function(img){
+      var key = imageColorKey(img);
+
+      // Only try product option matching if we couldn't extract from filename/alt
+      if (!key) {
+        console.log('⚠️ No color key found for image, trying option values match:', img.src);
+        // attempt to match against option values
+        productOptions.forEach(function(opt){
+          opt.values.forEach(function(v){
+            var vlow = v.toString().toLowerCase();
+            var srcLow = img.src.toLowerCase();
+            // Check if the color value appears in the filename
+            if (srcLow.indexOf(vlow.replace(/\s+/g, '-')) !== -1 ||
+                srcLow.indexOf(vlow.replace(/\s+/g, '_')) !== -1 ||
+                srcLow.indexOf(vlow.replace(/\s+/g, '')) !== -1) {
+              key = vlow;
+              console.log('  ✅ Matched via option value:', key);
+            }
+          });
+        });
+      }
+
+      if (!key) {
+        key = 'default';
+        console.log('  ⚠️ Using default key for:', img.src);
+      }
+
+      if (!imagesByColor[key]) imagesByColor[key] = [];
+      imagesByColor[key].push(img.src);
+    });
+
+    console.log('🎨 Final image groups:', imagesByColor);
+
+    // Normalize keys set
+    var colorKeys = Object.keys(imagesByColor).map(function(k){ return k.toLowerCase(); });
+
+    // Find the option index for color (look for option name with 'color' keywords)
+    var colorOptionIndex = -1;
+    for (var i=0; i<productOptions.length; i++){
+      var oname = (productOptions[i].name || '').toString().toLowerCase();
+      if (oname.match(/color|colour|shade|tone|colourway/i)) { colorOptionIndex = i; break; }
+    }
+    // If not found, attempt to find option whose values match image keys
+    if (colorOptionIndex === -1) {
+      for (var i=0; i<productOptions.length; i++){
+        var values = productOptions[i].values || [];
+        var matched = values.some(function(v){ return colorKeys.indexOf(v.toString().toLowerCase()) !== -1; });
+        if (matched) { colorOptionIndex = i; break; }
+      }
+    }
+    // final fallback to option 0
+    if (colorOptionIndex === -1) colorOptionIndex = 0;
+
+    // Utility: read selected value for option index (works for selects, radios, swatches)
+    function getSelectedOptionValue(idx) {
+      var optionName = 'option' + (idx + 1);
+
+      // 1) try select element
+      var select = document.querySelector('select[name="' + optionName + '"]');
+      if (select) return select.value;
+
+      // 2) try radio / inputs
+      var inputs = document.querySelectorAll('input[name="' + optionName + '"]');
+      if (inputs && inputs.length) {
+        for (var i=0;i<inputs.length;i++){
+          if (inputs[i].checked) return inputs[i].value;
+        }
+      }
+
+      // 3) try swatch elements commonly used: check data-option-index or data-value attributes
+      var swatchContainer = document.querySelector('[data-option-index="' + idx + '"], .swatch[data-option-index="' + idx + '"]');
+      if (swatchContainer) {
+        // look for element with aria-pressed or active class or input checked
+        var active = swatchContainer.querySelector('[aria-pressed="true"], .active, .is-active, input:checked');
+        if (active) {
+          // prefer data-value or value attribute or text
+          return active.getAttribute('data-value') || active.value || (active.textContent || '').trim();
+        }
+        // fallback: check children with data-value
+        var any = swatchContainer.querySelector('[data-value]');
+        if (any) return any.getAttribute('data-value');
+      }
+
+      // 4) fallback via hidden variant id -> find variant -> read option value
+      var variantIdInput = document.querySelector('form[action^="/cart"] input[name="id"], form[action^="/cart/add"] input[name="id"]');
+      if (variantIdInput) {
+        var vid = variantIdInput.value;
+        if (vid) {
+          var v = productVariants.find(function(x){ return String(x.id) === String(vid) || String(x.id) === String(vid).replace('gid://shopify/ProductVariant/',''); });
+          if (v) {
+            // variants often have properties option1/option2 or options array
+            if (v.hasOwnProperty('option' + (idx+1))) return v['option' + (idx+1)];
+            if (v.options && v.options[idx]) return v.options[idx];
+          }
+        }
+      }
+
+      return null;
+    }
+
+    // The 4 image DOM elements
+    var slotEls = [
+      document.getElementById('pcq-img-1'),
+      document.getElementById('pcq-img-2'),
+      document.getElementById('pcq-img-3'),
+      document.getElementById('pcq-img-4')
+    ];
+
+    function fadeReplace(el, newSrc) {
+      if (!el) return;
+      if (el.src === newSrc) return;
+      el.classList.add('fade-out');
+      setTimeout(function(){
+        el.src = newSrc;
+        // ensure visible after image loads
+        el.onload = function(){ el.classList.remove('fade-out'); };
+      }, 260);
+    }
+
+    // Normalize string for comparison (remove spaces, hyphens, underscores, lowercase)
+    function normalizeColorName(str) {
+      return str.toString().toLowerCase().trim().replace(/[\s\-_]+/g, '');
+    }
+
+    // Update the 4 slots for a given selectedColor (string)
+    function updateSlotsForColor(selectedColor) {
+      console.log('🔄 updateSlotsForColor called with:', selectedColor);
+
+      if (!selectedColor) {
+        console.log('⚠️ No color selected, using default images');
+        // use default images (first 4)
+        for (var i=0;i<4;i++){
+          var fallback = allImages[i] ? allImages[i].src : '';
+          fadeReplace(slotEls[i], fallback);
+        }
+        return;
+      }
+
+      var sc = selectedColor.toString().toLowerCase().trim();
+      var scNormalized = normalizeColorName(sc);
+      console.log('🎨 Selected color (normalized):', sc, '→', scNormalized);
+
+      // find best-matching key in imagesByColor
+      var matchKey = null;
+
+      // Method 1: exact match
+      if (imagesByColor[sc]) {
+        matchKey = sc;
+        console.log('✅ Method 1: Exact match found:', matchKey);
+      }
+      // Method 2: normalized comparison (handles "Aquatic Blue" vs "aquatic-blue")
+      else {
+        console.log('🔍 Method 2: Trying normalized matching...');
+        for (var key in imagesByColor) {
+          if (!imagesByColor.hasOwnProperty(key)) continue;
+          var keyNormalized = normalizeColorName(key);
+
+          console.log('  Comparing:', scNormalized, 'vs', key, '(normalized:', keyNormalized + ')');
+
+          // Exact normalized match
+          if (keyNormalized === scNormalized) {
+            matchKey = key;
+            console.log('✅ Method 2a: Exact normalized match found:', matchKey);
+            break;
+          }
+
+          // Partial normalized match (one contains the other)
+          if (keyNormalized.indexOf(scNormalized) !== -1 || scNormalized.indexOf(keyNormalized) !== -1) {
+            matchKey = key;
+            console.log('✅ Method 2b: Partial normalized match found:', matchKey);
+            break;
+          }
+        }
+      }
+
+      // Method 3: fallback with original logic for partial matches
+      if (!matchKey) {
+        console.log('🔍 Method 3: Trying fallback partial matching...');
+        for (var key in imagesByColor) {
+          if (!imagesByColor.hasOwnProperty(key)) continue;
+          var k = key.toLowerCase();
+          if (k === sc || k.indexOf(sc) !== -1 || sc.indexOf(k) !== -1) {
+            matchKey = key;
+            console.log('✅ Method 3: Fallback match found:', matchKey);
+            break;
+          }
+        }
+      }
+
+      // Get the image list
+      var list = matchKey ? imagesByColor[matchKey] : null;
+
+      if (matchKey) {
+        console.log('📸 Using images for color key:', matchKey);
+        console.log('📸 Images to display:', list);
+      } else {
+        console.log('⚠️ No match found, using default images');
+      }
+
+      // Final fallback to first images
+      if (!list) list = allImages.map(function(i){ return i.src; });
+
+      // ensure at least 4 items (repeat last if needed)
+      while (list.length < 4) list.push(list[list.length-1] || list[0] || '');
+
+      // replace slots
+      console.log('🖼️ Updating image slots...');
+      for (var j=0;j<4;j++){
+        console.log('  Slot', (j+1), ':', list[j]);
+        fadeReplace(slotEls[j], list[j]);
+      }
+      console.log('✅ Image swap complete');
+    }
+
+    // Initial set on page load: pick currently selected color
+    var initialColor = getSelectedOptionValue(colorOptionIndex);
+    updateSlotsForColor(initialColor);
+
+    // MAIN: listen for changes:
+    // 1) listen for change events on option inputs/selects
+    var optionName = 'option' + (colorOptionIndex + 1);
+    document.addEventListener('change', function(e){
+      if (e.target && (e.target.name === optionName || e.target.matches('input[name^="option"], select[name^="option"]'))) {
+        var sc = getSelectedOptionValue(colorOptionIndex);
+        updateSlotsForColor(sc);
+      }
+    }, true);
+
+    // 2) listen for clicks on swatches (many themes use clickable elements)
+    document.addEventListener('click', function(e){
+      var el = e.target;
+      // walk up to find an element that has data-value or data-option-index matching color option
+      while (el && el !== document) {
+        if (el.hasAttribute && el.hasAttribute('data-value')) {
+          // small timeout because theme scripts may update checked inputs after click
+          setTimeout(function(){
+            var sc = getSelectedOptionValue(colorOptionIndex);
+            updateSlotsForColor(sc);
+          }, 80);
+          break;
+        }
+        el = el.parentNode;
+      }
+    }, true);
+
+    // 3) fallback: observe hidden variant id change (some themes update this)
+    var variantIdInput = document.querySelector('form[action^="/cart"] input[name="id"], form[action^="/cart/add"] input[name="id"]');
+    if (variantIdInput) {
+      variantIdInput.addEventListener('change', function(){
+        var sc = getSelectedOptionValue(colorOptionIndex);
+        updateSlotsForColor(sc);
+      });
+    }
+
+    // 4) final fallback: poll for changes (light weight, only runs short term)
+    var lastVariantId = variantIdInput ? variantIdInput.value : null;
+    var pollCount = 0;
+    var poll = setInterval(function(){
+      var cur = variantIdInput ? variantIdInput.value : null;
+      if (cur !== lastVariantId) {
+        lastVariantId = cur;
+        var sc = getSelectedOptionValue(colorOptionIndex);
+        updateSlotsForColor(sc);
+      }
+      pollCount++;
+      if (pollCount > 200) clearInterval(poll); // stop after ~20s
+    }, 100);
+
+    // Debug helper - always enabled to troubleshoot
+    window.__pcq_debug = function(){
+      console.log('=== IMAGE SWAPPING DEBUG ===');
+      console.log('All Images:', allImages);
+      console.log('Images Grouped by Color:', imagesByColor);
+      console.log('Color Keys Found:', Object.keys(imagesByColor));
+      console.log('Color Option Index:', colorOptionIndex);
+      console.log('Current Selected Color:', getSelectedOptionValue(colorOptionIndex));
+      console.log('Product Options:', productOptions);
+      console.log('=========================');
+    };
+
+    // Auto-log on page load for debugging
+    console.log('🎨 IMAGE SWAP SYSTEM INITIALIZED');
+    console.log('📸 Total images:', allImages.length);
+    console.log('🎨 Color groups found:', Object.keys(imagesByColor));
+    console.log('🔧 Color option index:', colorOptionIndex);
+    console.log('✅ Current selection:', getSelectedOptionValue(colorOptionIndex));
+    console.log('💡 Run __pcq_debug() in console for full details');
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const accordions = document.querySelectorAll('.accordion-header');
+    
+    // Check if it's desktop view
+    const isDesktop = window.innerWidth > 768; // Adjust breakpoint as needed
+    
+    // If desktop, open first item by default
+    if (isDesktop) {
+      const firstItem = document.querySelector('.accordion-item');
+      if (firstItem) {
+        firstItem.classList.add('active');
+      }
+    }
+    
+    accordions.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const open = document.querySelector('.accordion-item.active');
+        if (open && open !== item) open.classList.remove('active');
+        item.classList.toggle('active');
+      });
+    });
+  });
+</script>
+
+<!-- product data bridge -->
+<script>
+  (function() {
+    console.log('🔗 Product data bridge initialized');
+
+    // Get product title from .pcq-title element
+    const productTitleElement = document.querySelector('.pcq-title');
+    const productTitle = productTitleElement ? productTitleElement.textContent.trim() : {{ product.title | json }};
+
+    console.log('📦 Product title:', productTitle);
+
+    // Initialize global product data object
+    window.productQuoteData = {
+      title: productTitle,
+      currentColor: null,
+      productUrl: window.location.href
+    };
+
+    // Function to get selected color from swatch system
+    function getSelectedColor() {
+      // Method 1: Find checked radio input in swatch container
+      const checkedInput = document.querySelector('.swatch input[type="radio"]:checked');
+      if (checkedInput) {
+        const colorValue = checkedInput.value;
+        console.log('✅ Color found from checked input:', colorValue);
+        return colorValue;
+      }
+
+      // Method 2: Find active swatch element
+      const activeSwatch = document.querySelector('.swatch-element.active-swatch');
+      if (activeSwatch) {
+        const colorValue = activeSwatch.getAttribute('data-value');
+        if (colorValue) {
+          console.log('✅ Color found from active swatch:', colorValue);
+          return colorValue;
+        }
+      }
+
+      // Method 3: Find first checked input (fallback)
+      const anyChecked = document.querySelector('input[type="radio"][name^="option"]:checked');
+      if (anyChecked) {
+        const colorValue = anyChecked.value;
+        console.log('✅ Color found from any checked option:', colorValue);
+        return colorValue;
+      }
+
+      console.log('⚠️ No color selection found');
+      return null;
+    }
+
+    // Function to update product data
+    function updateProductData() {
+      const newColor = getSelectedColor();
+
+      if (newColor && newColor !== window.productQuoteData.currentColor) {
+        window.productQuoteData.currentColor = newColor;
+        console.log('🎨 Color updated to:', newColor);
+        console.log('📦 Full product data:', window.productQuoteData);
+      }
+    }
+
+    // Initial update (with delay to ensure DOM is ready)
+    setTimeout(function() {
+      updateProductData();
+      console.log('📦 Initial product data:', window.productQuoteData);
+    }, 500);
+
+    // Listen for changes on swatch radio inputs
+    document.addEventListener('change', function(e) {
+      if (e.target && e.target.type === 'radio' && e.target.name.indexOf('option') !== -1) {
+        console.log('🔄 Swatch changed:', e.target.value);
+        setTimeout(updateProductData, 100);
+      }
+    }, true);
+
+    // Listen for clicks on swatch elements
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      const swatchElement = target.closest('.swatch-element');
+
+      if (swatchElement) {
+        console.log('🖱️ Swatch clicked');
+        setTimeout(updateProductData, 150);
+      }
+    }, true);
+
+    // Observe changes to active-swatch class
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const target = mutation.target;
+          if (target.classList.contains('swatch-element') && target.classList.contains('active-swatch')) {
+            console.log('👁️ Active swatch class added');
+            setTimeout(updateProductData, 50);
+          }
+        }
+      });
+    });
+
+    // Start observing swatch elements
+    setTimeout(function() {
+      const swatchElements = document.querySelectorAll('.swatch-element');
+      swatchElements.forEach(function(el) {
+        observer.observe(el, { attributes: true });
+      });
+      console.log('👁️ Observing', swatchElements.length, 'swatch elements');
+    }, 1000);
+
+    console.log('✅ Product data bridge ready');
+
+    // Debug helper
+    window.debugProductData = function() {
+      console.log('=== PRODUCT DATA DEBUG ===');
+      console.log('Product Quote Data:', window.productQuoteData);
+      console.log('');
+      console.log('Checked inputs:', document.querySelectorAll('.swatch input[type="radio"]:checked'));
+      console.log('Active swatches:', document.querySelectorAll('.swatch-element.active-swatch'));
+      console.log('All swatch inputs:', document.querySelectorAll('.swatch input[type="radio"]'));
+      console.log('========================');
+    };
+
+    // Make it accessible for quote form
+    console.log('🌐 Product data available globally as window.productQuoteData');
+  })();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Set initial state for all animated elements with more dramatic effects
+  gsap.set('.pcq-img', {
+    opacity: 0,
+    y: 50,
+    scale: 0.95,
+    rotationY: -5
+  });
+
+  gsap.set('.pcq-title', {
+    opacity: 0,
+    y: 40,
+    scale: 0.98
+  });
+
+  gsap.set('.pcq-short-desc > *', {
+    opacity: 0,
+    x: -20,
+    y: 20
+  });
+
+  gsap.set('.pcq-options', {
+    opacity: 0,
+    y: 30
+  });
+
+  gsap.set('.btn-quote, .btn-customize', {
+    opacity: 0,
+    y: 30,
+    scale: 0.95
+  });
+
+  gsap.set('.product-accordion', {
+    opacity: 0,
+    y: 30
+  });
+
+  // Create the main animation timeline
+  const tl = gsap.timeline({
+    defaults: {
+      duration: 0.8,
+      ease: 'power3.out'
+    }
+  });
+
+  // Animate images with 3D effect and scale
+  tl.to('.pcq-img', {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotationY: 0,
+    stagger: {
+      amount: 0.4,
+      from: "start"
+    },
+    ease: 'back.out(1.2)'
+  })
+  
+  // Animate product title with scale effect
+  .to('.pcq-title', {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    duration: 0.9,
+    ease: 'back.out(1.1)'
+  }, '-=0.4')
+  
+  // Animate short description with slide from left
+  .to('.pcq-short-desc > *', {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    stagger: 0.1,
+    duration: 0.7,
+    ease: 'power2.out'
+  }, '-=0.5')
+  
+  // Animate product options with smooth fade
+  .to('.pcq-options', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  }, '-=0.4')
+  
+  // Animate action buttons with bounce effect
+  .to('.btn-quote, .btn-customize', {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    stagger: 0.12,
+    duration: 0.7,
+    ease: 'back.out(1.3)'
+  }, '-=0.4')
+  
+  // Animate accordion parent div
+  .to('.product-accordion', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'power2.out'
+  }, '-=0.3');
+
+  // Add hover animations for buttons
+  const buttons = document.querySelectorAll('.btn-quote, .btn-customize');
+  buttons.forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      gsap.to(this, {
+        scale: 1.05,
+        y: -3,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+
+    btn.addEventListener('mouseleave', function() {
+      gsap.to(this, {
+        scale: 1,
+        y: 0,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+  });
+  });
+
+</script>
+

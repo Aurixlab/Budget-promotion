@@ -1,0 +1,865 @@
+<footer class="custom-footer">
+  <div class="footer-container">
+    <!-- Top Logo Section -->
+    <div class="footer-logo-row">
+      <span class="line"></span>
+      <img
+        src="//budgetpromotion.myshopify.com/cdn/shop/files/Budget_Promotion.ca_Logo_410x.png?v=1613159021"
+        alt="Budget Promotion"
+        class="footer-logo"
+      >
+      <span class="line"></span>
+    </div>
+
+    <!-- Main Footer Columns -->
+    <div class="footer-top">
+      <!-- Contact -->
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+          </svg>
+          Bay 30 - 999 57th Ave NE Calgary
+        </p>
+        <p>
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
+          </svg>
+          1-403-259-8275
+        </p>
+        <p>
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" fill="currentColor"/>
+          </svg>
+          hello@budgetpromotion.ca
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/collections/all">Products</a></li>
+          <li><a href="/pages/templates">Templates</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
+          <li><a href="/pages/design-now">Design Now</a></li>
+        </ul>
+      </div>
+
+      <!-- Store -->
+      <div class="footer-col">
+        <h4>Store</h4>
+        <ul>
+          <li><a href="/cart">Cart (0)</a></li>
+          <li><a href="/account">User Account</a></li>
+          <li><a href="/account/login">Login/Register</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-col newsletter">
+        <h4>Join Our Newsletter</h4>
+
+        <div class="footer-newsletter-wrapper">
+          <span class="message"></span>
+
+          {% if settings.mailchimp_link != blank %}
+            <!-- MailChimp Form -->
+            <form
+              action="{{ settings.mailchimp_link }}"
+              method="post"
+              name="mc-embedded-subscribe-form"
+              class="footer-newsletter"
+              target="_blank"
+            >
+              <input type="email" value="" name="EMAIL" class="contact_email" placeholder="Email" required>
+              <button type="submit" name="subscribe" aria-label="Subscribe">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          {% else %}
+            <!-- Shopify Customer Form -->
+            {% form 'customer', class: 'footer-newsletter-form' %}
+              {% if form.posted_successfully? %}
+                <p class="success-message">
+                  <em>{{ 'general.newsletter_form.success_text' | t }}</em>
+                </p>
+              {% elsif form.errors %}
+                {% for field in form.errors %}
+                  <p class="error-message">
+                    <em>{{ field }} - {{ form.errors.messages[field] }}</em>
+                  </p>
+                {% endfor %}
+              {% endif %}
+
+              <input type="hidden" name="contact[tags]" value="prospect,newsletter">
+              <div class="footer-newsletter">
+                <input type="hidden" name="challenge" value="false">
+                <input type="email" class="contact_email" name="contact[email]" required placeholder="Email">
+                <button type="submit" aria-label="Subscribe">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            {% endform %}
+          {% endif %}
+        </div>
+
+        <div class="footer-social">
+          <h4>Follow Us On</h4>
+          <div class="footer-social-info-box">
+            <div class="social-icons">
+              <a href="#" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+            </div>
+            {% comment %}
+              <div class="footer-com-img">
+                <a href="https://aurixlab.com/">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/Marble_Plaque.png?v=1768070206"
+                    alt="Aurixlab"
+                  >
+                </a>
+              </div>
+            {% endcomment %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-com-img">
+        <div>Created by</div>
+                <a href="https://aurixlab.com/">
+                  <img
+                    src="https://cdn.shopify.com/s/files/1/0777/5879/files/Black-Gold-Logo.png?v=1768593019"
+                    alt="Aurixlab"
+                  >
+                </a>
+              </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="footer-bottom">
+      <p>Copyright © 2025 <a href="/">Budgetpromotion.ca</a> | All Rights Reserved</p>
+      
+    </div>
+  </div>
+</footer>
+
+<style>
+inbox-online-store-chat#ShopifyChat {
+    left: 16px;
+    max-width: 10%;
+    width: 100%;
+}
+    .custom-footer {
+      background: #FF741C;
+      color: #fff;
+      padding: 60px 2% 30px;
+    }
+
+    .footer-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      gap: 20px;
+    }
+
+    .footer-logo-row .line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    .footer-logo {
+      max-width: 180px;
+      height: auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .footer-top > div:last-child {
+    grid-column: 1 / -1;
+    text-align: center;
+        font-size: 14px;
+}
+.footer-top > div:last-child a {
+    color: #fff;
+    text-decoration: underline;
+}
+    .footer-col:nth-child(2),
+    .footer-col:nth-child(3) {
+      max-width: 150px;
+    }
+
+    .footer-col h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      color: #fff;
+    }
+
+    .footer-col p,
+    .footer-col li,
+    .footer-col a {
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.8;
+      text-decoration: none;
+    }
+
+    .footer-col p {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .footer-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .footer-col a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+
+    /* Newsletter Form Responsive Fixes */
+    .footer-newsletter-wrapper {
+      width: 100%;
+    }
+
+    .footer-newsletter {
+      display: flex;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+
+    .footer-newsletter input[type="email"] {
+      border: none;
+      padding: 14px 18px;
+      flex: 1;
+      font-size: 15px;
+      outline: none;
+      color: #333;
+      min-width: 0;
+      width: 100%;
+      background: #fff;
+      margin: 0;
+    }
+
+    .footer-newsletter button {
+      background: #cc5200;
+      border: none;
+      padding: 0 22px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      min-width: 50px;
+    }
+
+
+    /* Tablet */
+
+    @media (max-width: 768px) {
+      .footer-newsletter input[type="email"] {
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+
+      .footer-newsletter button {
+        padding: 0 20px;
+        min-width: 48px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .footer-newsletter input[type="email"] {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .footer-newsletter button {
+        padding: 0 16px;
+        min-width: 45px;
+      }
+
+      .footer-newsletter button svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .footer-com-img img {
+          width: 80px;
+      }
+
+          .social-icons a {
+          width: 24px;
+          height: 24px;
+      }
+  }
+
+    .footer-newsletter button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .footer-newsletter button:hover {
+      background: #a84300;
+      transform: translateX(3px);
+    }
+
+    .success-message,
+    .error-message {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .success-message {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .error-message {
+      background: rgba(255,0,0,0.2);
+      color: #fff;
+    }
+
+    .footer-social h4 {
+      margin-bottom: 15px;
+      margin-top: 25px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-icons a {
+      width: 42px;
+      height: 42px;
+      background: #fff;
+      color: #FF741C;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .social-icons a svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .social-icons a:hover {
+      background: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 0;
+      font-size: 14px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .footer-bottom p {
+      margin: 0;
+    }
+
+    .footer-bottom a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-bottom a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom .developer {
+      font-size: 14px;
+    }
+
+    .footer-bottom .developer span {
+      font-weight: 700;
+      letter-spacing: 0px;
+    }
+
+    /* Footer Social Info Box */
+    .footer-social-info-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .footer-com-img {
+      flex-shrink: 0;
+    }
+
+    .footer-com-img img {
+      width: 120px;
+      height: auto;
+      display: block;
+    }
+
+    /* Tablet Responsive */
+    @media (max-width: 992px) {
+      .custom-footer {
+        padding: 50px 4% 25px;
+      }
+
+      .footer-top {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+
+      .footer-logo {
+        max-width: 160px;
+      }
+
+      .footer-social-info-box {
+        gap: 20px;
+      }
+
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .custom-footer {
+        padding: 40px 5% 20px;
+      }
+
+      .footer-logo-row {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 0px;
+      }
+
+      .footer-logo-row .line {
+        display: none;
+      }
+
+      .footer-logo {
+        max-width: 140px;
+      }
+
+      .footer-top {
+        gap: 30px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+
+      .footer-col h4 {
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .footer-col p,
+      .footer-col li,
+      .footer-col a {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .footer-newsletter {
+        flex-direction: row;
+      }
+
+      .footer-newsletter input[type="email"] {
+        padding: 12px 15px;
+        font-size: 14px;
+      }
+
+      .footer-newsletter button {
+        padding: 0 20px;
+      }
+
+      .social-icons a {
+        width: 38px;
+        height: 38px;
+      }
+
+      .social-icons a svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .footer-social-info-box {
+        gap: 15px;
+      }
+
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding-top: 0;
+      }
+
+      .footer-bottom p {
+        font-size: 13px;
+      }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+      .custom-footer {
+        padding: 30px 4% 15px;
+      }
+
+      .footer-top {
+        gap: 10px;
+      }
+
+      .footer-social-info-box {
+        gap: 15px;
+        align-items: flex-start;
+      }
+
+      .footer-com-img img {
+        width: 90px;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 4px;
+      }
+
+      .footer-col h4 {
+        font-size: 15px;
+      }
+
+      .footer-newsletter input[type="email"] {
+        font-size: 13px;
+        padding: 10px 12px;
+      }
+
+      .footer-newsletter button {
+        padding: 0 18px;
+      }
+
+      .footer-newsletter button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .social-icons a {
+        width: 36px;
+        height: 36px;
+      }
+
+      .social-icons a svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .footer-com-img {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+</style>
+
+<script>
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', function () {
+    // Footer Animation
+    const footer = document.querySelector('.custom-footer');
+
+    if (footer) {
+      const footerLogo = footer.querySelector('.footer-logo');
+      const footerLines = footer.querySelectorAll('.footer-logo-row .line');
+      const footerCols = footer.querySelectorAll('.footer-col');
+      const footerBottom = footer.querySelector('.footer-bottom');
+      const socialIcons = footer.querySelectorAll('.social-icons a');
+      const newsletterForm = footer.querySelector('.footer-newsletter');
+      const footerComImg = footer.querySelector('.footer-com-img');
+
+      // Set initial states
+      gsap.set(footerLogo, { scale: 0.5, opacity: 0, rotation: -10 });
+      gsap.set(footerLines, { scaleX: 0, opacity: 0 });
+      gsap.set(footerCols, { y: 50, opacity: 0 });
+      gsap.set(footerBottom, { y: 30, opacity: 0 });
+      gsap.set(socialIcons, { scale: 0, opacity: 0, rotation: 0 });
+      if (newsletterForm) gsap.set(newsletterForm, { x: -20, opacity: 0 });
+      if (footerComImg) gsap.set(footerComImg, { y: 30, opacity: 0 });
+
+      // Function to check if footer is in viewport
+      const isFooterInView = () => {
+        const rect = footer.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom >= 0;
+      };
+
+      // Function to play footer animation
+      const playFooterAnimation = () => {
+        // Create main timeline without ScrollTrigger
+        const footerTimeline = gsap.timeline();
+
+        // Animate lines expanding (faster)
+        footerTimeline.to(footerLines, {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.12,
+        });
+
+        // Animate logo with bounce (faster)
+        footerTimeline.to(
+          footerLogo,
+          {
+            scale: 1,
+            opacity: 1,
+            rotation: 0,
+            duration: 0.7,
+            ease: 'back.out(1.7)',
+          },
+          '-=0.3'
+        );
+
+        // Animate footer columns with stagger (faster)
+        footerTimeline.to(
+          footerCols,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power3.out',
+          },
+          '-=0.4'
+        );
+
+        // Animate newsletter form (faster)
+        if (newsletterForm) {
+          footerTimeline.to(
+            newsletterForm,
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+            },
+            '-=0.3'
+          );
+        }
+
+        // Animate social icons with rotation (faster)
+        footerTimeline.to(
+          socialIcons,
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: 'back.out(2)',
+          },
+          '-=0.2'
+        );
+
+        // Animate footer bottom (faster)
+        footerTimeline.to(
+          footerBottom,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          '-=0.15'
+        );
+
+        // Animate footer-com-img (fade in from bottom)
+        if (footerComImg) {
+          footerTimeline.to(
+            footerComImg,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+            },
+            '-=0.3'
+          );
+        }
+      };
+
+      // Check if footer is already in view (short pages), otherwise wait for scroll
+      if (isFooterInView()) {
+        // Delay slightly to ensure smooth page load
+        setTimeout(playFooterAnimation, 300);
+      } else {
+        // Use Intersection Observer for better performance
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                playFooterAnimation();
+                observer.disconnect(); // Run animation only once
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+            rootMargin: '0px 0px -10% 0px',
+          }
+        );
+
+        observer.observe(footer);
+      }
+
+      // Enhanced hover animations for footer columns (faster)
+      footerCols.forEach((col) => {
+        const links = col.querySelectorAll('a, p');
+
+        links.forEach((link) => {
+          link.addEventListener('mouseenter', function () {
+            gsap.to(this, {
+              x: 5,
+              duration: 0.5,
+              ease: 'power2.out',
+            });
+          });
+
+          link.addEventListener('mouseleave', function () {
+            gsap.to(this, {
+              x: 0,
+              duration: 0.5,
+              ease: 'power2.out',
+            });
+          });
+        });
+      });
+
+      // Enhanced social icon hover animations (faster)
+      socialIcons.forEach((icon) => {
+        icon.addEventListener('mouseenter', function () {
+          gsap.to(this, {
+            scale: 1.2,
+            duration: 0.3,
+            ease: 'back.out(2)',
+          });
+        });
+
+        icon.addEventListener('mouseleave', function () {
+          gsap.to(this, {
+            scale: 1,
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        });
+      });
+
+      // Newsletter button hover animation (faster)
+      const newsletterButton = footer.querySelector('.footer-newsletter button');
+      if (newsletterButton) {
+        newsletterButton.addEventListener('mouseenter', function () {
+          gsap.to(this, {
+            scale: 1.1,
+            duration: 0.3,
+            ease: 'back.out(2)',
+          });
+        });
+
+        newsletterButton.addEventListener('mouseleave', function () {
+          gsap.to(this, {
+            scale: 1,
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        });
+      }
+
+      // Newsletter input focus animation (faster)
+      const newsletterInput = footer.querySelector('.footer-newsletter input[type="email"]');
+      if (newsletterInput) {
+        newsletterInput.addEventListener('focus', function () {
+          gsap.to(newsletterForm, {
+            scale: 1.02,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        });
+
+        newsletterInput.addEventListener('blur', function () {
+          gsap.to(newsletterForm, {
+            scale: 1,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            duration: 0.3,
+            ease: 'power2.out',
+          });
+        });
+      }
+
+      // Continuous subtle animation for footer logo (starts after main animation)
+      setTimeout(() => {
+        gsap.to(footerLogo, {
+          y: -5,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+        });
+      }, 1500);
+    }
+  });
+</script>

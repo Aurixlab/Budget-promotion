@@ -1,0 +1,848 @@
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+.reviews-section {
+        padding: 32px 0px;
+        overflow: hidden;
+    }
+    
+    /* Header Styles */
+    .sms-header {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .sms-header h2 {
+        font-style: normal;
+        font-weight: 800;
+        font-size: 28px;
+        line-height: 34px;
+        text-align: center;
+        color: #000000;
+        margin: 0 0 10px 0;
+        letter-spacing: 0;
+        opacity: 0;
+    }
+
+    .sms-header h3 {
+        font-style: normal;
+        font-weight: 800;
+        font-size: 40px;
+        line-height: 48px;
+        text-align: center;
+        text-transform: uppercase;
+        color: #FF741C;
+        margin: 0 0 10px 0;
+        letter-spacing: 0;
+        opacity: 0;
+    }
+
+    .sms-header p {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 29px;
+        text-align: center;
+        color: #000000;
+        margin: 0;
+        letter-spacing: 0;
+        opacity: 0;
+    }
+
+    /* Swiper Container */
+    .reviews-swiper-container {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+        opacity: 0;
+    }
+
+    .swiper {
+        width: 100%;
+        padding-bottom: 10px !important;
+    }
+
+    .swiper-slide {
+        height: auto;
+    }
+    
+    .swiper-wrapper {
+        padding: 10px;
+    }
+
+    /* Review Card */
+    .review-card {
+        height: 100%;
+        padding: 40px 30px;
+        background: #F2F2F2;
+        box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.5);
+        border-radius: 32px;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        opacity: 0;
+    }
+
+    .review-card:hover {
+        transform: translateY(-8px) scale(1);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Stars */
+    .stars {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+
+    .star {
+        color: #FF8C00;
+        font-size: 24px;
+        display: inline-block;
+        transform: scale(0);
+    }
+
+    .star.empty {
+        color: #ddd;
+    }
+
+    /* Review Text */
+    .review-text {
+        margin-bottom: 30px;
+        min-height: 150px;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 22px;
+        text-align: center;
+        color: #636363;
+        flex-grow: 1;
+    }
+
+    /* Reviewer Info */
+    .reviewer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-top: auto;
+    }
+
+    .reviewer-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #FF6B00, #FF4444);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 20px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .review-card:hover .reviewer-avatar {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .reviewer-name {
+        color: #FF6B00;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    /* Custom Pagination */
+    .swiper-pagination {
+        position: relative;
+        margin-top: 30px;
+    }
+
+    .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: #ddd;
+        opacity: 1;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .swiper-pagination-bullet:hover {
+        background: #FF6B00;
+        transform: scale(1.2);
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #FF6B00;
+        width: 35px;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
+    }
+
+    /* Rating Badges */
+    .badges {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .badge {
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        background: #FFFFFF;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 12px;
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    .badge-content {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .badge:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .badge-icon {
+        width: 28px;
+        height: 28px;
+        transition: transform 0.3s ease;
+    }
+
+    .badge:hover .badge-icon {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    .badge-content .rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+    }
+
+    .badge-content .rating-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .badge-content .rating-star {
+        color: #FF8C00;
+        font-size: 22px;
+    }
+
+    .badge-content .platform {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        color: #636363;
+    }
+
+    /* API Notice */
+    .api-notice {
+        text-align: center;
+        margin-top: 40px;
+        display: none;
+    }
+
+    .notice-box {
+        display: inline-block;
+        background: #FFF9E6;
+        border: 1px solid #FFE082;
+        border-radius: 10px;
+        padding: 15px 25px;
+    }
+
+    .notice-box p {
+        color: #8B6F00;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .notice-box strong {
+        color: #6B5500;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .reviews-swiper-container {
+            max-width: 1100px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sms-header h3 {
+            font-size: 32px;
+        }
+
+        .sms-header h2 {
+            font-size: 24px;
+        }
+
+        .sms-header p {
+            font-size: 18px;
+        }
+
+        .review-card {
+            padding: 20px 10px;
+        }
+        
+        .reviewer-name {
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            line-height: 18px;
+            min-height: 180px;
+        }
+
+        .badges {
+            gap: 15px;
+        }
+
+        .badge {
+            padding: 15px 20px;
+            width: 100%;
+            max-width: 280px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sms-header h3 {
+            font-size: 22px;
+            line-height: 26px;
+            margin: 0;
+        }
+
+        .sms-header h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .sms-header p {
+            font-size: 16px;
+        }
+        
+        .reviews-section {
+            padding-top: 0;
+        }
+
+        .review-text {
+            min-height: auto;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .badge-content .rating-number {
+            font-size: 24px;
+        }
+        
+        .reviews-swiper-container {
+            padding: 0;
+        }
+        
+        .stars {
+            margin-bottom: 10px;
+        }
+        
+        .badge {
+            padding: 10px 15px;
+            gap: 5px;
+        }
+        
+        .badge-content .rating-number {
+            font-size: 14px;
+        }
+        
+        .badge-content {
+            gap: 7px;
+        }
+        
+        .badge-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .badge-content .rating-star {
+            font-size: 14px;
+        }
+
+        .badge-content .platform {
+            font-size: 12px;
+            line-height: 16px;
+        }
+        
+        .reviewer {
+            gap: 8px;
+        }
+        
+        .reviewer-avatar {
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+        }
+        
+        .sms-header {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<div class="reviews-section">
+    <div class="review-container">
+        <!-- sms-header -->
+        <div class="sms-header">
+            <h2>{{ section.settings.heading }}</h2>
+            <h3>{{ section.settings.subheading }}</h3>
+            <p>{{ section.settings.tagline }}</p>
+        </div>
+
+        <!-- Swiper Slider -->
+        <div class="reviews-swiper-container">
+            <div class="swiper reviewsSwiper">
+                <div class="swiper-wrapper" id="swiperWrapper">
+                    <!-- Reviews will be inserted here by JavaScript -->
+                </div>
+                
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+
+        <!-- Rating Badges -->
+        <div class="badges">
+            <!-- Google Badge -->
+            <div class="badge">
+                <svg class="badge-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <div class="badge-content">
+                    <div class="rating">
+                        <span class="rating-number" id="googleRating">{{ section.settings.google_rating }}</span>
+                        <span class="rating-star">★</span>
+                    </div>
+                    <div class="platform">Google Reviews</div>
+                </div>
+            </div>
+
+            <!-- Facebook Badge -->
+            <div class="badge">
+                <svg class="badge-icon" viewBox="0 0 24 24">
+                    <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <div class="badge-content">
+                    <div class="rating">
+                        <span class="rating-number">{{ section.settings.facebook_rating }}</span>
+                        <span class="rating-star">★</span>
+                    </div>
+                    <div class="platform">Facebook Reviews</div>
+                </div>
+            </div>
+        </div>
+
+        {% if section.settings.api_key == blank %}
+        <!-- API Notice -->
+        <div class="api-notice" id="apiNotice">
+            <div class="notice-box">
+                <p><strong>Demo Mode:</strong> Add Google API key in theme settings to display live reviews.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    // Mock reviews data
+    const mockReviews = [
+        {
+            author_name: "Bryce Willigar",
+            rating: 5,
+            text: "My band gets our T-shirts for merch sales from these guys and in true band fashion we're always sending in last minute orders. They knock it out of the park every time! Orders are fast, high quality and affordable."
+        },
+        {
+            author_name: "Zack Beer",
+            rating: 5,
+            text: "Budget Promotion has been excellent in helping me. We have been ordering tons of materials for our business and they are always able to deliver excellent products quickly, at a great price."
+        },
+        {
+            author_name: "Erica Phare-Bergh",
+            rating: 5,
+            text: "Extremely pleased with the quality and price of the baseball shirts we ordered for our choir, the Good Vibes Memory Choirs. Service was prompt and professional. I'm looking forward to seeing the choir in them."
+        },
+        {
+            author_name: "Sarah Mitchell",
+            rating: 5,
+            text: "Outstanding service from start to finish! The team at Budget Promotion went above and beyond to ensure our corporate event merchandise was perfect. Quick turnaround, excellent quality, and very competitive pricing."
+        },
+        {
+            author_name: "Mike Johnson",
+            rating: 5,
+            text: "We've been working with Budget Promotion for over 3 years now and they never disappoint. Great communication, reliable delivery, and the quality is consistently top-notch. Highly recommend for any promotional needs!"
+        }
+    ];
+
+    let reviews = mockReviews;
+    let swiper = null;
+
+    // ====== INITIALIZE ======
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+        renderReviews();
+        initSwiper();
+        initGSAPAnimations();
+    });
+
+    // ====== RENDER REVIEWS ======
+    function renderReviews() {
+        const swiperWrapper = document.getElementById('swiperWrapper');
+        swiperWrapper.innerHTML = '';
+        
+        reviews.forEach((review) => {
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+            slide.innerHTML = `
+                <div class="review-card">
+                    <div class="stars">
+                        ${generateStars(review.rating)}
+                    </div>
+                    <div class="review-text">"${review.text}"</div>
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">${review.author_name.charAt(0)}</div>
+                        <div class="reviewer-name">${review.author_name}</div>
+                    </div>
+                </div>
+            `;
+            swiperWrapper.appendChild(slide);
+        });
+    }
+
+    // ====== GENERATE STARS ======
+    function generateStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<span class="star ${i > rating ? 'empty' : ''}">★</span>`;
+        }
+        return stars;
+    }
+
+    // ====== INITIALIZE SWIPER ======
+    function initSwiper() {
+        swiper = new Swiper('.reviewsSwiper', {
+            slidesPerView: 2,
+            spaceBetween: 20,
+            loop: true,
+            speed: 700,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: false,
+            },
+            breakpoints: {
+                769: {
+                    slidesPerView: 3,
+                    spaceBetween: 31,
+                },
+                1201: {
+                    slidesPerView: 4,
+                    spaceBetween: 31,
+                }
+            },
+            effect: 'slide',
+            grabCursor: true,
+            on: {
+                slideChange: function() {
+                    animateActiveSlide();
+                }
+            }
+        });
+    }
+
+    // ====== GSAP ANIMATIONS ======
+    function initGSAPAnimations() {
+        // Animate header elements with stagger
+        const headerTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.sms-header',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        headerTimeline
+            .to('.sms-header h2', {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: 'power3.out'
+            })
+            .to('.sms-header h3', {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: 'back.out(1.4)'
+            }, '-=0.5')
+            .to('.sms-header p', {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: 'power3.out'
+            }, '-=0.5');
+
+        // Animate swiper container
+        gsap.to('.reviews-swiper-container', {
+            opacity: 1,
+            duration: 1,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.reviews-swiper-container',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            },
+            onComplete: () => {
+                animateReviewCards();
+            }
+        });
+
+        // Animate badges with spring effect
+        gsap.to('.badge', {
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            ease: 'elastic.out(1, 0.6)',
+            scrollTrigger: {
+                trigger: '.badges',
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        gsap.to('.facebook-badge', {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            delay: 0.2,
+            ease: 'elastic.out(1, 0.6)',
+            scrollTrigger: {
+                trigger: '.badges',
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        // Add floating animation to badges
+        gsap.to('.badge', {
+            y: -10,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+
+        gsap.to('.facebook-badge', {
+            y: -10,
+            duration: 2,
+            delay: 1,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+    }
+
+    // ====== ANIMATE REVIEW CARDS ======
+function animateReviewCards() {
+    const cards = document.querySelectorAll('.review-card');
+    
+    // Set initial state for all cards
+    gsap.set(cards, {
+        y: 100,
+        opacity: 0,
+        scale: 0.8
+    });
+    
+    // Animate cards one by one from bottom
+    gsap.to(cards, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.15, // Delay between each card
+        ease: 'back.out(1.4)',
+        onComplete: function() {
+            // After cards appear, animate their content
+            cards.forEach((card, index) => {
+                const timeline = gsap.timeline({ delay: index * 0.15 });
+                
+                // Stars animation
+                const stars = card.querySelectorAll('.star');
+                timeline.fromTo(stars, 
+                    { opacity: 0, scale: 0, rotation: -180 },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.4,
+                        stagger: 0.08,
+                        ease: 'elastic.out(1, 0.7)'
+                    }
+                );
+
+                // Review text
+                timeline.fromTo(card.querySelector('.review-text'),
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    }, '-=0.2'
+                );
+
+                // Reviewer info
+                timeline.fromTo(card.querySelector('.reviewer'),
+                    { opacity: 0, x: -20 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 0.5,
+                        ease: 'power2.out'
+                    }, '-=0.3'
+                );
+            });
+        }
+    });
+}
+
+    // ====== ANIMATE ACTIVE SLIDE ======
+    function animateActiveSlide() {
+        const activeSlides = document.querySelectorAll('.swiper-slide-active, .swiper-slide-next, .swiper-slide-prev');
+        
+        activeSlides.forEach(slide => {
+            const stars = slide.querySelectorAll('.star');
+            
+            gsap.fromTo(stars, 
+                { scale: 0.8, opacity: 0.7 },
+                { 
+                    scale: 1, 
+                    opacity: 1,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    ease: 'elastic.out(1, 0.5)',
+                    rotation: '+=360'
+                }
+            );
+        });
+    }
+
+    // ====== HOVER ANIMATIONS ======
+    {% comment %} document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            const cards = document.querySelectorAll('.review-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    gsap.to(this, {
+                        scale: 1.02,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                    
+                    gsap.to(this.querySelector('.reviewer-avatar'), {
+                        rotation: 360,
+                        duration: 0.6,
+                        ease: 'back.out(1.4)'
+                    });
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    gsap.to(this, {
+                        scale: 1,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+        }, 1000);
+    }); {% endcomment %}
+</script>
+
+{% schema %}
+{
+  "name": "Google Reviews Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trusted by"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "10,000+ CUSTOMERS"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Nationwide"
+    },
+    {
+      "type": "text",
+      "id": "google_rating",
+      "label": "Google Rating",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "facebook_rating",
+      "label": "Facebook Rating",
+      "default": "4.5"
+    },
+    {
+      "type": "text",
+      "id": "api_key",
+      "label": "Google Places API Key",
+      "info": "Add your Google Places API key to fetch live reviews"
+    },
+    {
+      "type": "text",
+      "id": "place_id",
+      "label": "Google Place ID",
+      "default": "ChIJ70-mODNwcVMRFMZLTL4wwJg",
+      "info": "Your Google Business Place ID"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Google Reviews Slider",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

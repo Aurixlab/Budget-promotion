@@ -1,0 +1,64 @@
+<!-- Begin uncomplicated category breadcrumbs v1.2.0tw - PLEASE DO NOT CHANGE as this is auto-generated in a theme-app-extension -->
+
+{%- comment -%} try to find collection hint {%- endcomment -%}
+{%- if collection -%}
+    {%- assign hinted_collection = collection -%}
+{%- elsif product.collections[0] -%}
+    {%- assign hinted_collection = product.collections[0] -%}
+{%- else -%}
+    {%- assign hinted_collection = false -%}
+{%- endif -%}
+{%- comment -%} create slash-terminated root including locale/county code {%- endcomment -%}
+{%- if request.locale.root_url == "/" -%}
+    {%- assign hinted_path_prepend = request.locale.root_url -%}
+{%- else -%}
+    {%- assign hinted_path_prepend = request.locale.root_url | append: "/" -%}
+{%- endif -%}
+{%- comment -%} generate hinted path based on hinted collection {%- endcomment -%}
+{%- if hinted_collection -%}
+    {%- assign hinted_path = hinted_path_prepend | append: "collections/" | append: hinted_collection.handle -%}
+{%- else -%}
+    {%- assign hinted_path = false -%}
+{%- endif -%}
+{%- comment -%} render breadcrumbs {%- endcomment -%}
+<nav id="uncomplicated-breadcrumbs" class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+<a id="uncomplicated-category-breadcrumb-model-item" href="{% if link_catroot %}{{ link_catroot }}{% else %}/{% endif %}" title="{% if text_catroot %}{{ text_catroot }}{% else %}Home{% endif %}">{% if text_catroot %}{{ text_catroot }}{% else %}Home{% endif %}</a>
+    {%- if hinted_collection -%}
+        {%- comment -%} on collection pages or product pages with an identifiable collection {%- endcomment -%}
+<span id="uncomplicated-category-breadcrumb-top-separator" aria-hidden="true" class="breadcrumb__sep">&rsaquo;</span>
+        {%- if product == null and block.settings.show_finalbread_as_textonly -%}
+            {%- comment -%} render collection as text-only leaf {%- endcomment -%}
+<span class="breadcrumb__leaf">{{ hinted_collection.title }}</span>
+        {%- else -%}
+            {%- comment -%} render collection as linked branch {%- endcomment -%}
+<a href="{{ hinted_path }}" class="breadcrumb__branch" id="uncomplicated-category-breadcrumb-final-item" >{{ hinted_collection.title }}</a>
+        {%- endif -%}
+    {%- else -%}
+        {%- comment -%} product pages with no identifiable collection {%- endcomment -%}
+<span id="uncomplicated-category-breadcrumb-top-separator" aria-hidden="true" class="breadcrumb__sep breadcrumb__allproducts">&rsaquo;</span>
+<a href="{% if link_catall %}{{ link_catall }}{% else %}/collections/all{% endif %}" title="{% if text_catall %}{{ text_catall }}{% else %}All Products{% endif %}">{% if text_catall %}{{ text_catall }}{% else %}All Products{% endif %}</a>
+    {%- endif -%}
+{%- comment -%} render appends (tags, product title etc.) {%- endcomment -%}
+    {%- if current_tags -%}
+<span aria-hidden="true" class="breadcrumb__sep">&rsaquo;</span><span>{{ current_tags | join: " + " }}</span>
+    {%- endif -%}
+    {%- if product -%}
+<span aria-hidden="true" class="breadcrumb__sep">&rsaquo;</span><span><strong>{% if truncate_limit %}{% if truncate_limit > -1 %}{{ product.title | truncate: truncate_limit }}{% else %}{{ product.title }}{% endif %}{% else %}{{ product.title | truncate: 28 }}{% endif %}</strong></span>
+    {%- endif -%}
+{%- comment -%} render metadata spans for JS processing {%- endcomment -%}
+    {%- if hinted_path -%}
+<span id="uncomplicated-meta-hintedpath" data-hintedpath="{{ hinted_path }}" aria-hidden="true" style="display: none;"></span>
+    {%- endif -%}
+    {%- if disable_jsonld -%}
+<span id="uncomplicated-meta-disablejsonld" aria-hidden="true" style="display: none;"></span>
+    {%- else -%}
+<span id="uncomplicated-meta-addjsonld" aria-hidden="true" style="display: none;"></span>
+    {%- endif -%}
+    {%- if insert_shortlinkfix -%}
+<span id="uncomplicated-meta-shortlinkfix" aria-hidden="true" style="display: none;"></span>
+    {%- endif -%}
+</nav>
+
+{{ 'uncomplicated.categories.catlist.min.js' | asset_url | script_tag }}
+{{ 'uncomplicated.categories.catlist.css' | asset_url | stylesheet_tag }}
+<!-- End uncomplicated category-based breadcrumb -->
