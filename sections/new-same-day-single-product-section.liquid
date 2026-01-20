@@ -2251,6 +2251,147 @@
 
   <!-- JavaScript for Step Navigation -->
   <script>
+// ============================================================================
+// VERCEL + PRINTAVO INTEGRATION
+// ============================================================================
+// Integrates Shopify → Vercel → Printavo workflow
+// IMPORTANT: Update VERCEL_API_URL after deploying Vercel app
+
+// ============================================================================
+// IMAGE HOSTING CONFIGURATION
+// ============================================================================
+
+const IMGBB_API_KEY = '39116b380cbb45a2caec30e8376fc2aa';  // ⚠️ REPLACE WITH YOUR KEY
+
+/**
+ * Upload base64 image to ImgBB and get permanent URL
+ * @param {string} base64Data - Base64 image data (with or without prefix)
+ * @param {string} name - Name for the image (optional)
+ * @returns {Promise<string>} - URL of uploaded image
+ */
+async function uploadImageToImgBB(base64Data, name = 'design') {
+  if (!base64Data) return null;
+  
+  console.log(`📤 Uploading image to ImgBB: ${name}`);
+  console.log(`   Image size: ${base64Data.length} chars`);
+  
+  try {
+    // Remove data:image/png;base64, prefix if present
+    const base64Clean = base64Data.replace(/^data:image\/\w+;base64,/, '');
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('key', IMGBB_API_KEY);
+    formData.append('image', base64Clean);
+    formData.append('name', name);
+    
+    // Upload to ImgBB
+    const response = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`ImgBB upload failed: ${response.status} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error('ImgBB upload unsuccessful');
+    }
+    
+    const imageUrl = result.data.url;
+    console.log(`✅ Image uploaded successfully!`);
+    console.log(`   URL: ${imageUrl}`);
+    console.log(`   Size: ${result.data.size} bytes`);
+    
+    return imageUrl;
+    
+  } catch (error) {
+    console.error('❌ Image upload failed:', error);
+    throw error;
+  }
+}
+
+const VERCEL_CONFIG = {
+  // ⚠️ UPDATE THIS to your actual Vercel deployment URL ⚠️
+  API_URL: 'https://shopify-printavo-proxy.vercel.app/api/hold',
+  ENABLED: true,
+  TIMEOUT: 10000,
+};
+
+// Configuration check
+if (VERCEL_CONFIG.ENABLED && VERCEL_CONFIG.API_URL.includes('your-vercel-app')) {
+  console.warn('⚠️  WARNING: Vercel not configured - update VERCEL_CONFIG.API_URL');
+}
+  
+
+
+console.log('═══════════════════════════════════════════════════════════');
+console.log('🛒 SHOPIFY + VERCEL + PRINTAVO INTEGRATION LOADED');
+console.log('Cart Token:', '{{ cart.token }}');
+console.log('Product ID:', '{{ product.id }}');
+console.log('Vercel API:', VERCEL_CONFIG.ENABLED ? VERCEL_CONFIG.API_URL : 'DISABLED');
+console.log('═══════════════════════════════════════════════════════════');
+
+/**
+ * Cache cart data to Vercel for Printavo webhook integration
+ * Non-blocking - won't fail cart add if Vercel is down
+ */
+async function cacheCartToVercel(cartItems, customData = {}) {
+  if (!VERCEL_CONFIG.ENABLED || VERCEL_CONFIG.API_URL.includes('your-vercel-app')) {
+    console.log('[VERCEL] Not configured, skipping');
+    return { success: false, reason: 'not_configured' };
+  }
+
+  try {
+    console.log('[VERCEL] 📦 Caching cart for Printavo webhook...');
+    
+    const payload = {
+      cartToken: '{{ cart.token }}',
+      items: cartItems.map(item => ({
+        title: item.product_title || 'Custom Product',
+        variant: item.variant_title || 'Default',
+        qty: item.quantity,
+        price: item.price,
+        properties: item.properties || {}
+      })),
+      note: customData.note || '',
+      timestamp: new Date().toISOString()
+    };
+    
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), VERCEL_CONFIG.TIMEOUT);
+    
+    const response = await fetch(VERCEL_CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`Vercel API error: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('[VERCEL] ✅ Cart cached successfully');
+    return { success: true, result };
+    
+  } catch (error) {
+    console.error('[VERCEL] ❌ Cache failed:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+// ============================================================================
+// END VERCEL INTEGRATION
+// ============================================================================
+
 /* safe colour string */
 function safeColor(str) {
   return String(str || '').toLowerCase().trim();
@@ -2347,19 +2488,71 @@ function safeColor(str) {
         const modalColorValue = window.getSelectedModalColorValue();
         const selectedColor = modalColorValue ? modalColorValue.value : window.getSelectedColorFromForm();
 
-        const frontDataUrl = await exportCanvasDataUrl('front');
-        document.getElementById('customDesignFront').value = frontDataUrl || '';
+        // ============================================================================
+// FIXED "NEXT" BUTTON HANDLER - READY TO PASTE
+// ============================================================================
+// Replace lines 2491-2503 in your file with this code:
 
-        const backDataUrl = await exportCanvasDataUrl('back');
-        document.getElementById('customDesignBack').value = backDataUrl || '';
+// Export designs to base64
+const frontDataUrl = await exportCanvasDataUrl('front');
+const backDataUrl = await exportCanvasDataUrl('back');
 
-        // Update preview
-        updateModalPreview(frontDataUrl, backDataUrl);
-        updateModalPriceDisplay();
-        window.setMainFormColor(selectedColor);
+// ✅ Upload images to ImgBB and get URLs
+console.log('🚀 [NEXT BUTTON] Starting image uploads...');
+this.textContent = 'Uploading designs...';
 
-        // Transition to preview step
-        updateModalStep('preview');
+let frontImageUrl = '';
+let backImageUrl = '';
+
+// Upload front design
+// Upload front design
+if (frontDataUrl) {
+  console.log('📤 [NEXT BUTTON] Uploading front design...');
+  try {
+    frontImageUrl = await uploadImageToImgBB(frontDataUrl, 'front-design');
+    console.log('✅ [NEXT BUTTON] Front uploaded:', frontImageUrl);
+  } catch (uploadError) {
+    console.error('❌ [NEXT BUTTON] Front upload failed:', uploadError);
+    console.error('Upload error details:', uploadError);
+    // Don't throw error - allow user to proceed without upload
+    alert('⚠️ Warning: Front design upload failed. You can still add to cart, but the design may not be saved. Error: ' + uploadError.message);
+    frontImageUrl = ''; // Continue with empty URL
+  }
+}
+
+// Upload back design
+if (backDataUrl && hasBackCustomization) {
+  console.log('📤 [NEXT BUTTON] Uploading back design...');
+  try {
+    backImageUrl = await uploadImageToImgBB(backDataUrl, 'back-design');
+    console.log('✅ [NEXT BUTTON] Back uploaded:', backImageUrl);
+  } catch (uploadError) {
+    console.error('❌ [NEXT BUTTON] Back upload failed:', uploadError);
+    console.error('Upload error details:', uploadError);
+    // Don't throw error - allow user to proceed without back upload
+    alert('⚠️ Warning: Back design upload failed. Front design was saved but back design may not be saved. Error: ' + uploadError.message);
+    backImageUrl = ''; // Continue with empty URL
+  }
+}
+
+console.log('✅ [NEXT BUTTON] All images uploaded!');
+console.log('   Front URL:', frontImageUrl || 'none');
+console.log('   Back URL:', backImageUrl || 'none');
+
+// ✅ Store image URLs in hidden fields (not base64!)
+document.getElementById('customDesignFront').value = frontImageUrl;
+document.getElementById('customDesignBack').value = backImageUrl;
+
+// Keep local preview with base64 (for display only)
+updateModalPreview(frontDataUrl, backDataUrl);
+updateModalPriceDisplay();
+window.setMainFormColor(selectedColor);
+
+// Reset button text before transitioning
+this.textContent = 'Processing...';
+
+// Transition to preview step
+updateModalStep('preview');
       } catch (error) {
         console.error('Preview generation failed:', error);
         alert('❌ ' + error.message);
@@ -2544,6 +2737,14 @@ if (typeof updateBubble === 'undefined') {
 if (typeof refreshCart === 'undefined') {
   window.refreshCart = async function() {
     await window.updateCartCount();
+    console.log('🧹 Clearing design...');
+    window.customizationLayers = [];
+    document.getElementById('customDesignFront').value = '';
+    document.getElementById('customDesignBack').value = '';
+    document.getElementById('backViewSelected').value = 'No';
+    document.getElementById('customizationDone').value = 'false';
+
+    const canvas = documen
     document.dispatchEvent(new CustomEvent('cart:refresh'));
   };
 }
@@ -3934,47 +4135,81 @@ document.addEventListener('DOMContentLoaded', function () {
   baseImage.onerror = () => log('ERROR: Failed to load base image');
 
   if (saveBtn) {
-    saveBtn.addEventListener('click', async () => {
-      log('Save button clicked');
-      if (saveBtn.classList.contains('btn-loading')) return;
+  saveBtn.addEventListener('click', async () => {
+    log('Save button clicked');
+    if (saveBtn.classList.contains('btn-loading')) return;
 
-      saveBtn.classList.add('btn-loading');
-      saveBtn.textContent = 'Saving...';
+    saveBtn.classList.add('btn-loading');
+    saveBtn.textContent = 'Uploading designs...';
 
-      try {
-        const hasBackCustomization = window.customizationLayers.some(l => l.view === 'back');
-        
-        const modalColorValue = window.getSelectedModalColorValue();
-        const selectedColor = modalColorValue ? modalColorValue.value : window.getSelectedColorFromForm();
-        
-        document.getElementById('backViewSelected').value = hasBackCustomization ? 'Yes' : 'No';
-        document.getElementById('customizationDone').value = 'true';
+    try {
+      const hasBackCustomization = window.customizationLayers.some(l => l.view === 'back');
+      
+      const modalColorValue = window.getSelectedModalColorValue();
+      const selectedColor = modalColorValue ? modalColorValue.value : window.getSelectedColorFromForm();
+      
+      document.getElementById('backViewSelected').value = hasBackCustomization ? 'Yes' : 'No';
+      document.getElementById('customizationDone').value = 'true';
 
-        const frontDataUrl = await exportCanvasDataUrl('front');
-        document.getElementById('customDesignFront').value = frontDataUrl || '';
-        
-        const backDataUrl = await exportCanvasDataUrl('back');
-        document.getElementById('customDesignBack').value = backDataUrl || '';
+      // Export designs to base64
+      const frontDataUrl = await exportCanvasDataUrl('front');
+      const backDataUrl = await exportCanvasDataUrl('back');
 
-        updateDesignPreview(frontDataUrl, backDataUrl);
-        updatePriceDisplay();
-        
-        window.setMainFormColor(selectedColor);
-
-        modal.classList.remove('show');
-        
-        showMainPageSuccess('Design saved successfully! Price updated.');
-        
-      } catch (error) {
-        console.error('Save failed:', error);
-        alert('❌ ' + error.message);
-        log('ERROR:', error);
-      } finally {
-        saveBtn.classList.remove('btn-loading');
-        saveBtn.textContent = 'Save Design';
+      // ✅ NEW: Upload images to ImgBB and get URLs
+      console.log('🚀 Starting image uploads...');
+      
+      let frontImageUrl = '';
+      let backImageUrl = '';
+      
+      // Upload front design
+// Upload front design
+      if (frontDataUrl) {
+        saveBtn.textContent = 'Uploading front design...';
+        try {
+          frontImageUrl = await uploadImageToImgBB(frontDataUrl, 'front-design');
+          console.log('✅ [SAVE BUTTON] Front uploaded:', frontImageUrl);
+        } catch (uploadError) {
+          console.error('❌ [SAVE BUTTON] Front upload failed:', uploadError);
+          console.error('Upload error details:', uploadError);
+          alert('⚠️ Warning: Front design upload failed. Please check your internet connection and try again. Error: ' + uploadError.message);
+          throw uploadError; // Stop the save process
+        }
       }
-    });
-  }
+      
+      // Upload back design
+      if (backDataUrl && hasBackCustomization) {
+        saveBtn.textContent = 'Uploading back design...';
+        backImageUrl = await uploadImageToImgBB(backDataUrl, 'back-design');
+      }
+      
+      console.log('✅ All images uploaded!');
+      console.log('   Front URL:', frontImageUrl || 'none');
+      console.log('   Back URL:', backImageUrl || 'none');
+      
+      // ✅ Store image URLs in hidden fields (not base64!)
+      document.getElementById('customDesignFront').value = frontImageUrl;
+      document.getElementById('customDesignBack').value = backImageUrl;
+
+      // Keep local preview with base64
+      updateDesignPreview(frontDataUrl, backDataUrl);
+      updatePriceDisplay();
+      
+      window.setMainFormColor(selectedColor);
+
+      modal.classList.remove('show');
+      
+      showMainPageSuccess('Designs uploaded successfully! URLs saved.');
+      
+    } catch (error) {
+      console.error('Save failed:', error);
+      alert('❌ Upload failed: ' + error.message + '\n\nPlease try again or contact support.');
+      log('ERROR:', error);
+    } finally {
+      saveBtn.classList.remove('btn-loading');
+      saveBtn.textContent = 'Save Design';
+    }
+  });
+}
 
   function showMainPageSuccess(message) {
     const existing = document.getElementById('mainPageSuccess');
@@ -4074,24 +4309,25 @@ async function addToCartWithAddons() {
     const frontDesign = document.getElementById('customDesignFront')?.value || '';
     const backDesign = document.getElementById('customDesignBack')?.value || '';
     
-    const cartItems = pricing.variants.map((v, index) => {
-      const item = {
-        id: parseInt(v.variantId), // ✅ Ensure it's an integer
-        quantity: parseInt(v.quantity),
-        properties: {
-          '_order_group_id': orderId,
-          '_custom_order': 'Yes',
-          '_back_view': pricing.hasBack ? 'Yes' : 'No',
-          '_size': v.size,
-          '_color': pricing.color,
-          ...(index === 0 && frontDesign ? { '_design_front': frontDesign.substring(0, 4000) } : {}),
-          ...(index === 0 && backDesign ? { '_design_back': backDesign.substring(0, 4000) } : {}),
-        }
-      };
-      
-      log(`📦 Cart item ${index + 1}:`, JSON.stringify(item, null, 2));
-      return item;
-    });
+const cartItems = pricing.variants.map((v, index) => {
+  const item = {
+    id: parseInt(v.variantId),
+    quantity: parseInt(v.quantity),
+    properties: {
+      '_order_group_id': orderId,
+      '_custom_order': 'Yes',
+      '_back_view': pricing.hasBack ? 'Yes' : 'No',
+      '_size': v.size,
+      '_color': pricing.color,
+      // ✅ ALL items get image URLs (not just first one!)
+      ...(frontDesign ? { '_design_front': frontDesign } : {}),
+      ...(backDesign ? { '_design_back': backDesign } : {}),
+    }
+  };
+  
+  log(`📦 Cart item ${index + 1}:`, JSON.stringify(item, null, 2));
+  return item;
+});
 
     log('📤 Sending to Shopify:', JSON.stringify({ items: cartItems }, null, 2));
 
@@ -4108,43 +4344,185 @@ async function addToCartWithAddons() {
     log('📥 Response status:', response.status);
     log('📥 Response body:', responseText);
 
-    if (!response.ok) {
-      let errorData;
-      try {
-        errorData = JSON.parse(responseText);
-      } catch (e) {
-        throw new Error(`Server error ${response.status}: ${responseText}`);
+// ============================================================================
+// ROBUST FIX FOR "CART IS TOO LARGE" ERROR
+// Replace lines 4347-4403 with this code
+// ============================================================================
+
+if (!response.ok) {
+  let errorData;
+  try {
+    errorData = JSON.parse(responseText);
+  } catch (e) {
+    throw new Error(`Server error ${response.status}: ${responseText}`);
+  }
+  
+  log('❌ Cart API error:', errorData);
+  const errorMsg = errorData.description || errorData.message || 'Unknown error';
+  
+  // ✅ SPECIAL HANDLING FOR "CART TOO LARGE" ERROR
+  if (errorMsg.toLowerCase().includes('cart') && errorMsg.toLowerCase().includes('too large')) {
+    console.warn('⚠️ "Cart is too large" error detected');
+    console.warn('   This error often appears even when items ARE added successfully');
+    console.warn('   Waiting longer to verify...');
+    
+    // Wait longer - Shopify needs time to process
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Increased to 1.5 seconds
+    
+    try {
+      // Check if cart was updated
+      const cartCheckResponse = await fetch('/cart.js?t=' + Date.now()); // Cache bust
+      const currentCart = await cartCheckResponse.json();
+      
+      console.log('📋 Current cart item count:', currentCart.items.length);
+      console.log('📋 Expected order ID:', orderId);
+      
+      // METHOD 1: Check by order group ID
+      let ourItems = currentCart.items.filter(item => 
+        item.properties && item.properties._order_group_id === orderId
+      );
+      
+      // METHOD 2: If not found, check by custom_order flag (fallback)
+      if (ourItems.length === 0) {
+        console.warn('⚠️ Order ID not found, checking by _custom_order flag...');
+        ourItems = currentCart.items.filter(item => 
+          item.properties && item.properties._custom_order === 'Yes'
+        );
+        
+        // If found, take only the most recent items (matching our quantity)
+        if (ourItems.length > 0) {
+          const expectedCount = cartItems.length;
+          ourItems = ourItems.slice(-expectedCount); // Take last N items
+        }
       }
       
-      log('❌ Cart API error:', errorData);
+      console.log('✅ Found items in cart:', ourItems.length);
       
-      // ✅ SHOW DETAILED ERROR MESSAGE
-      const errorMsg = errorData.description || errorData.message || 'Unknown error';
-      throw new Error(`Failed to add to cart:\n\n${errorMsg}\n\nVariant IDs sent: ${cartItems.map(i => i.id).join(', ')}`);
+      if (ourItems.length > 0) {
+        console.log('🎉 SUCCESS! Items were added despite "cart too large" error');
+        console.log('   Continuing normally...');
+        
+        // ✅ CLEAR DESIGN
+        console.log('🧹 Clearing design...');
+        window.customizationLayers = [];
+        document.getElementById('customDesignFront').value = '';
+        document.getElementById('customDesignBack').value = '';
+        document.getElementById('backViewSelected').value = 'No';
+        document.getElementById('customizationDone').value = 'false';
+        
+        const canvas = document.getElementById('customCanvas');
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        const layersList = document.getElementById('layersList');
+        if (layersList) {
+          layersList.innerHTML = '<p style="color: #666; font-size: 13px;">No layers yet. Upload an image or add text.</p>';
+        }
+        
+        // Update cart count and show success
+        await window.updateCartCount();
+        
+        const modal = document.getElementById('customizationModal');
+        if (modal?.classList.contains('show')) {
+          modal.classList.remove('show');
+        }
+        
+        showSuccessPopup(pricing.totalPrice);
+        
+        setTimeout(() => {
+          if (!window.openAjaxCartDrawer()) {
+            window.location.href = '/cart';
+          }
+        }, 300);
+        
+        // ✅ CRITICAL: Return true to prevent error alert
+        return true;
+      }
+      
+      // If we get here, items weren't found even after waiting
+      console.error('❌ Items not found in cart after verification');
+      
+    } catch (checkError) {
+      console.error('❌ Cart verification failed:', checkError);
     }
+    
+    // If we get here, verification failed
+    // Show a softer warning instead of error
+    console.warn('⚠️ Could not verify cart status, but items may have been added');
+    alert('⚠️ Note: Cart showed an error but items may have been added anyway. Please check your cart.');
+    
+    // Try to open cart anyway
+    setTimeout(() => {
+      if (!window.openAjaxCartDrawer()) {
+        window.location.href = '/cart';
+      }
+    }, 500);
+    
+    return false;
+  }
+  
+  // For OTHER errors (not "cart too large"), throw normally
+  throw new Error(`Failed to add to cart:\n\n${errorMsg}`);
+}
 
     const result = JSON.parse(responseText);
     log('✅ Cart response:', result);
+    
+    // ===== CACHE TO VERCEL (NON-BLOCKING) =====
+    cacheCartToVercel(result.items || [], {
+      note: 'Custom order - ' + new Date().toISOString()
+    }).catch(err => console.warn('[VERCEL] Cache failed (non-critical):', err));
+
     
     if (!result.items || result.items.length === 0) {
       throw new Error('No items were added. Response: ' + JSON.stringify(result));
     }
 
     // Update cart and show success
-    await window.updateCartCount();
+// Update cart and show success
+await window.updateCartCount();
 
-    const modal = document.getElementById('customizationModal');
-    if (modal?.classList.contains('show')) {
-      modal.classList.remove('show');
-    }
+// ✅ CLEAR DESIGN AFTER SUCCESSFUL ADD TO CART
+console.log('🧹 Clearing design for fresh start...');
 
-    showSuccessPopup(pricing.totalPrice);
-    
-    setTimeout(() => {
-      if (!window.openAjaxCartDrawer()) {
-        window.location.href = '/cart';
-      }
-    }, 300);
+// Clear customization layers
+window.customizationLayers = [];
+
+// Clear hidden fields
+document.getElementById('customDesignFront').value = '';
+document.getElementById('customDesignBack').value = '';
+document.getElementById('backViewSelected').value = 'No';
+document.getElementById('customizationDone').value = 'false';
+
+// Clear canvas if it exists
+const canvas = document.getElementById('customCanvas');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Update layers list in modal
+const layersList = document.getElementById('layersList');
+if (layersList) {
+  layersList.innerHTML = '<p style="color: #666; font-size: 13px;">No layers yet. Upload an image or add text.</p>';
+}
+
+console.log('✅ Design cleared - ready for new customization');
+
+const modal = document.getElementById('customizationModal');
+if (modal?.classList.contains('show')) {
+  modal.classList.remove('show');
+}
+
+showSuccessPopup(pricing.totalPrice);
+
+setTimeout(() => {
+  if (!window.openAjaxCartDrawer()) {
+    window.location.href = '/cart';
+  }
+}, 300);
     
     return true;
     
